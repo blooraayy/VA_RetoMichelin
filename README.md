@@ -16,5 +16,5 @@ Pablo: Deep Learning
 - [Improvement of mask R-CNN and deep learning for defect detection and segmentation in electronic products](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0329945)
 - [Application of self-supervised learning in steel surface defect detection](https://www.oaepublish.com/articles/jmi.2025.21)
 - [Enhanced surface defect detection of cylinder liners using Swin Transformer and YOLOv8Feng Pana, Junqian](https://www.sciencedirect.com/science/article/pii/S294985542500005X)
-- [Medical Image Segmentation Review: The Success of U-Net](https://ieeexplore.ieee.org/abstract/document/10643318/)
+- [Multi-Convolutional Channel Residual Spatial Attention U-Net for Industrial and Medical Image Segmentation](https://ieeexplore.ieee.org/abstract/document/10539995)
 - [Detection and classification of surface defects on hot-rolled steel using vision transformers](https://www.cell.com/heliyon/fulltext/S2405-8440(24)14529-X)
