@@ -18,3 +18,15 @@ Pablo: Deep Learning
 - [Enhanced surface defect detection of cylinder liners using Swin Transformer and YOLOv8Feng Pana, Junqian](https://www.sciencedirect.com/science/article/pii/S294985542500005X)
 - [Multi-Convolutional Channel Residual Spatial Attention U-Net for Industrial and Medical Image Segmentation](https://ieeexplore.ieee.org/abstract/document/10539995)
 - [Detection and classification of surface defects on hot-rolled steel using vision transformers](https://www.cell.com/heliyon/fulltext/S2405-8440(24)14529-X)
+
+`David`:
+-[Benchmarking of computer vision methods for energy-efficient high-accuracy olive fly detection on edge devices](https://link.springer.com/article/10.1007/s11042-024-18589-y) 03.pdf
+-[Adaptive edge finishing process on distorted features through robot-assisted computer vision](https://www.sciencedirect.com/science/article/pii/S0278612524000360) 05.pdf
+-[Evaluating K-Nearest Neighbors for X-Ray Bone Fracture Detection Using HOG, LBP, and SIFT Feature Extraction Methods](https://ieeexplore.ieee.org/abstract/document/11019966) 08.pdf
+-[Efficient Feature Extraction Techniques for Object Detection in Complex Images](https://ieeexplore.ieee.org/abstract/document/10774818) 10.pdf
+-[Surface Defect Detection Based on Machine Learning and Data Augmentation](https://ieeexplore.ieee.org/abstract/document/10827833) 11.pdf
+-[Comparative Analysis of SVM and XGBoost Classifiers with HOG Features for Concrete Crack Detection](https://journal.uir.ac.id/index.php/ITJRD/article/view/20560) 12.pdf
+-[Tool Wear Classification Based on Support Vector Machine and Deep Learning Models](https://sensors.myu-group.co.jp/sm_pdf/SM3833.pdf) 14.pdf
+-[Machine Learning-Based Phase Resolved Partial Discharge Pattern Classification using HOG and PCA](https://ieeexplore.ieee.org/abstract/document/10872724) 15.pdf
+-[]()
+-[]()
