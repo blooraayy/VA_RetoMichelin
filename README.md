@@ -14,10 +14,10 @@ Pablo: Deep Learning
 - [Segformer++: Efficient Token-Merging Strategies for High-Resolution Semantic Segmentation](https://huggingface.co/papers/2405.14467)
 - [PEM: Prototype-based Efficient MaskFormer for Image Segmentation](https://huggingface.co/papers/2402.19422)
 - [Relation DETR: Exploring Explicit Position Relation Prior for Object Detection](https://huggingface.co/papers/2407.11699)
-- []()
-- []()
-- []()
-- []()
+- [A Study on the Performance of U-Net Modifications in Retroperitoneal Tumor Segmentation](https://huggingface.co/papers/2502.00314)
+- [Grounded SAM: Assembling Open-World Models for Diverse Visual Tasks](https://huggingface.co/papers/2401.14159)
+- [YOLO-World: Real-Time Open-Vocabulary Object Detection](https://huggingface.co/papers/2401.17270)
+- [Grounding DINO 1.5: Advance the "Edge" of Open-Set Object Detection](https://huggingface.co/papers/2405.10300)
 
 `David`:
 -[Benchmarking of computer vision methods for energy-efficient high-accuracy olive fly detection on edge devices](https://link.springer.com/article/10.1007/s11042-024-18589-y) 03.pdf
