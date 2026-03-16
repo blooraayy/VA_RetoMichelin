@@ -3,6 +3,8 @@
 ```
 Jaime: Deep Learning
 Pablo: Deep Learning
+Miguel: Classic
+David: Classic
 ```
 
 ## Papers Searched
@@ -20,13 +22,25 @@ Pablo: Deep Learning
 - [Grounding DINO 1.5: Advance the "Edge" of Open-Set Object Detection](https://huggingface.co/papers/2405.10300)
 
 `David`:
--[Benchmarking of computer vision methods for energy-efficient high-accuracy olive fly detection on edge devices](https://link.springer.com/article/10.1007/s11042-024-18589-y) 03.pdf
--[Adaptive edge finishing process on distorted features through robot-assisted computer vision](https://www.sciencedirect.com/science/article/pii/S0278612524000360) 05.pdf
--[Evaluating K-Nearest Neighbors for X-Ray Bone Fracture Detection Using HOG, LBP, and SIFT Feature Extraction Methods](https://ieeexplore.ieee.org/abstract/document/11019966) 08.pdf
--[Efficient Feature Extraction Techniques for Object Detection in Complex Images](https://ieeexplore.ieee.org/abstract/document/10774818) 10.pdf
--[Surface Defect Detection Based on Machine Learning and Data Augmentation](https://ieeexplore.ieee.org/abstract/document/10827833) 11.pdf
--[Comparative Analysis of SVM and XGBoost Classifiers with HOG Features for Concrete Crack Detection](https://journal.uir.ac.id/index.php/ITJRD/article/view/20560) 12.pdf
--[Tool Wear Classification Based on Support Vector Machine and Deep Learning Models](https://sensors.myu-group.co.jp/sm_pdf/SM3833.pdf) 14.pdf
--[Machine Learning-Based Phase Resolved Partial Discharge Pattern Classification using HOG and PCA](https://ieeexplore.ieee.org/abstract/document/10872724) 15.pdf
--[]()
--[]()
+- [Benchmarking of computer vision methods for energy-efficient high-accuracy olive fly detection on edge devices](https://link.springer.com/article/10.1007/s11042-024-18589-y) 03.pdf
+- [Adaptive edge finishing process on distorted features through robot-assisted computer vision](https://www.sciencedirect.com/science/article/pii/S0278612524000360) 05.pdf
+- [Evaluating K-Nearest Neighbors for X-Ray Bone Fracture Detection Using HOG, LBP, and SIFT Feature Extraction Methods](https://ieeexplore.ieee.org/abstract/document/11019966) 08.pdf
+- [Efficient Feature Extraction Techniques for Object Detection in Complex Images](https://ieeexplore.ieee.org/abstract/document/10774818) 10.pdf
+- [Surface Defect Detection Based on Machine Learning and Data Augmentation](https://ieeexplore.ieee.org/abstract/document/10827833) 11.pdf
+- [Comparative Analysis of SVM and XGBoost Classifiers with HOG Features for Concrete Crack Detection](https://journal.uir.ac.id/index.php/ITJRD/article/view/20560) 12.pdf
+- [Tool Wear Classification Based on Support Vector Machine and Deep Learning Models](https://sensors.myu-group.co.jp/sm_pdf/SM3833.pdf) 14.pdf
+- [Machine Learning-Based Phase Resolved Partial Discharge Pattern Classification using HOG and PCA](https://ieeexplore.ieee.org/abstract/document/10872724) 15.pdf
+- []()
+- []()
+
+`Miguel`:
+- [SLIC Superpixels Compared to State-of-the-Art Superpixel Methods](https://ieeexplore.ieee.org/abstract/document/6205760)
+- [GrabCut Interactive Foreground Extraction using Iterated Graph Cuts](https://dl.acm.org/doi/abs/10.1145/1015706.1015720)
+- []()
+- []()
+- []()
+- []()
+- []()
+- []()
+- []()
+- []()
