@@ -1,0 +1,244 @@
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Template for Research proposals for Computer Vision subject
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Version 1.0 // February 2025
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Eduardo FIDALGO
+%%  - eduardo.fidalgo@unileon.es
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[11pt]{article}
+\usepackage{AV_style}
+\usepackage{comment}
+
+\usepackage{lipsum}  %% Package to create dummy text (comment or erase before start)
+
+\usepackage{multirow}
+\usepackage{diagbox}
+\usepackage{xfrac}
+\usepackage{tikz}
+\usepackage{caption, subcaption}
+\usepackage{lscape}
+\usepackage{pgfplots}
+\usepackage[export]{adjustbox}
+\usepackage{xcolor}
+
+%% ===============================================
+%% Setting the line spacing (3 options: only pick one)
+% \doublespacing
+% \singlespacing
+\onehalfspacing
+%% ===============================================
+
+\setlength{\droptitle}{-5em} %% Don't touch
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SET THE TITLE
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TITLE:
+\title{Research Proposal: Object detection and recognition of medical images 
+}
+
+% AUTHORS:
+\author{Name Surname1 Surname2\\% Student data
+    \href{mailto:student.email@estudiantes.unileon.es}{\texttt{student.email@estudiantes.unileon.es}} %% Email author 1 
+    }
+    
+% DATE:
+%\date{\today}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ABSTRACT
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{\setstretch{.8}
+\maketitle
+% %%%%%%%%%%%%%%%%%%
+\begin{abstract}
+% Insert the abstract content here--------------------------------------
+A paragraph summarizing the content of the Research proposal, including (i) the research line selected, (ii) the problem to be solved, (iii) the selected algorithm/method and (iv) what results obtained from that algorithm/method in different datasets from the literature
+
+% END CONTENT ABS------------------------------------------
+%\noindent
+%\textit{\textbf{Keywords: } Face Detection, Hand-crafted Descriptors, Deep Learning, Machine Learning} \\ %% <-- Keywords HERE!
+\noindent
+
+\end{abstract}
+}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BODY OF THE DOCUMENT
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --------------------
+\section{Introduction}
+% --------------------
+% Insert the content of the introduction here. % Try to reply to the following questions with your text.
+%    What is the problem?  Put the reader in context from a high level of perspective.  It is common to write a sentence giving – general – known information and then a sentence with new information about the previous sentence.
+\textbf{What is the problem? }
+
+%    Why is the problem significant or important?
+\textbf{Why is the problem significant?}
+
+%    A brief review of the state of the art pointing out what other researchers are doing in the field or with the problem, highlighting some author's contributions, highlighting those contributions close to the paper, highlighting their strengths, but especially their drawbacks. 
+\textbf{A brief review of the state of the art.} What other researchers are doing in the field or with the problem, highlight some author's contributions, highlight those contributions close to the paper, highlighting their strengths, but especially their drawbacks.
+
+%    What are the benefits or importance of this research? What is the potential value?
+\textbf{What are the benefits or importance of this research?}
+
+%   What will be presented in this document? In Section 2… then, in Section 3…
+\textbf{What will be presented in this document?}
+
+% An example of an introduction (part, not all) to the task of Face Detection extracted from one of our papers. An example of references is left too. 
+\textit{Automatic face detection, i.e., the localization of regions that contain faces in digital images, is a topic widely studied in the past decades due to its wide range of applications \cite{FaceDetectionSurvey2015}. These include forensic and security applications like video surveillance for criminal activity detection and facial recognition of fugitives and victims of child sexual abuse, among others. }
+
+\textit{Typically, automatic face detection is the first step towards face-related applications, and it is expected to identify faces under arbitrary image conditions. In real-world settings, the face detector should be robust enough to detect faces in low-resolution and low-quality images with occlusions, changes in pose or illumination, and distortions such as out-of-focus blur, noise, and low contrast \cite{kumar2019face}, which are commonly present in forensic applications like Child Sexual Exploitation Material (CSEM) \cite{Biswas_2019_HashEyeOcclusion}. However, automatic face detection is a very challenging task in these conditions, since performance degradation has been observed while testing detectors on low-quality images \cite{zhou2018survey}. There are two main approaches to address this problem \cite{FaceDetectionSurvey2015}: those based on hand-crafted descriptors and those based on trainable features with deep-learning techniques. }
+
+\textit{Usually, traditional \cite{Viola2004} and deep-learning-based face detectors \cite{MTCNN2016, swapna2020survey} are designed to process 2D images, but they have also been extended to analyze 3D data \cite{Olivetti2020_3DFaceDetection}. These approaches use deep information to be less sensitive to changing illumination conditions and viewpoint variation than 2D face detectors. However, 3D approaches are computationally more complex than 2D ones, which is a drawback when real-time performance is crucial. This condition applies to the domain of forensic tools; therefore, we limit this review to 2D face detectors.}
+
+\textit{In this work, we present a comparison of the trade-off between speed and accuracy of face detection through the image resizing strategy presented in \cite{ChavesJNIC} for three Intel CPUs ---i7, i9, and Xeon E5--- and five Nvidia GPUs ---Tesla K40, TITAN Xp, GTX 1060, RTX 2060, and RTX 2070---. We evaluated three face detector methods, MTCNN, PyramidBox and DSFD, using a set of images chosen from the WIDER Face dataset \cite{wider_face_dataset} and the Unconstrained Face Detection Dataset (UFDD)}
+
+\textit{The rest of the document is organized as follows. We present a review of the State-of-the-Art face detectors based on hand-crafted descriptors and Deep Learning methods, focusing on their suitability for forensic applications in Section \ref{sec:literatureReview}. Section \ref{sec:selectedMethod} describes… and Section … Finally, the python implementations found are briefly described in Section \ref{sec:python}.}
+
+% --------------------
+\section{Literature review}
+% --------------------
+% Insert the content of the proposed solutions here. Text from the guide is inserted as a reference for you to be aware of where the text could be inserted in LaTeX.
+\label{sec:literatureReview}
+The group must review no less than 10 papers from the literature, per group member. Papers reviewed must be "recent" and not more than three years old. An example of the level of detail expected for each method reviewed is provided below.
+
+Example of paper/method reviewed for a research line related to Phishing detection: \textit{Adebowale et al. \cite{Adebowale2019} created a browser extension to protect users by extracting features from the URL, the source code, the images and third-party services like WHOIS. Those features were introduced into an ANFIS (Adaptive Neuro-Fuzzy Inference System) and combined with SIFT (Scale-Invariant Feature Transform), obtaining an accuracy of $98.30\%$ on Rami et al. dataset\footnote{http://eprints.hud.ac.uk/24330/9/Mohammad14JulyDS}, collected in 2015.  }
+
+
+A table summarizing the reviewed methods would be a plus. An example of this kind of table can be seen below. As can be seen, the average precision or another performance metric used for evaluating the technique has to be provided.
+
+% Example of a small table, for you to reuse commands if you need.
+\begin{table}[phtb!]
+\begin{center}
+\resizebox{\linewidth}{!} {
+\begin{tabular}{ l  c c c c c c c}
+\hline
+\multirow{2}{*}{Method} &\multirow{2}{*}{Year}&\multicolumn{3}{c}{mAP per category}  & Speed  & \multirow{2}{*}{GPU}& \multirow{2}{*}{Code}\\
+\cline{3-5}
+ & & easy(\%) & medium(\%)  & hard (\%) & (FPS)  &   \\
+\hline
+MTCNN \cite{MTCNN2016}& 2016 & 85.1 & 82.0&60.7& 99.0 & TITAN Black&Yes\\
+S3DF \cite{S3FD2017}& 2017 & 93.7 & 92.4&85.2& 36.0 &  TITAN X&Yes\\
+FANet \cite{FANet2017}& 2017 & 95.6 & 94.7&89.5&  35.6 & GTX 1080 ti&Yes\\
+PyramidBox \cite{PyramidBox2018}& 2018 & 96.1 &95.0& 89.5 & --- & ---&Yes\\
+DSFD \cite{DSFD2018}& 2018 & 96.6 &95.7& 90.4& --- & ---&Yes\\
+AInnoFace \cite{AInnoFace2019}& 2019 & 96.5 &95.7& 91.2& --- & ---&No\\
+ASFD \cite{ASFD2020}& 2020 & 96.7 &96.2& 92.1& 26.0 &Tesla P40&No\\
+\hline
+\end{tabular}
+}
+\caption{\label{tab:literatureReview}Face detection performance on the WIDER Face data set \cite{wider_face_dataset}, in terms of the mean Average Precision (mAP) and the speed as Frames per Second (FPS)}
+\end{center}
+\end{table} 
+
+
+% --------------------
+\section{Selected Method}
+% --------------------
+\label{sec:selectedMethod}
+% Insert the content here.
+
+The group will choose one strategy (per student), and each student will dedicate a subsection under this section to explain how the method works in detail. The research proposal must contain at least one traditional and another deep learning approach to solve the problem. If three students collaborate, the options could be:
+\begin{itemize}
+    \item Two traditional and one deep learning approaches
+    \item One traditional and two deep learning approaches 
+\end{itemize}
+
+In both options, it is a must to pay and detail the steps of a computer vision pipeline. In other words, each student must reflect and describe all the steps of the selected method(s): any pre-processing step needed, which descriptors (or neural network architectures) are used, type of architecture and main features, how the classification works (traditional), and which metrics are presented for the selected method in the paper or other sources of information used.
+
+
+
+% --------------------
+\section{Datasets}
+% --------------------
+\label{sec:datasets}
+The group will list the details of at least \textbf{two datasets publicly available (per student)} used to evaluate the selected problem in the reviewed papers. Include, for each dataset:
+\begin{itemize}
+\item Name
+\item Date of creation
+\item Link to the dataset 
+\item Description: number of images, categories, sub-categories, details related to the task.      
+\end{itemize}
+
+Present the previous information in a paragraph format, not as a list of bullet points per dataset. Including an additional table summarizing the datasets with this information is voluntary (mandatory for the presentation).
+
+The student will include 2–3 samples of each dataset selected as a figure.
+
+
+
+% --------------------
+\section{Metrics}
+% --------------------
+\label{sec:metrics}
+Indicate the most typical metrics used for evaluating this problem. Explain them and include their formulas. For example, if you are working on image classification, you may want to define precision, recall, accuracy, and F1-Score.
+
+% --------------------
+\section{Python implementations}
+% --------------------
+\label{sec:python}
+The group will present a link to the GitHub, GitLab, or authors link where the implementation of the method in Python is available, the methods from Section 2 Proposed solutions.
+
+A brief description must be given of each implementation's release date, advantages, or possible limitations. Students should briefly explain the differences found between the methods they have selected.
+
+In the second part of the course project, the group is expected to implement the methods selected with all the datasets described and provide the metrics obtained with the implementation chosen.
+
+% --------------------
+\section{CREDITS}
+% --------------------
+\label{sec:credits}
+Review the following link for your information: \footnote{https://www.elsevier.com/researcher/author/policies-and-guidelines/credit-author-statement} “CRediT (Contributor Roles Taxonomy) was introduced to recognize individual author contributions, reducing authorship disputes and facilitating collaboration”. More informally, it is a paragraph usually introduced at the end of research papers that recognizes the individual work of each author. You will see this in most of the papers you will be reviewing. 
+
+The group will include a paragraph like the CRediT statement indicating who collaborated on each section and task of the research proposal. Not all the original CRediT Terms would be applicable, so the group could use the following:
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|p{10cm}|}
+\hline
+\textbf{Term} & \textbf{Definition} \\ \hline
+Investigation & Conducting a research and investigation process \\ \hline
+Resources & Collected or gathered datasets mentioned in the study \\ \hline
+Writing - Original Draft & Preparation of the research proposal, explicitly writing the initial draft. \\ \hline
+Writing - Review \& Editing & Critical review, commentary, or revision \\ \hline
+Visualization & Preparation of visual data, including figures and summary tables \\ \hline
+Supervision & Oversight and leadership responsibility for the research activity planning and execution, including external mentorship to the core team \\ \hline
+Project POC & Responsibility for being the point of contact with the professor for doubts and task upload. \\ \hline
+\end{tabular}
+\caption{Definitions of Research Terms}
+\label{tab:definitions}
+\end{table}
+
+
+For a group of three people, this could be a template.
+\begin{itemize}
+\item N\_Surname\_01 contributed to the Investigation of XXXX methods and participated in Writing - Original Draft, preparing the initial manuscript. Additionally, they served as the Project POC, acting as the main point of contact for the professor to address any doubts or concerns.
+
+\item N\_Surname\_02 also participated in the Investigation of YYYY methods and Writing - Original Draft, contributing to the research process and drafting the manuscript. They were responsible for resources, collecting and organizing datasets, and studying materials essential for the project.
+
+\item N\_Surname\_03 equally contributed to the Investigation of ZZZZ methods and Writing - Original Draft, engaging in the research and drafting activities. They took charge of Visualization, preparing figures and summary tables to present the study findings effectively, and provided Supervision, ensuring oversight and leadership throughout the research activities.
+ 
+\end{itemize}
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% REFERENCES SECTION
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\medskip
+
+\bibliography{references.bib} 
+
+\newpage
+
+
+\end{document}
