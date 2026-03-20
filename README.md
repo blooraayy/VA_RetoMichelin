@@ -3,23 +3,47 @@
 ```
 Jaime: Deep Learning
 Pablo: Deep Learning
+Miguel: Classic
+David: Classic
 ```
 
 ## Papers Searched
 
 `Pablo`:
-- [Real-time Industrial Surface Defect Detection Based on Lightweight Convolutional Neural Networks](https://scipublication.com/index.php/AIMLR/article/view/212)
-- [Training-Free Industrial Defect Generation with Diffusion Models](https://openaccessthecvf.com/content/ICCV2025/htmlXu_Training-Free_Industrial_Defect_Generation_with_Diffusion_Models_ICCV_2025_paper.html)
-- [Two-stage Text-Guided Diffusion Models for Disentangled Industrial Defect Generation](https://openaccess.thecvf.com/content/ICCV2025W/VISION%2725/htmlWei_Two-stage_Text-Guided_Diffusion_Models_for_Disentangled_Industrial_Defect_GenerationICCVW_2025_paper.html)
-- [An efficient industrial defect detection based on hybrid residual attention withmodified generative adversarial network and convolutional neural network model](https:/www.sciencedirect.com/science/article/pii/S0045790625005233)
-- [Hybrid-DC: A Hybrid Framework Using ResNet-50 and Vision Transformer for SteelSurface Defect Classification in the Rolling Process](https://www.mdpi.com/2079-9292/1322/4467)
-- [Improvement of mask R-CNN and deep learning for defect detection and segmentation in electronic products](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0329945)
-- [Application of self-supervised learning in steel surface defect detection](https://www.oaepublish.com/articles/jmi.2025.21)
-- [Enhanced surface defect detection of cylinder liners using Swin Transformer and YOLOv8Feng Pana, Junqian](https://www.sciencedirect.com/science/article/pii/S294985542500005X)
-- [Multi-Convolutional Channel Residual Spatial Attention U-Net for Industrial and Medical Image Segmentation](https://ieeexplore.ieee.org/abstract/document/10539995)
-- [Detection and classification of surface defects on hot-rolled steel using vision transformers](https://www.cell.com/heliyon/fulltext/S2405-8440(24)14529-X)
+- [What is YOLOv8: An In-Depth Exploration of the Internal Features of the Next-Generation Object Detector](https://huggingface.co/papers/2408.15857)
+- [RT-DETRv4: Painlessly Furthering Real-Time Object Detection with Vision Foundation Models](https://huggingface.co/papers/2510.25257)
+- [A Study on Unsupervised Anomaly Detection and Defect Localization using Generative Model in Ultrasonic Non-Destructive Testing](https://huggingface.co/papers/2405.16580)
+- [Segformer++: Efficient Token-Merging Strategies for High-Resolution Semantic Segmentation](https://huggingface.co/papers/2405.14467)
+- [PEM: Prototype-based Efficient MaskFormer for Image Segmentation](https://huggingface.co/papers/2402.19422)
+- [Relation DETR: Exploring Explicit Position Relation Prior for Object Detection](https://huggingface.co/papers/2407.11699)
+- [A Study on the Performance of U-Net Modifications in Retroperitoneal Tumor Segmentation](https://huggingface.co/papers/2502.00314)
+- [Grounded SAM: Assembling Open-World Models for Diverse Visual Tasks](https://huggingface.co/papers/2401.14159)
+- [YOLO-World: Real-Time Open-Vocabulary Object Detection](https://huggingface.co/papers/2401.17270)
+- [Grounding DINO 1.5: Advance the "Edge" of Open-Set Object Detection](https://huggingface.co/papers/2405.10300)
 
 `David`:
+- [Benchmarking of computer vision methods for energy-efficient high-accuracy olive fly detection on edge devices](https://link.springer.com/article/10.1007/s11042-024-18589-y) 03.pdf
+- [Adaptive edge finishing process on distorted features through robot-assisted computer vision](https://www.sciencedirect.com/science/article/pii/S0278612524000360) 05.pdf
+- [Evaluating K-Nearest Neighbors for X-Ray Bone Fracture Detection Using HOG, LBP, and SIFT Feature Extraction Methods](https://ieeexplore.ieee.org/abstract/document/11019966) 08.pdf
+- [Efficient Feature Extraction Techniques for Object Detection in Complex Images](https://ieeexplore.ieee.org/abstract/document/10774818) 10.pdf
+- [Surface Defect Detection Based on Machine Learning and Data Augmentation](https://ieeexplore.ieee.org/abstract/document/10827833) 11.pdf
+- [Comparative Analysis of SVM and XGBoost Classifiers with HOG Features for Concrete Crack Detection](https://journal.uir.ac.id/index.php/ITJRD/article/view/20560) 12.pdf
+- [Tool Wear Classification Based on Support Vector Machine and Deep Learning Models](https://sensors.myu-group.co.jp/sm_pdf/SM3833.pdf) 14.pdf
+- [Machine Learning-Based Phase Resolved Partial Discharge Pattern Classification using HOG and PCA](https://ieeexplore.ieee.org/abstract/document/10872724) 15.pdf
+- []()
+- []()
+
+`Miguel`:
+- [SLIC Superpixels Compared to State-of-the-Art Superpixel Methods](https://ieeexplore.ieee.org/abstract/document/6205760)
+- [GrabCut Interactive Foreground Extraction using Iterated Graph Cuts](https://dl.acm.org/doi/abs/10.1145/1015706.1015720)
+- [Mean shift: a robust approach toward feature space analysis](https://ieeexplore.ieee.org/abstract/document/1000236)
+- [Efficient graph-based image segmentation via speeded-up turbo pixels](https://ieeexplore.ieee.org/abstract/document/5653963)
+- [A Computational Approach to Edge Detection](https://ieeexplore.ieee.org/abstract/document/4767851)
+- [Histograms of oriented gradients for human detection](https://ieeexplore.ieee.org/abstract/document/1467360)
+- [ORB: An efficient alternative to SIFT or SURF](https://ieeexplore.ieee.org/abstract/document/6126544)
+- [Use of the Hough transformation to detect lines and curves in pictures](https://dl.acm.org/doi/abs/10.1145/361237.361242)
+- [Snakes:  Active Contour Models](https://link.springer.com/article/10.1007/bf00133570)
+- [Efficient Graph-Based Image Segmentation](https://link.springer.com/article/10.1023/B:VISI.0000022288.19776.77)
 -1[Benchmarking of computer vision methods for energy-efficient high-accuracy olive fly detection on edge devices](https://link.springer.com/article/10.1007/s11042-024-18589-y) 03.pdf
 -2[Adaptive edge finishing process on distorted features through robot-assisted computer vision](https://www.sciencedirect.com/science/article/pii/S0278612524000360) 05.pdf
 -3[Evaluating K-Nearest Neighbors for X-Ray Bone Fracture Detection Using HOG, LBP, and SIFT Feature Extraction Methods](https://ieeexplore.ieee.org/abstract/document/11019966) 08.pdf
