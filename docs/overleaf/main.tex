@@ -285,11 +285,34 @@ image encoder pretrained with MAE, a prompt encoder that accepts points,
 bounding boxes or masks, a two-way transformer mask decoder, and a streaming 
 memory module composed of a memory encoder, a FIFO memory bank and a memory 
 attention block that enables segmentation propagation across frames. Trained 
-on the SA-V dataset\footnote{https://arxiv.org/html/2408.00714v2}, 
+on the SA-V dataset\footnote{https://ai.meta.com/datasets/segment-anything-video/}, 
 comprising 50.9K videos and 35.5M masks, SAM 2 achieves a J\&F of $76.6\%$ 
 on MOSE val using the Hiera-B+ encoder, while being $6\times$ faster than 
 its predecessor SAM on image segmentation benchmarks, obtaining $61.9\%$ 
 mIoU across 23 zero-shot datasets.\\
+
+Xiong et al. \cite{Xiong2023EfficientSAM} proposed EfficientSAM, a lightweight 
+version of SAM developed by Meta AI Research that addresses the high computational 
+cost of the original model. Their approach, SAMI (SAM-leveraged Masked Image 
+Pretraining), trains lightweight ViT encoders (ViT-Tiny and ViT-Small) to 
+reconstruct feature embeddings from SAM's ViT-H image encoder using a 
+cross-attention decoder and MSE reconstruction loss, transferring SAM's 
+representational knowledge into compact models. The resulting EfficientSAM-S 
+reduces SAM's parameter count by $\sim20\times$ (25M vs 636M) while achieving 
+$44.4$ AP on zero-shot instance segmentation on COCO\footnote{https://cocodataset.org}, 
+compared to SAM's $46.5$ AP, at a throughput of 47 images/second versus SAM's 2 images/second.\\
+
+Wang et al. \cite{Wang2024YOLOv9} proposed YOLOv9, a real-time object detection 
+model that addresses the information bottleneck problem in deep networks through 
+two key contributions. First, Programmable Gradient Information (PGI), an 
+auxiliary supervision framework that uses a reversible branch to generate reliable 
+gradients and preserve complete input information during training without adding 
+inference cost. Second, the Generalized Efficient Layer Aggregation Network 
+(GELAN), a lightweight architecture based on CSPNet and ELAN that supports 
+arbitrary computational blocks while maintaining strong parameter efficiency. 
+Evaluated on MS COCO\footnote{\url{https://cocodataset.org}}, YOLOv9-E achieves 
+$55.6\%$ AP$_{50:95}$ with 57.3M parameters, reducing parameter count by $49\%$ 
+and computation by $43\%$ compared to YOLOv8-X while improving AP by $0.6\%$.\\
 
 A summary of the reviewed methods is provided in Table~\ref{tab:literatureReview}.
 
