@@ -12,7 +12,7 @@ David: Classic
 `Jaime`
 - [SAM 2: Segment Anything in Images and Videos](https://arxiv.org/html/2408.00714v2)
 - [EfficientSAM: Leveraged Masked Image Pretraining for Efficient Segment Anything](https://arxiv.org/html/2312.00863v1)
-- []()
+- [YOLOv9. Learning What You Want to Learn Using Programmable Gradient Information](https://arxiv.org/html/2402.13616v2)
 - []()
 - []()
 - []()
