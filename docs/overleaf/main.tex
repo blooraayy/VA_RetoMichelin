@@ -39,8 +39,8 @@
 }
 
 % AUTHORS:
-\author{Name Surname1 Surname2\\% Student data
-    \href{mailto:student.email@estudiantes.unileon.es}{\texttt{student.email@estudiantes.unileon.es}} %% Email author 1 
+\author{Pablo Ruíz Morán\\% Student data
+    \href{mailto:student.email@estudiantes.unileon.es}{\texttt{pruizm01@estudiantes.unileon.es}} %% Email author 1 
     }
     
 % DATE:
@@ -58,14 +58,40 @@
 \maketitle
 % %%%%%%%%%%%%%%%%%%
 \begin{abstract}
-% Insert the abstract content here--------------------------------------
-A paragraph summarizing the content of the Research proposal, including (i) the research line selected, (ii) the problem to be solved, (iii) the selected algorithm/method and (iv) what results obtained from that algorithm/method in different datasets from the literature
+This research project addresses the application of computer vision techniques to 
+industrial inspection, focusing on the calibration and segmentation of cutting edges 
+in rubber strip assembly within tyre manufacturing. The objective is to accurately 
+detect and segment cutting borders, as well as estimate their spatial position and 
+distances in a real-world industrial environment. This work is developed in the 
+context of the \textbf{Michelin Challenge 2} proposed by \textit{Michelin Aranda de Duero}, where precision, robustness, and 
+automation are critical for ensuring product quality and reducing operational costs.
 
-% END CONTENT ABS------------------------------------------
-%\noindent
-%\textit{\textbf{Keywords: } Face Detection, Hand-crafted Descriptors, Deep Learning, Machine Learning} \\ %% <-- Keywords HERE!
-\noindent
+To tackle this challenge, we analyze ten recent state-of-the-art methods (2024--2025) 
+in object detection, image segmentation, and anomaly detection, with a particular 
+focus on deep learning and vision-language models. Among the evaluated approaches, 
+the Grounded-SAM framework is selected due to its ability to combine open-vocabulary 
+grounding with high-quality segmentation. This method integrates Grounding DINO for 
+text-guided object detection and the Segment Anything Model (SAM) for precise mask 
+generation, enabling flexible detection of relevant regions without requiring 
+task-specific training.
 
+The selected deep learning method has demonstrated strong performance on 
+open-vocabulary benchmarks, particularly on the Segmentation in the Wild (SegInW) 
+zero-shot benchmark, which includes 25 diverse real-world datasets. Grounded-SAM 
+achieves a mean Average Precision (mAP) of 48.7 in zero-shot settings, outperforming 
+previous open-set segmentation approaches. These results highlight its strong 
+generalization capabilities across heterogeneous and unseen scenarios, making it 
+especially suitable for industrial environments characterized by variability, domain 
+shifts, and limited annotated data.
+
+Overall, this project aims to adapt and evaluate advanced vision-language models for 
+cutting edge detection in a real industrial setting, incorporating calibration 
+procedures to enable precise geometric measurements. The proposed approach 
+contributes to the development of scalable, robust, and automated inspection systems 
+for manufacturing processes.\\
+
+\textit{\textbf{Keywords: } Cut Edge Detection, Object Detection, Image Segmentation, 
+Grounded-SAM, Industrial Inspection, Michelin Challenge}
 \end{abstract}
 }
 
@@ -77,120 +103,727 @@ A paragraph summarizing the content of the Research proposal, including (i) the 
 
 % --------------------
 \section{Introduction}
-% --------------------
-% Insert the content of the introduction here. % Try to reply to the following questions with your text.
-%    What is the problem?  Put the reader in context from a high level of perspective.  It is common to write a sentence giving – general – known information and then a sentence with new information about the previous sentence.
-\textbf{What is the problem? }
-
+\label{sec:introduction}
+% Insert the content of the introduction here.
+%    What is the problem?
 %    Why is the problem significant or important?
-\textbf{Why is the problem significant?}
+%    A brief review of the state of the art.
+%    What are the benefits or importance of this research?
+%    What will be presented in this document?
 
-%    A brief review of the state of the art pointing out what other researchers are doing in the field or with the problem, highlighting some author's contributions, highlighting those contributions close to the paper, highlighting their strengths, but especially their drawbacks. 
-\textbf{A brief review of the state of the art.} What other researchers are doing in the field or with the problem, highlight some author's contributions, highlight those contributions close to the paper, highlighting their strengths, but especially their drawbacks.
+Automatic detection and precise localization of cutting edges in industrial images is a key problem 
+in modern manufacturing, driven by the increasing demand for automated 
+quality control systems. In tyre assembly processes, rubber strips are placed over a cylindrical 
+drum, cut, and subsequently joined at their edges. Currently, the tasks of verifying the position 
+of the strip and joining its borders are performed manually by workers on the production floor, 
+introducing variability, human error, and limiting the scalability of the process.
 
-%    What are the benefits or importance of this research? What is the potential value?
-\textbf{What are the benefits or importance of this research?}
+Precise cut edge localization is a particularly challenging problem in this industrial setting. 
+Images are captured using smartphones by different workers from variable positions and angles, 
+requiring the system to be robust to perspective distortion, changes in illumination, and 
+variations in camera distance. Furthermore, the rubber strip and its cut edges often present low 
+contrast with respect to the background, making accurate boundary detection non-trivial. An 
+additional challenge is the requirement to provide metric measurements in millimetres rather 
+than pixel coordinates, which necessitates a reliable pixel-to-metric calibration procedure based 
+on QR codes placed on the inspection surface.
 
-%   What will be presented in this document? In Section 2… then, in Section 3…
-\textbf{What will be presented in this document?}
+These challenges have been addressed through different paradigms in computer vision. Recent 
+advances in deep learning have produced powerful methods for object detection and image 
+segmentation. Convolutional approaches such as YOLOv8 \cite{Jocher2023YOLOv8} offer 
+real-time detection with strong accuracy, while transformer-based detectors such as 
+Relation-DETR \cite{HouRelationDETR2024} and RT-DETRv4 \cite{LiaoRTDETRv4} achieve 
+state-of-the-art results on standard benchmarks. More recently, vision-language models such 
+as YOLO-World \cite{ChengYOLOWorld2024} and Grounding DINO \cite{RenGroundedSAM2024} 
+have extended object detection to open-vocabulary settings, enabling the detection of objects 
+described by free-form text prompts without task-specific retraining. On the segmentation side, 
+efficient transformer-based architectures such as Segformer++ \cite{KienzleSegformer2024} 
+and PEM \cite{CavagneroPEM2024} provide accurate dense predictions, while the Segment 
+Anything Model (SAM) \cite{KirillovSAM2023} enables promptable pixel-level segmentation 
+for arbitrary objects. However, most of these methods are designed and evaluated on 
+general-purpose benchmarks, and their direct applicability to industrial inspection tasks with 
+limited labeled data remains an open challenge.
 
-% An example of an introduction (part, not all) to the task of Face Detection extracted from one of our papers. An example of references is left too. 
-\textit{Automatic face detection, i.e., the localization of regions that contain faces in digital images, is a topic widely studied in the past decades due to its wide range of applications \cite{FaceDetectionSurvey2015}. These include forensic and security applications like video surveillance for criminal activity detection and facial recognition of fugitives and victims of child sexual abuse, among others. }
+Despite this progress, applying these approaches to the specific problem of cut edge detection 
+in tyre manufacturing introduces additional difficulties, including the absence of large annotated 
+datasets, the need for reliable geometric calibration under uncontrolled acquisition conditions, 
+and the requirement for real-time or near-real-time performance in production environments.
 
-\textit{Typically, automatic face detection is the first step towards face-related applications, and it is expected to identify faces under arbitrary image conditions. In real-world settings, the face detector should be robust enough to detect faces in low-resolution and low-quality images with occlusions, changes in pose or illumination, and distortions such as out-of-focus blur, noise, and low contrast \cite{kumar2019face}, which are commonly present in forensic applications like Child Sexual Exploitation Material (CSEM) \cite{Biswas_2019_HashEyeOcclusion}. However, automatic face detection is a very challenging task in these conditions, since performance degradation has been observed while testing detectors on low-quality images \cite{zhou2018survey}. There are two main approaches to address this problem \cite{FaceDetectionSurvey2015}: those based on hand-crafted descriptors and those based on trainable features with deep-learning techniques. }
+The main contribution of this work is the design and adaptation of open-vocabulary vision-language models 
+to a real industrial inspection scenario, integrating segmentation and geometric calibration into 
+a unified framework. In particular, we analyze ten recent state-of-the-art methods for object 
+detection, segmentation, and anomaly detection, and select Grounded-SAM 
+\cite{RenGroundedSAM2024} as the primary deep learning approach. Grounded-SAM combines 
+Grounding DINO for open-vocabulary detection with SAM for precise mask generation, enabling 
+flexible detection and segmentation of cut edges without requiring task-specific training data. 
+Additionally, the proposed system incorporates QR-based spatial calibration to correct 
+perspective distortions and provide metric distance estimations, contributing to the development 
+of a scalable and automated inspection pipeline for the Michelin production environment.
 
-\textit{Usually, traditional \cite{Viola2004} and deep-learning-based face detectors \cite{MTCNN2016, swapna2020survey} are designed to process 2D images, but they have also been extended to analyze 3D data \cite{Olivetti2020_3DFaceDetection}. These approaches use deep information to be less sensitive to changing illumination conditions and viewpoint variation than 2D face detectors. However, 3D approaches are computationally more complex than 2D ones, which is a drawback when real-time performance is crucial. This condition applies to the domain of forensic tools; therefore, we limit this review to 2D face detectors.}
-
-\textit{In this work, we present a comparison of the trade-off between speed and accuracy of face detection through the image resizing strategy presented in \cite{ChavesJNIC} for three Intel CPUs ---i7, i9, and Xeon E5--- and five Nvidia GPUs ---Tesla K40, TITAN Xp, GTX 1060, RTX 2060, and RTX 2070---. We evaluated three face detector methods, MTCNN, PyramidBox and DSFD, using a set of images chosen from the WIDER Face dataset \cite{wider_face_dataset} and the Unconstrained Face Detection Dataset (UFDD)}
-
-\textit{The rest of the document is organized as follows. We present a review of the State-of-the-Art face detectors based on hand-crafted descriptors and Deep Learning methods, focusing on their suitability for forensic applications in Section \ref{sec:literatureReview}. Section \ref{sec:selectedMethod} describes… and Section … Finally, the python implementations found are briefly described in Section \ref{sec:python}.}
-
+The rest of the document is organized as follows. Section~\ref{sec:literatureReview} presents 
+a review of the ten selected state-of-the-art methods. Section~\ref{sec:selectedMethod} 
+describes the selected methods and the full computer vision pipeline proposed for 
+the challenge. Section~\ref{sec:datasets} presents the datasets used for evaluation, and 
+Section~\ref{sec:metrics} defines the evaluation metrics. Section~\ref{sec:python} provides 
+the Python implementations available for the reviewed methods. Finally, 
+Section~\ref{sec:credits} lists the individual contributions of each group member.
 % --------------------
-\section{Literature review}
 % --------------------
-% Insert the content of the proposed solutions here. Text from the guide is inserted as a reference for you to be aware of where the text could be inserted in LaTeX.
+\section{Literature Review}
+% --------------------
 \label{sec:literatureReview}
-The group must review no less than 10 papers from the literature, per group member. Papers reviewed must be "recent" and not more than three years old. An example of the level of detail expected for each method reviewed is provided below.
+% Insert the content of the proposed solutions here.
+% Papers reviewed must be recent (2024-2025), no more than three years old.
 
-Example of paper/method reviewed for a research line related to Phishing detection: \textit{Adebowale et al. \cite{Adebowale2019} created a browser extension to protect users by extracting features from the URL, the source code, the images and third-party services like WHOIS. Those features were introduced into an ANFIS (Adaptive Neuro-Fuzzy Inference System) and combined with SIFT (Scale-Invariant Feature Transform), obtaining an accuracy of $98.30\%$ on Rami et al. dataset\footnote{http://eprints.hud.ac.uk/24330/9/Mohammad14JulyDS}, collected in 2015.  }
+The following section reviews ten recent methods (2024--2025) relevant to the \textbf{Michelin Challenge}.
+The reviewed methods can be broadly categorized into Object Detection, Image Segmentation and Anomaly Detection.\\
 
+\textit{Jocher et al. \cite{Jocher2023YOLOv8} presents an in-depth analysis of YOLOv8, a 
+next-generation object detection model developed by Ultralytics. The architecture improves 
+previous YOLO versions by integrating a CSPNet backbone for enhanced feature extraction, an 
+FPN+PAN neck for multi-scale feature aggregation, and an anchor-free detection head that 
+simplifies bounding box prediction and reduces computational complexity. The model also 
+introduces improved training strategies such as advanced data augmentation techniques (mosaic 
+and mixup), focal loss for classification, and mixed-precision training to accelerate learning on 
+modern GPUs. Benchmark evaluations on Microsoft COCO and Roboflow 100 demonstrate that 
+YOLOv8 achieves higher accuracy and faster inference compared with earlier models like 
+YOLOv5, reaching $71.5\%$ mAP@0.5 with the YOLOv8x variant at 11.5 ms inference time.}\\
 
-A table summarizing the reviewed methods would be a plus. An example of this kind of table can be seen below. As can be seen, the average precision or another performance metric used for evaluating the technique has to be provided.
+\textit{Liao et al.~\cite{LiaoRTDETRv4} proposed RT-DETRv4, a real-time object detection 
+framework that further improves DETR-based detectors by distilling semantic knowledge from 
+Vision Foundation Models into lightweight detection architectures. The method introduces a 
+Deep Semantic Injector (DSI) module to inject high-level semantic representations into the 
+deep layers of the detector, together with a Gradient-guided Adaptive Modulation (GAM) 
+strategy that dynamically balances semantic transfer during training. Evaluated on COCO 2017, 
+RT-DETRv4 achieved AP scores of 49.7, 53.5, 55.4, and 57.0 for the S, M, L, and X variants 
+respectively, at corresponding speeds of 273, 169, 124, and 78 FPS.}\\
 
-% Example of a small table, for you to reuse commands if you need.
+\textit{Wyatt et al.~\cite{WyattAnoDDPM2022} proposed an unsupervised anomaly detection 
+approach for defect localization in ultrasonic non-destructive testing using a generative 
+diffusion model. Their method relies on AnoDDPM trained exclusively on defect-free data to 
+reconstruct normal ultrasonic wave propagation patterns. During inference, defects are detected 
+by computing the difference between the input image and the reconstructed output, producing 
+anomaly maps that highlight defective regions. Applied to a Laser Ultrasonic Visualization 
+Testing (LUVT) dataset for aluminium inspection, the method achieved an AUROC of 0.909, 
+outperforming VAE ($0.800$) and f-AnoGAN ($0.755$), and reaching Precision $0.817$ and 
+Recall $0.820$ when compared against supervised detectors such as YOLOv3 and RetinaNet.}\\
+
+\textit{Kienzle et al.~\cite{KienzleSegformer2024} proposed Segformer++, an efficient 
+transformer-based architecture for high-resolution semantic segmentation that adapts 
+token-merging strategies to the Segformer framework without requiring model retraining. The 
+authors introduce two configurations: Segformer++HQ, oriented towards quality preservation, 
+and Segformer++fast, oriented towards speed. Evaluated on Cityscapes and ADE20K, 
+Segformer++HQ achieves a mIoU of $82.31$ on Cityscapes with a $1.61\times$ inference 
+speedup, while Segformer++fast reaches a $1.94\times$ speedup with only a marginal 
+performance drop.}\\
+
+\textit{Cavagnero et al.~\cite{CavagneroPEM2024} proposed PEM (Prototype-based Efficient 
+MaskFormer), an efficient transformer-based architecture for image segmentation that 
+introduces a prototype-based cross-attention mechanism to reduce computational burden, 
+together with an efficient multi-scale feature pyramid network combining deformable 
+convolutions and context-based self-modulation. PEM was evaluated on both semantic and 
+panoptic segmentation tasks using Cityscapes and ADE20K, achieving $79.9$ mIoU on 
+Cityscapes at 13.8 FPS for semantic segmentation and $61.1$ PQ on Cityscapes at 13.8 FPS 
+for panoptic segmentation, demonstrating a strong trade-off between segmentation accuracy 
+and efficiency.}\\
+
+\textit{Hou et al.~\cite{HouRelationDETR2024} proposed Relation-DETR, a transformer-based 
+object detector that introduces an explicit position relation prior to improve both convergence 
+speed and detection accuracy in DETR architectures. The method incorporates a position 
+relation encoder that models pairwise interactions between bounding boxes and uses this 
+information as an attention bias for progressive attention refinement. In addition, the authors 
+extend the standard DETR pipeline into a contrast relation pipeline combining one-to-one and 
+one-to-many matching. Evaluated on COCO 2017, Relation-DETR achieved $51.7$ AP with 
+ResNet-50 in the $1\times$ training setting, outperforming DINO by $+2.0$ AP and reaching 
+over 40 AP after only 2 training epochs.}\\
+
+\textit{Heidari et al.~\cite{HeidariViLUNet2025} introduced ViLU-Net, a hybrid 
+encoder--decoder architecture that integrates Vision-LSTM (xLSTM) blocks within the 
+traditional U-Net structure to model long-range spatial dependencies while maintaining 
+efficient computational complexity. The model combines CNN layers for local feature extraction 
+with xLSTM modules for global contextual information. Evaluated on an in-house CT dataset 
+of retroperitoneal tumours and the FLARE abdominal organ segmentation dataset, ViLU-Net 
+achieves a Dice Similarity Coefficient (DSC) of $0.9309$ and IoU of $0.8720$, outperforming 
+methods such as nnU-Net, SwinUNETR, and U-Mamba.}\\
+
+\textit{Ren et al.~\cite{RenGroundedSAM2024} introduced Grounded-SAM, a modular framework 
+that combines Grounding DINO, an open-set object detector capable of identifying objects based 
+on free-form text prompts, with the Segment Anything Model (SAM), a promptable segmentation 
+model that generates precise pixel-level masks. In the proposed pipeline, Grounding DINO 
+detects candidate regions and outputs bounding boxes, which are then used as prompts by SAM 
+to generate accurate segmentation masks. Evaluated on the Segmentation in the Wild (SegInW) 
+benchmark --- comprising 25 diverse real-world datasets --- the method achieves a mean Average 
+Precision of $48.7$ in zero-shot settings, demonstrating strong generalization capabilities for 
+open-world vision tasks without additional training.}\\
+
+\textit{Cheng et al.~\cite{ChengYOLOWorld2024} propose a real-time open-vocabulary 
+object detector that enables the identification of objects not explicitly 
+included in the training set. The model extends the YOLO architecture by 
+incorporating linguistic information through a CLIP-based text encoder and 
+a Re-parameterizable Vision-Language Path Aggregation Network (RepVL-PAN), 
+which fuses visual and semantic features. As a result, YOLO-World achieves 
+strong performance in open-world scenarios, reaching $35.4$ AP on the LVIS 
+dataset in zero-shot settings at 52 FPS.}\\
+
+\textit{Ren et al.~\cite{RenGroundingDINO15} introduced Grounding DINO 1.5, an advanced 
+open-vocabulary object detection model that extends the original Grounding DINO framework. 
+It combines visual features with textual prompts through a transformer-based architecture, 
+enabling detection of objects beyond predefined categories. Trained on large-scale grounding 
+datasets, the Pro model achieves $54.3$ AP on COCO and $55.7$ AP on LVIS-minival in 
+zero-shot settings, while an optimised Edge variant reaches 75.2 FPS on A100 with TensorRT, 
+making it suitable for industrial deployment scenarios.}\\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% METODOS JAIME
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Ravi et al. \cite{Ravi2024SAM2} presented SAM 2 (Segment Anything Model 2), 
+a foundation model developed by Meta FAIR for promptable visual segmentation 
+in both images and videos. The architecture consists of a hierarchical Hiera 
+image encoder pretrained with MAE, a prompt encoder that accepts points, 
+bounding boxes or masks, a two-way transformer mask decoder, and a streaming 
+memory module composed of a memory encoder, a FIFO memory bank and a memory 
+attention block that enables segmentation propagation across frames. Trained 
+on the SA-V dataset\footnote{https://arxiv.org/html/2408.00714v2}, 
+comprising 50.9K videos and 35.5M masks, SAM 2 achieves a J\&F of $76.6\%$ 
+on MOSE val using the Hiera-B+ encoder, while being $6\times$ faster than 
+its predecessor SAM on image segmentation benchmarks, obtaining $61.9\%$ 
+mIoU across 23 zero-shot datasets.\\
+
+A summary of the reviewed methods is provided in Table~\ref{tab:literatureReview}.
+
 \begin{table}[phtb!]
 \begin{center}
-\resizebox{\linewidth}{!} {
-\begin{tabular}{ l  c c c c c c c}
+\resizebox{\linewidth}{!}{
+\begin{tabular}{l c p{4.5cm} c c c c}
 \hline
-\multirow{2}{*}{Method} &\multirow{2}{*}{Year}&\multicolumn{3}{c}{mAP per category}  & Speed  & \multirow{2}{*}{GPU}& \multirow{2}{*}{Code}\\
-\cline{3-5}
- & & easy(\%) & medium(\%)  & hard (\%) & (FPS)  &   \\
+\multirow{2}{*}{Method} & \multirow{2}{*}{Year} & \multirow{2}{*}{Description} & 
+\multirow{2}{*}{Dataset} & \multirow{2}{*}{Main Metric} & 
+\multirow{2}{*}{Code} & \multirow{2}{*}{Speed} \\
+ & & & & & & \\
 \hline
-MTCNN \cite{MTCNN2016}& 2016 & 85.1 & 82.0&60.7& 99.0 & TITAN Black&Yes\\
-S3DF \cite{S3FD2017}& 2017 & 93.7 & 92.4&85.2& 36.0 &  TITAN X&Yes\\
-FANet \cite{FANet2017}& 2017 & 95.6 & 94.7&89.5&  35.6 & GTX 1080 ti&Yes\\
-PyramidBox \cite{PyramidBox2018}& 2018 & 96.1 &95.0& 89.5 & --- & ---&Yes\\
-DSFD \cite{DSFD2018}& 2018 & 96.6 &95.7& 90.4& --- & ---&Yes\\
-AInnoFace \cite{AInnoFace2019}& 2019 & 96.5 &95.7& 91.2& --- & ---&No\\
-ASFD \cite{ASFD2020}& 2020 & 96.7 &96.2& 92.1& 26.0 &Tesla P40&No\\
+YOLOv8 \cite{Jocher2023YOLOv8} & 2024 & 
+    Anchor-free CNN detector with CSPNet backbone and FPN+PAN neck & 
+    COCO, Roboflow 100 & 71.5\% mAP@0.5 & Yes & 11.5 ms \\
+RT-DETRv4 \cite{LiaoRTDETRv4} & 2025 & 
+    DETR detector with VFM distillation via DSI and GAM & 
+    COCO 2017 & 49.7--57.0 AP & Yes & 78--273 FPS \\
+AnoDDPM \cite{WyattAnoDDPM2022} & 2024 & 
+    Unsupervised anomaly detection with diffusion models & 
+    LUVT & AUROC 0.909 & Yes & N/R \\
+Segformer++ \cite{KienzleSegformer2024} & 2024 & 
+    Efficient transformer-based semantic segmentation via token merging & 
+    Cityscapes, ADE20K & 82.31 mIoU & Yes & $1.61\times$ speedup \\
+PEM \cite{CavagneroPEM2024} & 2024 & 
+    Prototype-based efficient MaskFormer & 
+    Cityscapes, ADE20K & 61.1 PQ / 79.9 mIoU & Yes & 13.8--35.7 FPS \\
+Relation-DETR \cite{HouRelationDETR2024} & 2024 & 
+    DETR with explicit position relation prior & 
+    COCO 2017 & 51.5 AP & Yes & N/R \\
+ViLU-Net \cite{HeidariViLUNet2025} & 2025 & 
+    Hybrid U-Net with CNN and xLSTM blocks & 
+    CT Tumour, FLARE & DSC 0.9309 / IoU 0.8720& Yes & N/R \\
+Grounded-SAM \cite{RenGroundedSAM2024} & 2024 & 
+    Open-vocabulary detection + segmentation pipeline & 
+    SegInW (zero-shot) & 48.7 mAP & Yes & N/R \\
+YOLO-World \cite{ChengYOLOWorld2024} & 2024 & 
+    Real-time open-vocabulary YOLO with RepVL-PAN & 
+    LVIS & 28.7 AP / 35.2 APf & Yes & 52.0 FPS \\
+Grounding DINO 1.5 \cite{RenGroundingDINO15} & 2024 & 
+    Advanced open-vocabulary detector with ViT-L backbone & 
+    COCO, LVIS & 54.3 AP, 55.7 AP & Yes & 5.5--75.2 FPS \\
 \hline
 \end{tabular}
 }
-\caption{\label{tab:literatureReview}Face detection performance on the WIDER Face data set \cite{wider_face_dataset}, in terms of the mean Average Precision (mAP) and the speed as Frames per Second (FPS)}
+\caption{\label{tab:literatureReview}Summary of the reviewed methods for object detection, 
+segmentation, and anomaly detection. N/R = Not Reported.}
 \end{center}
-\end{table} 
+\end{table}
+
+Overall, the reviewed methods show that transformer-based approaches achieve 
+state-of-the-art performance in both object detection and segmentation tasks, while 
+diffusion-based methods provide promising results for unsupervised anomaly detection. 
+However, transformer models often require high computational resources, whereas 
+YOLO-based approaches offer a better trade-off between speed and accuracy for 
+real-time applications. Open-vocabulary models such as Grounded-SAM and YOLO-World 
+demonstrate strong generalization capabilities, making them suitable for real-world 
+industrial scenarios where object variability and limited labeled data are key constarints.
 
 
+% --------------------
 % --------------------
 \section{Selected Method}
 % --------------------
 \label{sec:selectedMethod}
-% Insert the content here.
+% Each student must describe one method in detail (at least one traditional 
+% and one deep learning approach per group).
+% TODO: add subsections for the traditional method(s) selected by other group members.
 
-The group will choose one strategy (per student), and each student will dedicate a subsection under this section to explain how the method works in detail. The research proposal must contain at least one traditional and another deep learning approach to solve the problem. If three students collaborate, the options could be:
+Grounded-SAM \cite{RenGroundedSAM2024} has been selected as the primary deep 
+learning due to its ability to combine 
+open-vocabulary object detection with high-quality segmentation in a unified pipeline.
+
+% -----------------------------------------------
+\subsection{Grounded-SAM (Deep Learning Approach)}
+% -----------------------------------------------
+
+\subsubsection{Description and motivation}
+
+Grounded-SAM \cite{RenGroundedSAM2024} is a computer vision framework that combines 
+Grounding DINO, an open-vocabulary object detector, with the Segment Anything Model (SAM) 
+to perform automatic object detection and segmentation. The method enables detecting objects 
+using natural language prompts and generating precise pixel-level segmentation masks, without 
+requiring task-specific retraining.
+
+This method was selected for the Michelin Challenge 2 because the combination of detection 
+and segmentation in a single pipeline allows the system to:
 \begin{itemize}
-    \item Two traditional and one deep learning approaches
-    \item One traditional and two deep learning approaches 
+    \item detect QR codes for spatial calibration,
+    \item segment the table or conveyor belt area,
+    \item detect and segment rubber strip cut edges,
+    \item estimate distances between detected elements using geometric analysis.
 \end{itemize}
 
-In both options, it is a must to pay and detail the steps of a computer vision pipeline. In other words, each student must reflect and describe all the steps of the selected method(s): any pre-processing step needed, which descriptors (or neural network architectures) are used, type of architecture and main features, how the classification works (traditional), and which metrics are presented for the selected method in the paper or other sources of information used.
+\subsubsection{Architecture}
+
+Grounded-SAM has a modular design composed of two main deep learning models working sequentially.
+
+\paragraph{Grounding DINO (Object Detection Stage).}
+Grounding DINO is a transformer-based object detector that performs open-vocabulary 
+detection using natural language prompts. The transformer aligns visual features with text 
+embeddings through cross-attention mechanisms, allowing the model to associate image 
+regions with semantic concepts. Its main components are:
+
+\begin{itemize}
+    \item \textbf{Backbone network:} Extracts multi-scale visual features from the input image.
+    \item \textbf{Text encoder:} Encodes the input text prompt (e.g., ``QR code'' or 
+    ``rubber strip edge'') into text embeddings.
+    \item \textbf{Transformer encoder-decoder:} Processes visual features and aligns them 
+    with text embeddings through cross-attention layers.
+    \item \textbf{Detection head:} Predicts bounding boxes and confidence scores 
+    corresponding to the detected objects.
+\end{itemize}
+
+The output of this stage is a set of bounding boxes associated with the objects described 
+in the text prompt.
+
+\paragraph{Segment Anything Model (SAM) (Segmentation Stage).}
+SAM performs high-quality segmentation based on input prompts. Its architecture includes:
+
+\begin{itemize}
+    \item \textbf{Image encoder (Vision Transformer):} Extracts high-level visual feature 
+    embeddings from the entire input image. This stage runs only once per image.
+    \item \textbf{Prompt encoder:} Encodes prompts such as bounding boxes or points 
+    into dense and sparse embeddings.
+    \item \textbf{Mask decoder:} Generates the final pixel-level segmentation mask by 
+    combining image embeddings with prompt embeddings through cross-attention and 
+    upsampling operations.
+\end{itemize}
+
+SAM receives the bounding boxes produced by Grounding DINO as spatial prompts and 
+produces pixel-level segmentation masks for the detected objects.
+
+\subsubsection{Computer vision pipeline}
+
+\paragraph{Step 1: Image acquisition.}
+An RGB image of the inspection area is captured using a smartphone. Since images are 
+taken by different workers at variable positions and angles, the system must be robust to 
+perspective distortion and changes in illumination.
+
+\paragraph{Step 2: Preprocessing.}
+Before feeding the image into the neural networks, the following operations are applied:
+\begin{itemize}
+    \item \textbf{Image resizing:} The image is resized to match the input resolution 
+    expected by each model.
+    \item \textbf{Pixel normalization:} Pixel values are normalized to follow the 
+    distribution used during training.
+    \item \textbf{Tensor conversion:} The image is converted into a PyTorch tensor for 
+    neural network processing.
+    \item \textbf{QR code detection:} QR codes in the scene are detected and decoded 
+    to extract the calibration reference points for metric distance estimation.
+\end{itemize}
+
+\paragraph{Step 3: Feature extraction.}
+The preprocessed image is processed by the Grounding DINO backbone, which extracts 
+multi-scale visual feature maps capturing both global and local visual information from 
+the scene.
+
+\paragraph{Step 4: Object detection with Grounding DINO.}
+Grounding DINO receives the visual features and a text prompt describing the objects 
+of interest. Examples of prompts used in this application include:
+\begin{itemize}
+    \item \texttt{"QR code"}
+    \item \texttt{"rubber strip"}
+    \item \texttt{"cutting edge"}
+\end{itemize}
+The output of this stage is a set of bounding boxes localizing the objects described 
+by the prompt.
+
+\paragraph{Step 5: Segmentation with SAM.}
+The bounding boxes produced by Grounding DINO are passed as spatial prompts to SAM, 
+which generates pixel-level segmentation masks for the detected objects.
+
+\paragraph{Step 6: Edge extraction and post-processing.}
+Once segmentation masks are obtained, image processing techniques are applied to 
+extract geometric information:
+\begin{itemize}
+    \item contour detection,
+    \item edge extraction,
+    \item boundary analysis.
+\end{itemize}
+These techniques allow identifying the exact borders of the segmented rubber strips 
+or cutting edges.
+
+\paragraph{Step 7: Geometric analysis and metric estimation.}
+Using the segmented masks and the QR codes as reference markers, the system computes:
+\begin{itemize}
+    \item distances between cutting edges,
+    \item distance from the edge to the table border,
+    \item object positions in the coordinate system defined by the QR codes, where 
+    point $(0, 0)$ is the centre of the upper-left QR code.
+\end{itemize}
+The pixel-to-millimetre conversion is derived from the known physical distance between 
+QR codes (800 mm legs of a right triangle) using homography or affine transformations 
+to correct for perspective distortion.
+
+\subsubsection{Output}
+
+The output of the Grounded-SAM pipeline includes:
+\begin{itemize}
+    \item bounding boxes of detected objects,
+    \item pixel-level segmentation masks of the rubber strip cut edges,
+    \item pixel coordinates of detected edge boundaries,
+    \item metric measurements of edge positions and distances in millimetres.
+\end{itemize}
+
+\subsubsection{Evaluation metrics}
+
+The performance of Grounded-SAM is evaluated using the following metrics. For the object 
+detection stage performed by Grounding DINO: Average Precision (AP) and mean Average 
+Precision (mAP), which evaluate the accuracy of predicted bounding boxes with respect to 
+ground truth annotations. For the segmentation stage performed by SAM: Intersection over 
+Union (IoU) and mask IoU, which measure the overlap between the predicted segmentation 
+mask and the ground truth mask. These performance metrics are described in detail in
+Section~\ref{sec:metrics}
+
+\subsubsection{Applicability to the Michelin Challenge}
+
+Grounded-SAM is particularly suited for the Michelin Challenge 2 because it integrates 
+object detection and segmentation in a unified pipeline without requiring task-specific 
+training data. In this context, the method can detect QR codes for spatial calibration, 
+segment the table or conveyor belt area, identify the cutting edges of rubber strips, and 
+compute metric distances between detected elements. The combination of open-vocabulary 
+detection and precise segmentation enables accurate localization of relevant structures 
+and supports the measurement tasks required in the automated inspection system.
+
+% TODO: \subsection{Traditional Method (to be completed by group member)}
 
 
 
+% --------------------
 % --------------------
 \section{Datasets}
 % --------------------
 \label{sec:datasets}
-The group will list the details of at least \textbf{two datasets publicly available (per student)} used to evaluate the selected problem in the reviewed papers. Include, for each dataset:
-\begin{itemize}
-\item Name
-\item Date of creation
-\item Link to the dataset 
-\item Description: number of images, categories, sub-categories, details related to the task.      
-\end{itemize}
+% The group will list at least two publicly available datasets per student.
+% Information must be presented in paragraph format, not as bullet points.
+% Include 2-3 sample images per dataset as figures.
 
-Present the previous information in a paragraph format, not as a list of bullet points per dataset. Including an additional table summarizing the datasets with this information is voluntary (mandatory for the presentation).
+There are several publicly available datasets used to evaluate object detection and 
+segmentation models such as Grounding DINO and the Segment Anything Model. In addition, 
+this project makes use of a proprietary dataset provided by Michelin Aranda de Duero 
+as part of the challenge.
 
-The student will include 2–3 samples of each dataset selected as a figure.
+The \textbf{COCO (Common Objects in Context)} dataset was introduced in 2014 by 
+Microsoft~\cite{LinCOCO2014} and is available at \url{https://cocodataset.org}. 
+COCO contains more than 330,000 images, with over 200,000 labeled images and more 
+than 1.5 million object instances annotated across 80 object categories, covering 
+common objects in everyday scenes such as people, vehicles, animals, and household 
+items. Each image provides detailed annotations including bounding boxes, instance 
+segmentation masks, and keypoints, making the dataset suitable for evaluating object 
+detection, instance segmentation, and keypoint detection methods. Due to its diversity 
+and scale, COCO is the primary benchmark for evaluating modern detection models 
+such as Grounding DINO and YOLOv8.
 
+The \textbf{SA-1B (Segment Anything 1 Billion)} dataset was introduced in 2023 by 
+Meta AI~\cite{KirillovSAM2023} as part of the Segment Anything project and is 
+available at \url{https://segment-anything.com/dataset}. SA-1B is one of the largest 
+segmentation datasets ever created, containing more than 11 million images and over 
+1 billion segmentation masks. Unlike traditional datasets that focus on a limited 
+number of predefined categories, SA-1B provides segmentation masks for a broad and 
+diverse range of objects without category restrictions, making it particularly suitable 
+for training and evaluating foundation segmentation models such as SAM. The dataset 
+was specifically designed to enable generalization to open-world segmentation scenarios.
+
+The \textbf{Michelin Aranda Dataset} is a proprietary image collection provided by 
+Michelin Aranda de Duero as part of the Challenge 2. The dataset consists of images 
+captured in laboratory conditions simulating real factory scenarios, using a flat table 
+as a surface. Each image contains rubber strips placed on the table alongside three 
+QR codes arranged in a right triangle with legs of 800 mm, used as calibration 
+markers for pixel-to-metric conversion. The images were captured with a smartphone 
+under variable camera positions and angles, reflecting the real acquisition conditions 
+on the production floor. The dataset is specifically designed for the tasks of QR 
+detection, rubber strip segmentation, cut edge localization, and metric distance 
+estimation. Two sample images from this dataset are shown in 
+Figure~\ref{fig:michelin_samples}.
+
+\begin{figure}[htb!]
+    \centering
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{Multimedia__37_.jpg}
+        \caption{Sample 1: rubber strips with QR calibration markers.}
+        \label{fig:michelin1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{Multimedia__38_.jpg}
+        \caption{Sample 2: rubber strips with cut edges visible.}
+        \label{fig:michelin2}
+    \end{subfigure}
+    \caption{Sample images from the Michelin Aranda Dataset. QR codes are visible 
+    in the corners of the surface and serve as spatial calibration markers.}
+    \label{fig:michelin_samples}
+\end{figure}
+
+A summary of the datasets used in this project is provided in 
+Table~\ref{tab:datasets}.
+
+\begin{table}[htb!]
+\begin{center}
+\resizebox{\linewidth}{!}{
+\begin{tabular}{l c c c p{5cm}}
+\hline
+\textbf{Dataset} & \textbf{Year} & \textbf{Images} & \textbf{Annotations} & 
+\textbf{Task} \\
+\hline
+COCO \cite{LinCOCO2014} & 2014 & 330,000+ & 1.5M+ instances, 80 categories & 
+    Object detection, instance segmentation, keypoint detection \\
+SA-1B \cite{KirillovSAM2023} & 2023 & 11M+ & 1B+ masks, open vocabulary & 
+    Promptable segmentation, open-world scenarios \\
+Michelin Aranda Dataset & 2025 & Proprietary & QR codes, rubber strips, cut edges & 
+    QR detection, segmentation, cut edge localization, metric estimation \\
+\hline
+\end{tabular}
+}
+\caption{\label{tab:datasets}Summary of datasets used in this project.}
+\end{center}
+\end{table}
 
 
 % --------------------
-\section{Metrics}
-% --------------------
+\section{Evaluation Metrics}
 \label{sec:metrics}
-Indicate the most typical metrics used for evaluating this problem. Explain them and include their formulas. For example, if you are working on image classification, you may want to define precision, recall, accuracy, and F1-Score.
+
+The performance of the proposed system is evaluated using standard metrics commonly 
+adopted in object detection and image segmentation tasks.
+
+\paragraph{Precision.}
+Precision measures the proportion of correctly predicted detections among all predicted 
+detections. It reflects the model's ability to avoid false positives.
+
+\[
+\text{Precision} = \frac{TP}{TP + FP}
+\]
+
+\paragraph{Recall.}
+Recall measures the ability of the model to detect all relevant objects present in the 
+image. It reflects the model's capacity to minimize false negatives.
+
+\[
+\text{Recall} = \frac{TP}{TP + FN}
+\]
+
+\paragraph{Intersection over Union (IoU).}
+Intersection over Union (IoU) evaluates the overlap between the predicted region and the 
+ground truth annotation. It is defined as the ratio between the intersection area and the 
+union area of the predicted and ground truth regions.
+
+\[
+\text{IoU} = \frac{\text{Area of Overlap}}{\text{Area of Union}}
+\]
+
+IoU is widely used in both object detection and segmentation tasks. A prediction is 
+typically considered correct if the IoU exceeds a predefined threshold (e.g., 0.5), 
+although more strict evaluations may use multiple thresholds.
+
+\paragraph{Average Precision (AP).}
+Average Precision summarizes the precision-recall curve for a given class by computing 
+the area under the curve. It provides a single value representing the model performance 
+across different recall levels.
+
+\[
+\text{AP} = \int_0^1 \text{Precision}(\text{Recall}) \, d(\text{Recall})
+\]
+
+\paragraph{Mean Average Precision (mAP).}
+Mean Average Precision (mAP) is computed as the mean of the Average Precision across all 
+object classes and is one of the most widely used metrics in object detection.
+
+\[
+\text{mAP} = \frac{1}{N} \sum_{i=1}^{N} AP_i
+\]
+
+where $N$ is the number of object classes and $AP_i$ is the Average Precision for class $i$.
+
+In the context of the Michelin Challenge, mAP is used to evaluate the detection of QR codes 
+and relevant objects, while IoU is particularly important for assessing the accuracy of 
+segmentation masks and edge localization.
 
 % --------------------
-\section{Python implementations}
+% --------------------
+\section{Python Implementations}
 % --------------------
 \label{sec:python}
-The group will present a link to the GitHub, GitLab, or authors link where the implementation of the method in Python is available, the methods from Section 2 Proposed solutions.
+% Provide links to GitHub/GitLab repositories, release dates, advantages, 
+% and limitations for each method. Include a comparison at the end.
 
-A brief description must be given of each implementation's release date, advantages, or possible limitations. Students should briefly explain the differences found between the methods they have selected.
+This section presents the available Python implementations of the reviewed methods, 
+including their repositories, release dates, main advantages, and limitations, with 
+a focus on their practical applicability in real-world scenarios.
 
-In the second part of the course project, the group is expected to implement the methods selected with all the datasets described and provide the metrics obtained with the implementation chosen.
+\textbf{YOLOv8} \cite{Jocher2023YOLOv8} is available at 
+\url{https://github.com/ultralytics/ultralytics}. The official implementation was 
+released on January 10, 2023, provided by Ultralytics as a unified Python package 
+available via pip. It is built on PyTorch and offers both a Python API and a 
+command-line interface, supporting multiple model sizes (n, s, m, l, x) and export 
+to ONNX, TensorRT, and CoreML formats. Its main advantages are ease of use, 
+real-time inference capability, and support for advanced data augmentation strategies 
+such as mosaic and mixup. A possible limitation is that YOLOv8 operates on a closed 
+vocabulary, making it less flexible than open-vocabulary methods when unseen 
+categories need to be detected. Additionally, larger model variants require 
+significantly more computational resources.
+
+\textbf{RT-DETRv4} \cite{LiaoRTDETRv4} is available at 
+\url{https://github.com/RT-DETRs/RT-DETRv4}. The repository was created on 
+October 30, 2025, with full code, configurations, and checkpoints released on 
+November 17, 2025. The implementation is provided in PyTorch and includes full 
+training, evaluation, and deployment scripts for four model sizes (S, M, L, X) 
+using HGNetv2 as backbone. Its main advantages include high detection accuracy 
+through transformer-based global attention, improved efficiency over earlier 
+DETR-based detectors, and an end-to-end pipeline that avoids Non-Maximum Suppression 
+(NMS). Its main limitations are higher computational requirements than lightweight 
+CNN detectors such as YOLOv8 and greater implementation complexity.
+
+\textbf{AnoDDPM} \cite{WyattAnoDDPM2022} is available at 
+\url{https://github.com/Julian-Wyatt/AnoDDPM}. The method was introduced at CVPR 
+Workshops 2022. The implementation is written in PyTorch and provides scripts for 
+training diffusion models on normal data and running anomaly detection at inference 
+time, supporting both Gaussian and simplex noise schedules. Note that the repository 
+was archived by the author in October 2025 and is no longer actively maintained. 
+Its main advantages are the ability to learn from defect-free data only and stable 
+training compared to GAN-based approaches. Its main limitations are high 
+computational cost due to the iterative denoising process and the requirement for 
+careful tuning of noise schedules.
+
+\textbf{Segformer++} \cite{KienzleSegformer2024} is available at 
+\url{https://github.com/KieDani/SegformerPlusPlus}. It was introduced in May 2024 
+and is built on PyTorch with integration with the MMSegmentation and MMPose 
+libraries. A key practical advantage is that the token merging strategy can be 
+applied at inference time using the original Segformer pre-trained weights, without 
+any retraining. Its main limitations are that performance gains are less pronounced 
+at lower resolutions, and the method is specifically adapted to the Segformer 
+architecture.
+
+\textbf{PEM} \cite{CavagneroPEM2024} is available at 
+\url{https://github.com/NiccoloCavagnero/PEM}. It was introduced on February 29, 
+2024, and is provided in PyTorch with support for both semantic and panoptic 
+segmentation under a single unified codebase. Its main advantages are significantly 
+faster inference than comparable models such as Mask2Former and a unified framework 
+that avoids task-specific architectures. Its main limitations are that performance 
+falls slightly below the most accurate but slower models on some benchmarks, and 
+computational requirements remain higher than lightweight CNN-only architectures.
+
+\textbf{Relation-DETR} \cite{HouRelationDETR2024} is available at 
+\url{https://github.com/xiuqhou/Relation-DETR}. It was introduced on July 16, 2024, 
+and is provided in PyTorch with full training and evaluation scripts for COCO 2017 
+and several domain-specific benchmarks. The position relation encoder is designed as 
+a plug-in-and-play module compatible with any DETR-based architecture. Its main 
+advantages are significantly faster convergence and state-of-the-art detection 
+performance. Its main limitations are increased memory requirements at training time 
+and limited validation on domain-specific datasets.
+
+\textbf{ViLU-Net} \cite{HeidariViLUNet2025} is available at 
+\url{https://github.com/moeinheidari7829/Retroperitoneal_Tumour_Segmentation_SPIE2025}. 
+It was introduced on February 1, 2025, and is built on top of the nnU-Net framework 
+in PyTorch. Its main advantages are state-of-the-art performance on medical 
+segmentation benchmarks and efficient long-range dependency modeling via xLSTM blocks. 
+Its main limitations are the small in-house dataset used for evaluation, the high GPU 
+memory requirements (NVIDIA V100, 32 GB), and limited validation beyond CT imaging.
+
+\textbf{Grounded-SAM} \cite{RenGroundedSAM2024} is available at 
+\url{https://github.com/IDEA-Research/Grounded-Segment-Anything}. It was introduced 
+on January 25, 2024, and is actively maintained. The implementation follows a 
+training-free pipeline combining Grounding DINO with SAM, and includes ready-to-use 
+scripts for multiple pipelines including RAM-Grounded-SAM and integration with 
+HQ-SAM and faster SAM variants such as MobileSAM and EfficientSAM. Its main 
+advantages are open-vocabulary detection and segmentation without retraining and 
+strong zero-shot performance on the SegInW benchmark. Its main limitations are 
+inference speed bottlenecks for real-time applications and dependence on the quality 
+of Grounding DINO detections.
+
+\textbf{YOLO-World} \cite{ChengYOLOWorld2024} is available at 
+\url{https://github.com/AILab-CVC/YOLO-World}. It was introduced on January 30, 
+2024, and is built on top of the MMYOLO and MMDetection toolboxes in PyTorch. It 
+provides three model variants (S, M, L) and supports pre-training on large-scale 
+datasets as well as fine-tuning for downstream tasks. Its main advantages are 
+real-time open-vocabulary detection at 52 FPS and a lightweight architecture with 
+as few as 13M parameters. Its main limitations are lower zero-shot performance than 
+heavier open-vocabulary detectors and high pre-training computational requirements.
+
+\textbf{Grounding DINO 1.5} \cite{RenGroundingDINO15} is available at 
+\url{https://github.com/IDEA-Research/Grounding-DINO-1.5-API}. It was introduced on 
+May 16, 2024, and is accessible via API rather than as a fully open-source codebase. 
+It includes two model variants: the Pro model using a ViT-L backbone for maximum 
+accuracy, and the Edge model using EfficientViT-L1 for real-time inference. Its main 
+advantages are state-of-the-art zero-shot detection performance and support for 
+diverse input modalities. Its main limitations are the closed API restricting 
+reproducibility and customisation, and the high computational requirements of the 
+Pro model.
+
+The ten reviewed methods can be grouped into four broad categories based on their 
+primary task and architectural approach. Object detection methods --- YOLOv8, 
+RT-DETRv4, Relation-DETR, YOLO-World, Grounding DINO 1.5, and Grounded-SAM --- all 
+address object detection but differ significantly in their design philosophy. YOLOv8 
+and YOLO-World share the same CNN-based YOLO backbone, but while YOLOv8 operates on 
+a fixed closed vocabulary, YOLO-World extends it with open-vocabulary capabilities 
+through vision-language pre-training. RT-DETRv4 and Relation-DETR are both 
+transformer-based end-to-end detectors that eliminate the need for NMS, but 
+RT-DETRv4 focuses on improving lightweight detectors via knowledge distillation from 
+Vision Foundation Models, whereas Relation-DETR addresses the slow convergence 
+problem of DETR by introducing explicit position relation priors. Grounding DINO 1.5 
+and Grounded-SAM both operate in open-vocabulary settings, but Grounding DINO 1.5 is 
+a standalone detector, while Grounded-SAM is a modular pipeline that adds pixel-level 
+segmentation on top of detection.
+
+Segmentation methods --- Segformer++, PEM, and ViLU-Net --- all follow 
+encoder-decoder architectures for dense prediction tasks but differ in their core 
+components. Segformer++ improves the inference efficiency of the existing Segformer 
+through token merging without any retraining. PEM redesigns the MaskFormer family 
+for efficiency using a prototype-based cross-attention mechanism. ViLU-Net targets 
+medical image segmentation, integrating xLSTM blocks into a U-Net structure for 
+long-range dependency modeling with linear computational complexity.
+
+AnoDDPM stands apart as the only unsupervised generative approach. Unlike all other 
+methods, which require labeled training data, AnoDDPM learns the distribution of 
+normal images using a diffusion model and detects anomalies by identifying 
+reconstruction differences, making it particularly suited for industrial inspection 
+scenarios with limited defect samples.
+
+In terms of inference speed, YOLO-based methods (YOLOv8, YOLO-World) are 
+consistently the fastest, while transformer-based and diffusion-based methods 
+(RT-DETRv4, Grounding DINO 1.5 Pro, AnoDDPM) require considerably more computational 
+resources. Methods such as Segformer++ and YOLO-World address this trade-off 
+explicitly by incorporating efficiency mechanisms that maintain accuracy while 
+reducing inference time.
+
+From the perspective of the Michelin Challenge, methods such as Grounded-SAM and 
+YOLO-World are particularly relevant due to their open-vocabulary capabilities and 
+ability to generalize to unseen objects. Additionally, YOLO-based approaches provide 
+a strong advantage in terms of real-time performance, which is critical in industrial 
+inspection scenarios. In contrast, diffusion-based methods such as AnoDDPM are more 
+suitable for anomaly detection tasks where labeled defect data is scarce, although 
+their computational cost may limit real-time deployment.
 
 % --------------------
 \section{CREDITS}
