@@ -9,6 +9,18 @@ David: Classic
 
 ## Papers Searched
 
+`Jaime`
+- [SAM 2: Segment Anything in Images and Videos](https://arxiv.org/html/2408.00714v2)
+- [EfficientSAM: Leveraged Masked Image Pretraining for Efficient Segment Anything](https://arxiv.org/html/2312.00863v1)
+- []()
+- []()
+- []()
+- []()
+- []()
+- []()
+- []()
+- []()
+
 `Pablo`:
 - [What is YOLOv8: An In-Depth Exploration of the Internal Features of the Next-Generation Object Detector](https://huggingface.co/papers/2408.15857)
 - [RT-DETRv4: Painlessly Furthering Real-Time Object Detection with Vision Foundation Models](https://huggingface.co/papers/2510.25257)
