@@ -314,6 +314,115 @@ Evaluated on MS COCO\footnote{\url{https://cocodataset.org}}, YOLOv9-E achieves
 $55.6\%$ AP$_{50:95}$ with 57.3M parameters, reducing parameter count by $49\%$ 
 and computation by $43\%$ compared to YOLOv8-X while improving AP by $0.6\%$.\\
 
+Shi et al. \cite{Shi2025CarbonBlock} proposed YOLOv8-HDSA, an improved 
+YOLOv8-based instance segmentation algorithm for industrial carbon block 
+recognition developed at Shandong University of Science and Technology. 
+The architecture introduces three main contributions over the baseline 
+YOLOv8: a Selective Reinforcement Feature Fusion Module (SRFF) that uses 
+Hadamard product and dilated convolution to enhance feature representation 
+while suppressing background noise; a convolutional self-attention mechanism 
+with residual structure added to the detection head to improve fine-grained 
+edge detail extraction; and Focaler-IoU as a loss function to dynamically 
+adjust sample weights and optimize regression performance. Evaluated on a 
+real industrial carbon block dataset\footnote{\url{https://www.nature.com/articles/s41598-025-91495-x}}, YOLOv8-HDSA improved average recognition accuracy by $7.2\%$ and segmentation 
+accuracy by $3.8\%$ over the baseline YOLOv8.\\
+
+Damm et al. \cite{Damm2024AnomalyDINO} proposed AnomalyDINO, a training-free 
+vision-only framework for one-shot and few-shot anomaly detection in industrial 
+applications. The method adapts DINOv2 as a patch-level feature extractor and 
+follows the deep nearest neighbor paradigm, computing distances between patch 
+embeddings of test images and a small set of normal reference images to produce 
+both image-level anomaly scores and pixel-level anomaly segmentation maps, 
+without requiring fine-tuning, meta-learning, or any additional training data. 
+Evaluated on the MVTec-AD dataset\footnote{\url{https://www.mvtec.com/company/research/datasets/mvtec-ad}}, 
+AnomalyDINO achieves an AUROC of $96.6\%$ in the one-shot setting, improving 
+over the previous state-of-the-art by $3.5\%$, while also outperforming 
+existing vision-language approaches in multiple few-shot configurations.\\
+
+Jiang et al. \cite{Jiang2025CLIPDINO} proposed a zero-shot industrial anomaly 
+detection framework that fuses CLIP's global semantic embeddings with DINOv2's 
+multi-scale structural features through a Dual-Modality Attention (DMA) mechanism. 
+The DMA module computes DINOv2 self-similarity weights and CLIP-guided attention 
+maps that are adaptively fused to align cross-modal representations without 
+requiring any target-domain training samples. A complementary Stabilized 
+Attention-based Pooling (SAP) module uses self-generated anomaly heatmaps as 
+prior guidance to aggregate discriminative features and suppress normal background 
+dilution. Trained with a multi-task loss combining Focal, Dice, and contrastive 
+losses on auxiliary datasets, the framework is evaluated across seven industrial 
+benchmarks\footnote{\url{https://www.mvtec.com/company/research/datasets/mvtec-ad}}, 
+achieving an average image-level AUROC of $93.4\%$, AP of $94.3\%$, 
+pixel-level AUROC of $96.9\%$, and AUPRO of $92.4\%$, outperforming 
+state-of-the-art zero-shot methods including WinCLIP, AnomalyCLIP, and Crane.\\
+
+Xiong et al. \cite{Xiong2026SAM2UNet} proposed SAM2-UNet, a simple yet 
+effective U-shaped segmentation framework that leverages the hierarchical 
+Hiera backbone of SAM2 as encoder. Unlike the plain ViT encoder used in 
+SAM1, Hiera provides multi-scale features at four resolution levels, making 
+it naturally suited for a U-Net decoder architecture. Lightweight adapters 
+with a bottleneck MLP design are inserted before each Hiera block to enable 
+parameter-efficient fine-tuning while keeping the encoder frozen. The decoder 
+follows the classic U-Net design with three decoder blocks and deep supervision, 
+trained with weighted IoU and binary cross-entropy losses. Evaluated across 
+18 datasets\footnote{\url{https://github.com/WZH0120/SAM2-UNet}} on five 
+benchmarks including camouflaged object detection, salient object detection, 
+marine animal segmentation, mirror detection, and polyp segmentation, 
+SAM2-UNet consistently outperforms specialized state-of-the-art methods, 
+achieving for example a mDice of $92.8\%$ on Kvasir-SEG and an S-measure 
+improvement of $4.8\%$ over FEDER on the CAMO dataset.\\
+
+Shi et al. \cite{Shi2024SemiSupervised} proposed a semi-supervised semantic 
+segmentation framework for industrial surface defect detection that addresses 
+the scarcity of labeled data through a Two-Branch Perturbation Cross Pseudo 
+Supervision model (TPcps). One branch applies image-level perturbations 
+(geometric and non-geometric augmentations, noise injection, and random 
+erasure), while the second branch perturbs the feature space via random 
+channel dropout, with both branches generating mutual pseudo-labels constrained 
+by a cross pseudo-supervised loss. The segmentation network combines a 
+lightweight modified MobileNetv2 backbone with DeepLabv3Plus, augmented by 
+a lightweight attention module using 1D convolution for channel attention 
+and dilated convolution for spatial attention, plus a shallow feature fusion 
+module. A dynamic threshold strategy prevents simultaneous false label 
+generation between branches. Evaluated on five self-built industrial 
+datasets\footnote{\url{https://doi.org/10.1038/s41598-024-72579-6}} and the 
+public KolektorSDD dataset, the method achieves a mIoU $3.11\%$ higher than 
+the state-of-the-art on the self-built dataset and $4.39\%$ higher on 
+KolektorSDD, while matching the inference speed of U-Net at $64.59$ fps.\\
+
+Liao et al. \cite{Liao2025CameraCalibration} presented a comprehensive survey 
+of learning-based camera calibration techniques covering a decade of research. 
+The work categorizes existing methods into four main models: the standard 
+pinhole camera model, the distortion camera model, the cross-view model, and 
+the cross-sensor model, analyzing deep learning strategies including 
+convolutional networks, transformers, and geometric prior integration. The 
+survey reviews approaches for intrinsic and extrinsic parameter estimation, 
+lens distortion correction, homography estimation, and multi-camera 
+calibration, highlighting how learning-based methods overcome the limitations 
+of traditional checkerboard-based pipelines. To address the lack of a unified 
+benchmark, the authors compile a holistic calibration 
+dataset\footnote{\url{https://github.com/KangLiao929/Awesome-Deep-Camera-Calibration}} 
+comprising both synthetic and real-world images captured by diverse cameras 
+in varied scenes. This survey is directly applicable to the Michelin challenge, 
+where QR code-based distance calibration from mobile phone images with variable 
+camera position requires robust geometric parameter estimation under 
+perspective distortion.\\
+
+Heckler-Kram et al. \cite{HecklerKram2025MVTecAD2} introduced MVTec AD 2, 
+a new benchmark dataset for unsupervised anomaly detection in industrial 
+visual inspection that addresses the saturation of existing benchmarks such 
+as MVTec AD and VisA, where state-of-the-art models compete within less than 
+one percentage point of AU-PRO. The dataset comprises eight anomaly detection 
+scenarios with over 8000 high-resolution 
+images\footnote{\url{https://www.mvtec.com/company/research/datasets/mvtec-ad-2}}, 
+covering challenging industrial use cases not addressed by prior datasets, 
+including transparent and overlapping objects, dark-field and backlight 
+illumination, objects with high variance in normal data, and extremely small 
+defects distributed across the full image including borders. Each scenario 
+is captured under multiple lighting conditions to evaluate model robustness 
+to real-world distribution shifts. Comprehensive evaluation of state-of-the-art 
+methods shows that performance remains below $60\%$ average AU-PRO, 
+demonstrating the dataset's discriminatory power for benchmarking future 
+industrial anomaly detection methods.
+
 A summary of the reviewed methods is provided in Table~\ref{tab:literatureReview}.
 
 \begin{table}[phtb!]
