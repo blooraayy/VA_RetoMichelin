@@ -878,9 +878,6 @@ Together, these components enable reliable localization and measurement of rubbe
 strip cut edges in the automated inspection system.
 % TODO: \subsection{Traditional Method (to be completed by group member)}
 
-
-
-¡
 % --------------------
 \section{Datasets}
 % --------------------
@@ -961,6 +958,37 @@ anomalies in rubber strips is required. Some images of the dataset are shown in 
     steel strips.}
     \label{fig:neu_samples}
 \end{figure}
+
+The \textbf{MVTec Anomaly Detection (MVTec AD)} dataset was introduced in 2019 by 
+Bergmann et al. at MVTec Software GmbH and is available at its official 
+website\footnote{\url{https://www.mvtec.com/company/research/datasets/mvtec-ad}}. 
+MVTec AD contains 5,354 high-resolution images divided into 15 categories, covering 
+both textures (5 categories: carpet, grid, leather, tile, wood) and objects (10 
+categories: bottle, cable, capsule, hazelnut, metal nut, pill, screw, toothbrush, 
+transistor, zipper). The training set consists exclusively of defect-free images 
+(3,629 images), while the test set includes both normal and anomalous samples (1,725 
+images) with pixel-level ground truth annotations for 73 defect types. Images have 
+resolutions between $700 \times 700$ and $1024 \times 1024$ pixels. MVTec AD is the 
+primary benchmark for unsupervised anomaly detection and is used to evaluate 
+AnomalyDINO \cite{Damm2024AnomalyDINO}, which achieves 96.6\% AUROC in the one-shot 
+setting, and CLIP-DINOv2 \cite{Jiang2025CLIPDINO}, which achieves 93.4\% image-level 
+AUROC in the zero-shot setting.\\
+
+%% FALTA AÑADIR LAS IMAGENES
+
+The \textbf{SA-1B} dataset was introduced in 2023 by Kirillov et al. at Meta FAIR 
+and is available at its official 
+website\footnote{\url{https://ai.meta.com/datasets/segment-anything/}}. SA-1B is 
+the largest image segmentation dataset to date, comprising over 11 million 
+high-resolution images with more than 1.1 billion automatically generated segmentation 
+masks. The masks cover objects of all categories without semantic constraints, 
+including whole objects and their parts and subparts, making it a general-purpose 
+dataset for training and evaluating promptable segmentation models. It is used to 
+pretrain and evaluate both SAM 2 \cite{Ravi2024SAM2} and EfficientSAM 
+\cite{Xiong2023EfficientSAM}, with the latter achieving 44.4 AP on COCO zero-shot 
+instance segmentation after fine-tuning on SA-1B.\\
+
+% FALTA AÑADIR LAS IMAGENES
 
 Lastlly, we have \textbf{Michelin Aranda Dataset}, which is a propietary image collection provided by
 Michelin Aranda. The dataset consists of images 
