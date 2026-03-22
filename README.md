@@ -58,3 +58,7 @@ David: Classic
 - [Efficient and accurate semi-supervised semantic segmentation for industrial surface defects](https://pmc.ncbi.nlm.nih.gov/articles/PMC11413236/)
 - [Deep Learning for Camera Calibration and Beyond: A Survey](https://arxiv.org/abs/2303.10559)
 - [The MVTec AD 2 Dataset: Advanced Scenarios for Unsupervised Anomaly Detection](https://arxiv.org/abs/2303.10559)
+
+### REQUEST
+
+hola chicos, que tal va la tarde hay que hacer un pst de añadir nueva entrada, meter los datasets y las imagenes y mover la tabla 4
