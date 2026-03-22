@@ -272,6 +272,65 @@ datasets, the Pro model achieves $54.3$ AP on COCO and $55.7$ AP on LVIS-minival
 zero-shot settings, while an optimised Edge variant reaches 75.2 FPS on A100 with TensorRT, 
 making it suitable for industrial deployment scenarios.}\\
 
+A summary of the reviewed methods is provided in Table~\ref{tab:literatureReview}.
+
+\begin{table}[phtb!]
+\begin{center}
+\resizebox{\linewidth}{!}{
+\begin{tabular}{l c p{4.5cm} c c c c}
+\hline
+\multirow{2}{*}{Method} & \multirow{2}{*}{Year} & \multirow{2}{*}{Description} & 
+\multirow{2}{*}{Dataset} & \multirow{2}{*}{Main Metric} & 
+\multirow{2}{*}{Code} & \multirow{2}{*}{Speed} \\
+ & & & & & & \\
+\hline
+YOLOv8 \cite{Jocher2023YOLOv8} & 2024 & 
+    Anchor-free CNN detector with CSPNet backbone and FPN+PAN neck & 
+    COCO, Roboflow 100 & 71.5\% mAP@0.5 & Yes & 11.5 ms \\
+RT-DETRv4 \cite{LiaoRTDETRv4} & 2025 & 
+    DETR detector with VFM distillation via DSI and GAM & 
+    COCO 2017 & 49.7--57.0 AP & Yes & 78--273 FPS \\
+AnoDDPM \cite{WyattAnoDDPM2022} & 2024 & 
+    Unsupervised anomaly detection with diffusion models & 
+    LUVT & AUROC 0.909 & Yes & N/R \\
+Segformer++ \cite{KienzleSegformer2024} & 2024 & 
+    Efficient transformer-based semantic segmentation via token merging & 
+    Cityscapes, ADE20K & 82.31 mIoU & Yes & $1.61\times$ speedup \\
+PEM \cite{CavagneroPEM2024} & 2024 & 
+    Prototype-based efficient MaskFormer & 
+    Cityscapes, ADE20K & 61.1 PQ / 79.9 mIoU & Yes & 13.8--35.7 FPS \\
+Relation-DETR \cite{HouRelationDETR2024} & 2024 & 
+    DETR with explicit position relation prior & 
+    COCO 2017 & 51.5 AP & Yes & N/R \\
+ViLU-Net \cite{HeidariViLUNet2025} & 2025 & 
+    Hybrid U-Net with CNN and xLSTM blocks & 
+    CT Tumour, FLARE & DSC 0.9309 / IoU 0.8720& Yes & N/R \\
+Grounded-SAM \cite{RenGroundedSAM2024} & 2024 & 
+    Open-vocabulary detection + segmentation pipeline & 
+    SegInW (zero-shot) & 48.7 mAP & Yes & N/R \\
+YOLO-World \cite{ChengYOLOWorld2024} & 2024 & 
+    Real-time open-vocabulary YOLO with RepVL-PAN & 
+    LVIS & 28.7 AP / 35.2 APf & Yes & 52.0 FPS \\
+Grounding DINO 1.5 \cite{RenGroundingDINO15} & 2024 & 
+    Advanced open-vocabulary detector with ViT-L backbone & 
+    COCO, LVIS & 54.3 AP, 55.7 AP & Yes & 5.5--75.2 FPS \\
+\hline
+\end{tabular}
+}
+\caption{\label{tab:literatureReview}Summary of the reviewed methods for object detection, 
+segmentation, and anomaly detection. N/R = Not Reported.}
+\end{center}
+\end{table}
+
+Overall, the reviewed methods show that transformer-based approaches achieve 
+state-of-the-art performance in both object detection and segmentation tasks, while 
+diffusion-based methods provide promising results for unsupervised anomaly detection. 
+However, transformer models often require high computational resources, whereas 
+YOLO-based approaches offer a better trade-off between speed and accuracy for 
+real-time applications. Open-vocabulary models such as Grounded-SAM and YOLO-World 
+demonstrate strong generalization capabilities, making them suitable for real-world 
+industrial scenarios where object variability and limited labeled data are key constarints.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % METODOS JAIME
@@ -421,67 +480,7 @@ is captured under multiple lighting conditions to evaluate model robustness
 to real-world distribution shifts. Comprehensive evaluation of state-of-the-art 
 methods shows that performance remains below $60\%$ average AU-PRO, 
 demonstrating the dataset's discriminatory power for benchmarking future 
-industrial anomaly detection methods.
-
-A summary of the reviewed methods is provided in Table~\ref{tab:literatureReview}.
-
-\begin{table}[phtb!]
-\begin{center}
-\resizebox{\linewidth}{!}{
-\begin{tabular}{l c p{4.5cm} c c c c}
-\hline
-\multirow{2}{*}{Method} & \multirow{2}{*}{Year} & \multirow{2}{*}{Description} & 
-\multirow{2}{*}{Dataset} & \multirow{2}{*}{Main Metric} & 
-\multirow{2}{*}{Code} & \multirow{2}{*}{Speed} \\
- & & & & & & \\
-\hline
-YOLOv8 \cite{Jocher2023YOLOv8} & 2024 & 
-    Anchor-free CNN detector with CSPNet backbone and FPN+PAN neck & 
-    COCO, Roboflow 100 & 71.5\% mAP@0.5 & Yes & 11.5 ms \\
-RT-DETRv4 \cite{LiaoRTDETRv4} & 2025 & 
-    DETR detector with VFM distillation via DSI and GAM & 
-    COCO 2017 & 49.7--57.0 AP & Yes & 78--273 FPS \\
-AnoDDPM \cite{WyattAnoDDPM2022} & 2024 & 
-    Unsupervised anomaly detection with diffusion models & 
-    LUVT & AUROC 0.909 & Yes & N/R \\
-Segformer++ \cite{KienzleSegformer2024} & 2024 & 
-    Efficient transformer-based semantic segmentation via token merging & 
-    Cityscapes, ADE20K & 82.31 mIoU & Yes & $1.61\times$ speedup \\
-PEM \cite{CavagneroPEM2024} & 2024 & 
-    Prototype-based efficient MaskFormer & 
-    Cityscapes, ADE20K & 61.1 PQ / 79.9 mIoU & Yes & 13.8--35.7 FPS \\
-Relation-DETR \cite{HouRelationDETR2024} & 2024 & 
-    DETR with explicit position relation prior & 
-    COCO 2017 & 51.5 AP & Yes & N/R \\
-ViLU-Net \cite{HeidariViLUNet2025} & 2025 & 
-    Hybrid U-Net with CNN and xLSTM blocks & 
-    CT Tumour, FLARE & DSC 0.9309 / IoU 0.8720& Yes & N/R \\
-Grounded-SAM \cite{RenGroundedSAM2024} & 2024 & 
-    Open-vocabulary detection + segmentation pipeline & 
-    SegInW (zero-shot) & 48.7 mAP & Yes & N/R \\
-YOLO-World \cite{ChengYOLOWorld2024} & 2024 & 
-    Real-time open-vocabulary YOLO with RepVL-PAN & 
-    LVIS & 28.7 AP / 35.2 APf & Yes & 52.0 FPS \\
-Grounding DINO 1.5 \cite{RenGroundingDINO15} & 2024 & 
-    Advanced open-vocabulary detector with ViT-L backbone & 
-    COCO, LVIS & 54.3 AP, 55.7 AP & Yes & 5.5--75.2 FPS \\
-\hline
-\end{tabular}
-}
-\caption{\label{tab:literatureReview}Summary of the reviewed methods for object detection, 
-segmentation, and anomaly detection. N/R = Not Reported.}
-\end{center}
-\end{table}
-
-Overall, the reviewed methods show that transformer-based approaches achieve 
-state-of-the-art performance in both object detection and segmentation tasks, while 
-diffusion-based methods provide promising results for unsupervised anomaly detection. 
-However, transformer models often require high computational resources, whereas 
-YOLO-based approaches offer a better trade-off between speed and accuracy for 
-real-time applications. Open-vocabulary models such as Grounded-SAM and YOLO-World 
-demonstrate strong generalization capabilities, making them suitable for real-world 
-industrial scenarios where object variability and limited labeled data are key constarints.
-
+industrial anomaly detection methods.\\
 
 % --------------------
 % --------------------
