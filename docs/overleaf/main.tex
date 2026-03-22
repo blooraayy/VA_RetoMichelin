@@ -959,20 +959,21 @@ anomalies in rubber strips is required. Some images of the dataset are shown in 
     \label{fig:neu_samples}
 \end{figure}
 
-The \textbf{MVTec Anomaly Detection (MVTec AD)} dataset was introduced in 2019 by 
-Bergmann et al. at MVTec Software GmbH and is available at its official 
-website\footnote{\url{https://www.mvtec.com/company/research/datasets/mvtec-ad}}. 
-MVTec AD contains 5,354 high-resolution images divided into 15 categories, covering 
-both textures (5 categories: carpet, grid, leather, tile, wood) and objects (10 
-categories: bottle, cable, capsule, hazelnut, metal nut, pill, screw, toothbrush, 
-transistor, zipper). The training set consists exclusively of defect-free images 
-(3,629 images), while the test set includes both normal and anomalous samples (1,725 
-images) with pixel-level ground truth annotations for 73 defect types. Images have 
-resolutions between $700 \times 700$ and $1024 \times 1024$ pixels. MVTec AD is the 
-primary benchmark for unsupervised anomaly detection and is used to evaluate 
-AnomalyDINO \cite{Damm2024AnomalyDINO}, which achieves 96.6\% AUROC in the one-shot 
-setting, and CLIP-DINOv2 \cite{Jiang2025CLIPDINO}, which achieves 93.4\% image-level 
-AUROC in the zero-shot setting.\\
+The \textbf{LVIS (Large Vocabulary Instance Segmentation)} dataset was introduced 
+in 2019 by Gupta et al. at Facebook AI Research and is available at its official 
+website\footnote{\url{https://www.lvisdataset.org}}. LVIS contains over 164,000 
+images sourced from the COCO image collection, annotated with high-quality instance 
+segmentation masks across 1,203 object categories, making it one of the most 
+diverse and fine-grained instance segmentation benchmarks available. The dataset 
+is divided into three frequency-based splits: frequent categories (more than 100 
+training samples), common categories (between 10 and 100 samples), and rare 
+categories (fewer than 10 samples), reflecting the long-tail distribution of 
+object categories in the real world. Annotations were collected using a 
+federated annotation protocol that assigns only a subset of categories to each 
+image, resulting in over 2 million high-quality segmentation masks. LVIS is used 
+to evaluate EfficientSAM \cite{Xiong2023EfficientSAM} on zero-shot instance 
+segmentation, where EfficientSAM-S achieves 42.3 AP on LVIS compared to 44.7 AP 
+for the original SAM, while using $20\times$ fewer parameters.\\
 
 %% FALTA AÑADIR LAS IMAGENES
 
