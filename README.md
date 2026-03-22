@@ -9,18 +9,6 @@ David: Classic
 
 ## Papers Searched
 
-`Jaime`
-- [SAM 2: Segment Anything in Images and Videos](https://arxiv.org/abs/2408.00714v2)
-- [EfficientSAM: Leveraged Masked Image Pretraining for Efficient Segment Anything](https://arxiv.org/abs/2312.00863v1)
-- [YOLOv9. Learning What You Want to Learn Using Programmable Gradient Information](https://arxiv.org/abs/2402.13616v2)
-- [An industrial carbon block instance segmentation algorithm based on improved YOLOv8](https://www.nature.com/articles/s41598-025-91495-x)
-- [AnomalyDINO: Boosting Patch-based Few-shot Anomaly Detection with DINOv2](https://arxiv.org/abs/2405.14529)
-- [Zero-Shot Industrial Anomaly Detection via CLIP-DINOv2 Multimodal Fusion and Stabilized Attention Pooling](https://www.mdpi.com/2079-9292/14/24/4785)
-- [SAM2-UNet: Segment Anything 2 Makes Strong Encoder for Natural and Medical Image Segmentation](https://link.springer.com/article/10.1007/s44267-025-00106-w)
-- [Efficient and accurate semi-supervised semantic segmentation for industrial surface defects](https://pmc.ncbi.nlm.nih.gov/articles/PMC11413236/)
-- [Deep Learning for Camera Calibration and Beyond: A Survey](https://arxiv.org/abs/2303.10559)
-- [The MVTec AD 2 Dataset: Advanced Scenarios for Unsupervised Anomaly Detection](https://arxiv.org/abs/2303.10559)
-
 `Pablo`:
 - [What is YOLOv8: An In-Depth Exploration of the Internal Features of the Next-Generation Object Detector](https://huggingface.co/papers/2408.15857)
 - [RT-DETRv4: Painlessly Furthering Real-Time Object Detection with Vision Foundation Models](https://huggingface.co/papers/2510.25257)
@@ -58,3 +46,15 @@ David: Classic
 - [Robust Ridge-Patterned Instance Segmentation for High-Resolution Point Cloud Measurement](https://ieeexplore.ieee.org/abstract/document/11245550)
 - [Research on sub-pixel accuracy flange disk dimension measurement based on machine vision](https://link.springer.com/article/10.1007/s11760-024-03306-x)
 - [Advancements in Edge Detection Techniques for Image Enhancement: A Comprehensive Review](https://ejournal.unitomo.ac.id/index.php/ijair/article/view/8217)
+
+`Jaime`
+- [SAM 2: Segment Anything in Images and Videos](https://arxiv.org/abs/2408.00714v2)
+- [EfficientSAM: Leveraged Masked Image Pretraining for Efficient Segment Anything](https://arxiv.org/abs/2312.00863v1)
+- [YOLOv9. Learning What You Want to Learn Using Programmable Gradient Information](https://arxiv.org/abs/2402.13616v2)
+- [An industrial carbon block instance segmentation algorithm based on improved YOLOv8](https://www.nature.com/articles/s41598-025-91495-x)
+- [AnomalyDINO: Boosting Patch-based Few-shot Anomaly Detection with DINOv2](https://arxiv.org/abs/2405.14529)
+- [Zero-Shot Industrial Anomaly Detection via CLIP-DINOv2 Multimodal Fusion and Stabilized Attention Pooling](https://www.mdpi.com/2079-9292/14/24/4785)
+- [SAM2-UNet: Segment Anything 2 Makes Strong Encoder for Natural and Medical Image Segmentation](https://link.springer.com/article/10.1007/s44267-025-00106-w)
+- [Efficient and accurate semi-supervised semantic segmentation for industrial surface defects](https://pmc.ncbi.nlm.nih.gov/articles/PMC11413236/)
+- [Deep Learning for Camera Calibration and Beyond: A Survey](https://arxiv.org/abs/2303.10559)
+- [The MVTec AD 2 Dataset: Advanced Scenarios for Unsupervised Anomaly Detection](https://arxiv.org/abs/2303.10559)
