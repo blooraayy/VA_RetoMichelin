@@ -648,6 +648,187 @@ compute metric distances between detected elements. The combination of open-voca
 detection and precise segmentation enables accurate localization of relevant structures 
 and supports the measurement tasks required in the automated inspection system.
 
+\subsection{YOLOv9 + EfficientSAM (Deep Learning Approach)}
+
+\subsubsection{Description and motivation}
+
+YOLOv9 + EfficientSAM is a two-stage computer vision pipeline that combines a 
+real-time object detector with a lightweight segmentation model to perform accurate 
+detection and pixel-level segmentation of rubber strip cut edges. YOLOv9 
+\cite{WangYOLOv92024} is a state-of-the-art real-time object detector that introduces 
+Programmable Gradient Information (PGI) and the Generalized Efficient Layer Aggregation 
+Network (GELAN) to address the information bottleneck problem in deep networks. 
+EfficientSAM \cite{XiongEfficientSAM2023} is a lightweight variant of the Segment 
+Anything Model (SAM) that leverages masked image pretraining to achieve high-quality 
+segmentation with significantly reduced computational cost.
+
+This method was selected for the Michelin Challenge 2 because the combination of 
+detection and segmentation in a sequential pipeline allows the system to:
+\begin{itemize}
+    \item detect QR codes for spatial calibration and perspective correction,
+    \item segment the table and rubber band area,
+    \item detect and segment the cut edges of the rubber strip,
+    \item estimate metric distances between detected elements using geometric analysis.
+\end{itemize}
+
+\subsubsection{Architecture}
+
+The pipeline is composed of two main deep learning models working sequentially.
+
+\paragraph{YOLOv9 (Object Detection Stage).}
+YOLOv9 \cite{WangYOLOv92024} is a real-time object detector built on two core 
+contributions:
+
+\begin{itemize}
+    \item \textbf{GELAN (Generalized Efficient Layer Aggregation Network):} A lightweight 
+    network architecture based on gradient path planning that combines CSPNet and ELAN 
+    blocks. GELAN achieves better parameter utilization than depth-wise convolution-based 
+    designs while maintaining high inference speed and accuracy.
+    \item \textbf{PGI (Programmable Gradient Information):} An auxiliary supervision 
+    framework composed of an auxiliary reversible branch and multi-level auxiliary 
+    information. PGI ensures that reliable gradient information is available throughout 
+    training, preventing information loss caused by the information bottleneck in deep 
+    networks. The auxiliary reversible branch is removed at inference time, so it 
+    introduces no additional computational cost.
+\end{itemize}
+
+The main components of YOLOv9 are:
+\begin{itemize}
+    \item \textbf{Backbone (GELAN):} Extracts multi-scale visual features from the input 
+    image while retaining complete information through gradient path planning.
+    \item \textbf{Neck (PAN):} Aggregates features from different scales to improve 
+    detection of objects of varying sizes.
+    \item \textbf{Detection head:} Predicts bounding boxes and confidence scores for 
+    the detected objects.
+\end{itemize}
+
+The output of this stage is a set of bounding boxes localizing the cut edges in 
+the image.
+
+\paragraph{EfficientSAM (Segmentation Stage).}
+EfficientSAM \cite{XiongEfficientSAM2023} is a lightweight variant of SAM obtained 
+through a pretraining method called SAMI (SAM-leveraged Masked Image pretraining). 
+Instead of reconstructing raw pixel values as in standard masked autoencoders, SAMI 
+trains a lightweight Vision Transformer encoder to reconstruct the feature embeddings 
+produced by the SAM ViT-H image encoder. This allows the lightweight encoder to acquire 
+the strong visual representations of SAM at a fraction of the computational cost. 
+Its architecture includes:
+
+\begin{itemize}
+    \item \textbf{Lightweight image encoder (ViT-Tiny or ViT-Small):} Pretrained with 
+    SAMI to extract high-quality visual feature embeddings from the input image.
+    \item \textbf{Prompt encoder:} Encodes spatial prompts such as bounding boxes or 
+    points into dense and sparse embeddings.
+    \item \textbf{Mask decoder:} Generates the final pixel-level segmentation mask by 
+    combining image embeddings with prompt embeddings through cross-attention and 
+    upsampling operations.
+\end{itemize}
+
+EfficientSAM receives the bounding boxes produced by YOLOv9 as spatial prompts and 
+generates pixel-level segmentation masks for the detected cut edges.
+
+\subsubsection{Computer vision pipeline}
+
+\paragraph{Step 1: Image acquisition.}
+An RGB image of the inspection area is captured using a smartphone. Since images are 
+taken by different workers at variable positions and angles, the system must be robust 
+to perspective distortion and illumination changes.
+
+\paragraph{Step 2: Preprocessing.}
+Before feeding the image into the neural networks, the following operations are applied:
+\begin{itemize}
+    \item \textbf{QR code detection and decoding:} The three QR codes present in the 
+    scene are detected and decoded using OpenCV. Their pixel coordinates are extracted 
+    to define the spatial reference system, where point $(0, 0)$ corresponds to the 
+    centre of the upper-left QR code.
+    \item \textbf{Homography estimation:} Using the known physical distance between 
+    QR codes (800 mm legs of a right triangle) and their detected pixel positions, a 
+    homography matrix is computed to correct perspective distortion and derive the 
+    pixel-to-millimetre conversion factor.
+    \item \textbf{Image resizing and normalization:} The image is resized to match the 
+    input resolution expected by each model, pixel values are normalized, and the image 
+    is converted into a PyTorch tensor.
+\end{itemize}
+
+\paragraph{Step 3: Feature extraction.}
+The preprocessed image is processed by the YOLOv9 GELAN backbone, which extracts 
+multi-scale visual feature maps capturing both global and local information from 
+the scene.
+
+\paragraph{Step 4: Object detection with YOLOv9.}
+YOLOv9 processes the extracted features and predicts bounding boxes for the objects 
+of interest. In this application, the model is fine-tuned on the Michelin dataset 
+to detect:
+\begin{itemize}
+    \item QR codes (used as calibration markers),
+    \item the rubber strip,
+    \item the cut edges of the rubber strip.
+\end{itemize}
+The output of this stage is a set of bounding boxes localizing the cut edges in 
+pixel coordinates.
+
+\paragraph{Step 5: Segmentation with EfficientSAM.}
+The bounding boxes produced by YOLOv9 are passed as spatial prompts to EfficientSAM, 
+which generates pixel-level segmentation masks for the detected cut edges. EfficientSAM 
+processes each bounding box independently and outputs a binary mask indicating the 
+exact pixel region corresponding to each cut edge.
+
+\paragraph{Step 6: Edge extraction and post-processing.}
+Once segmentation masks are obtained, classical image processing techniques are applied 
+to extract geometric information:
+\begin{itemize}
+    \item contour detection,
+    \item edge extraction,
+    \item boundary analysis.
+\end{itemize}
+These operations allow identifying the precise boundary coordinates of each segmented 
+cut edge.
+
+\paragraph{Step 7: Geometric analysis and metric estimation.}
+Using the segmented masks and the homography derived from the QR codes, the system 
+computes:
+\begin{itemize}
+    \item the position of the cut edges in the coordinate system defined by the 
+    QR codes, where point $(0, 0)$ is the centre of the upper-left QR code,
+    \item the distance from each cut edge to the lower border of the table,
+    \item the distance between the two cut edges.
+\end{itemize}
+All measurements are expressed in millimetres using the pixel-to-millimetre conversion 
+factor estimated in the preprocessing step.
+
+\subsubsection{Output}
+
+The output of the YOLOv9 + EfficientSAM pipeline includes:
+\begin{itemize}
+    \item bounding boxes of the detected cut edges,
+    \item pixel-level segmentation masks of the rubber strip cut edges,
+    \item pixel coordinates of the detected edge boundaries,
+    \item metric measurements of edge positions and distances in millimetres, 
+    referenced to the QR code coordinate system.
+\end{itemize}
+
+\subsubsection{Evaluation metrics}
+
+The performance of the pipeline is evaluated using the following metrics. For the 
+object detection stage performed by YOLOv9: Average Precision (AP) and mean Average 
+Precision (mAP), which evaluate the accuracy of predicted bounding boxes with respect 
+to ground truth annotations. For the segmentation stage performed by EfficientSAM: 
+Intersection over Union (IoU) and mask IoU, which measure the overlap between the 
+predicted segmentation mask and the ground truth mask. These performance metrics are 
+described in detail in Section~\ref{sec:metrics}.
+
+\subsubsection{Applicability to the Michelin Challenge}
+
+YOLOv9 + EfficientSAM is well suited for the Michelin Challenge 2 because it provides 
+a complete and efficient pipeline for detection, segmentation and metric estimation. 
+YOLOv9 delivers accurate and fast detection of cut edges even under variable 
+illumination and perspective conditions, while EfficientSAM produces precise 
+pixel-level segmentation masks at a fraction of the computational cost of the original 
+SAM. The use of QR codes as calibration markers and the homography-based perspective 
+correction ensure accurate metric estimation regardless of the camera position. 
+Together, these components enable reliable localization and measurement of rubber 
+strip cut edges in the automated inspection system.
+
 % TODO: \subsection{Traditional Method (to be completed by group member)}
 
 
