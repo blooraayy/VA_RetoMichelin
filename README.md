@@ -48,25 +48,13 @@ David: Classic
 -12[Research on surface defect classification model of automotive flange disks based on machine vision](https://link.springer.com/article/10.1007/s11760-025-04864-4) 24.pdf
 
 `Miguel`:
-- [SLIC Superpixels Compared to State-of-the-Art Superpixel Methods](https://ieeexplore.ieee.org/abstract/document/6205760)
-- [GrabCut Interactive Foreground Extraction using Iterated Graph Cuts](https://dl.acm.org/doi/abs/10.1145/1015706.1015720)
-- [Mean shift: a robust approach toward feature space analysis](https://ieeexplore.ieee.org/abstract/document/1000236)
-- [Efficient graph-based image segmentation via speeded-up turbo pixels](https://ieeexplore.ieee.org/abstract/document/5653963)
-- [A Computational Approach to Edge Detection](https://ieeexplore.ieee.org/abstract/document/4767851)
-- [Histograms of oriented gradients for human detection](https://ieeexplore.ieee.org/abstract/document/1467360)
-- [ORB: An efficient alternative to SIFT or SURF](https://ieeexplore.ieee.org/abstract/document/6126544)
-- [Use of the Hough transformation to detect lines and curves in pictures](https://dl.acm.org/doi/abs/10.1145/361237.361242)
-- [Snakes:  Active Contour Models](https://link.springer.com/article/10.1007/bf00133570)
-- [Efficient Graph-Based Image Segmentation](https://link.springer.com/article/10.1023/B:VISI.0000022288.19776.77)
--1[Benchmarking of computer vision methods for energy-efficient high-accuracy olive fly detection on edge devices](https://link.springer.com/article/10.1007/s11042-024-18589-y) 03.pdf
--2[Adaptive edge finishing process on distorted features through robot-assisted computer vision](https://www.sciencedirect.com/science/article/pii/S0278612524000360) 05.pdf
--3[Evaluating K-Nearest Neighbors for X-Ray Bone Fracture Detection Using HOG, LBP, and SIFT Feature Extraction Methods](https://ieeexplore.ieee.org/abstract/document/11019966) 08.pdf
--4[Surface Defect Detection Based on Machine Learning and Data Augmentation](https://ieeexplore.ieee.org/abstract/document/10827833) 11.pdf
--5[Comparative Analysis of SVM and XGBoost Classifiers with HOG Features for Concrete Crack Detection](https://journal.uir.ac.id/index.php/ITJRD/article/view/20560) 12.pdf
--6[Tool Wear Classification Based on Support Vector Machine and Deep Learning Models](https://sensors.myu-group.co.jp/sm_pdf/SM3833.pdf) 14.pdf
--7[Machine Learning-Based Phase Resolved Partial Discharge Pattern Classification using HOG and PCA](https://ieeexplore.ieee.org/abstract/document/10872724) 15.pdf
--8[Adaptive edge detection of rebar thread head image based on improved Canny operator](https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/ipr2.13015) 18.pdf
--9[Recognize and decode QR codes from images](https://ieeexplore.ieee.org/document/10708606) 19.pdf
--10[Homography Decomposition Revisited](https://link.springer.com/article/10.1007/s11263-025-02680-4) 21.pdf
--11[A High-Quality and Convenient Camera Calibration Method Using a Single Image](https://www.mdpi.com/2079-9292/13/22/4361) 22.pdf
--12[Research on surface defect classification model of automotive flange disks based on machine vision](https://link.springer.com/article/10.1007/s11760-025-04864-4) 24.pdf
+- [Detection Segmentation and Noise Removal Process of Cancerous Image Cell of Liver Through Modified Marker-Controlled Watershed Approach](https://link.springer.com/chapter/10.1007/978-981-96-4273-1_1)
+- [Noise-Robust image edge detection based on multi-scale automatic anisotropic morphological Gaussian Kernels](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0319852)
+- [Feature Engineering is Not Dead Reviving Classical Machine Learning with Entropy, HOG, and LBP Feature Fusion for Image Classification](https://arxiv.org/abs/2507.13772)
+- [The Application of Automated Image Processing Technology in Industrial Inspection](https://journal.whioce.com/index.php/cef/article/view/1178)
+- [Interactive design modeling of 3D styling combining Bezier curve and Harris corner point detection algorithm](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0319323)
+- [A Stable Region-Based Image Segmentation Model Integrating Fuzzy Logic and Geometric Principles](https://library.acadlore.com/ATAIML/2025/4/2/ATAIML_04.02_05.pdf)
+- [Sandpiper Optimization Algorithm With Region Growing Based Robust Retinal Blood Vessel Segmentation Approach](https://ieeexplore.ieee.org/abstract/document/10443598)
+- [Robust Ridge-Patterned Instance Segmentation for High-Resolution Point Cloud Measurement](https://ieeexplore.ieee.org/abstract/document/11245550)
+- [Research on sub-pixel accuracy flange disk dimension measurement based on machine vision](https://link.springer.com/article/10.1007/s11760-024-03306-x)
+- [Advancements in Edge Detection Techniques for Image Enhancement: A Comprehensive Review](https://ejournal.unitomo.ac.id/index.php/ijair/article/view/8217)
