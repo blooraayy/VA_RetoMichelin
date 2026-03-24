@@ -46,16 +46,16 @@ David: Classic
 - [Advancements in Edge Detection Techniques for Image Enhancement: A Comprehensive Review](https://ejournal.unitomo.ac.id/index.php/ijair/article/view/8217)
 
 `David`:
-- [Benchmarking of computer vision methods for energy-efficient high-accuracy olive fly detection on edge devices](https://link.springer.com/article/10.1007/s11042-024-18589-y) 03.pdf
-- [Adaptive edge finishing process on distorted features through robot-assisted computer vision](https://www.sciencedirect.com/science/article/pii/S0278612524000360) 05.pdf
-- [Evaluating K-Nearest Neighbors for X-Ray Bone Fracture Detection Using HOG, LBP, and SIFT Feature Extraction Methods](https://ieeexplore.ieee.org/abstract/document/11019966) 08.pdf
-- [Surface Defect Detection Based on Machine Learning and Data Augmentation](https://ieeexplore.ieee.org/abstract/document/10827833) 11.pdf
-- [Comparative Analysis of SVM and XGBoost Classifiers with HOG Features for Concrete Crack Detection](https://journal.uir.ac.id/index.php/ITJRD/article/view/20560) 12.pdf
-- [Tool Wear Classification Based on Support Vector Machine and Deep Learning Models](https://sensors.myu-group.co.jp/sm_pdf/SM3833.pdf) 14.pdf
-- [Machine Learning-Based Phase Resolved Partial Discharge Pattern Classification using HOG and PCA](https://ieeexplore.ieee.org/abstract/document/10872724) 15.pdf
-- [Adaptive edge detection of rebar thread head image based on improved Canny operator](https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/ipr2.13015) 18.pdf
-- [Recognize and decode QR codes from images](https://ieeexplore.ieee.org/document/10708606) 19.pdf
-- [Homography Decomposition Revisited](https://link.springer.com/article/10.1007/s11263-025-02680-4) 21.pdf
-- [A High-Quality and Convenient Camera Calibration Method Using a Single Image](https://www.mdpi.com/2079-9292/13/22/4361) 22.pdf
-- [Research on surface defect classification model of automotive flange disks based on machine vision](https://link.springer.com/article/10.1007/s11760-025-04864-4) 24.pdf
+- [Benchmarking of computer vision methods for energy-efficient high-accuracy olive fly detection on edge devices](https://link.springer.com/article/10.1007/s11042-024-18589-y)
+- [Adaptive edge finishing process on distorted features through robot-assisted computer vision](https://www.sciencedirect.com/science/article/pii/S0278612524000360)
+- [Evaluating K-Nearest Neighbors for X-Ray Bone Fracture Detection Using HOG, LBP, and SIFT Feature Extraction Methods](https://ieeexplore.ieee.org/abstract/document/11019966)
+- [Surface Defect Detection Based on Machine Learning and Data Augmentation](https://ieeexplore.ieee.org/abstract/document/10827833)
+- [Comparative Analysis of SVM and XGBoost Classifiers with HOG Features for Concrete Crack Detection](https://journal.uir.ac.id/index.php/ITJRD/article/view/20560)
+- [Tool Wear Classification Based on Support Vector Machine and Deep Learning Models](https://sensors.myu-group.co.jp/sm_pdf/SM3833.pdf)
+- [Machine Learning-Based Phase Resolved Partial Discharge Pattern Classification using HOG and PCA](https://ieeexplore.ieee.org/abstract/document/10872724)
+- [Adaptive edge detection of rebar thread head image based on improved Canny operator](https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/ipr2.13015)
+- [Recognize and decode QR codes from images](https://ieeexplore.ieee.org/document/10708606)
+- [Homography Decomposition Revisited](https://link.springer.com/article/10.1007/s11263-025-02680-4)
+- [A High-Quality and Convenient Camera Calibration Method Using a Single Image](https://www.mdpi.com/2079-9292/13/22/4361)
+- [Research on surface defect classification model of automotive flange disks based on machine vision](https://link.springer.com/article/10.1007/s11760-025-04864-4)
 
