@@ -1,0 +1,15 @@
+{
+  "image_path": "data/images/Multimedia_46.jpg",
+  "n_qr_detected": 3,
+  "n_edges_detected": 2,
+  "edges": [],
+  "inter_edge_distances_mm": [],
+  "evaluation": {
+    "rmse_mm": null,
+    "mae_mm": null,
+    "iou": 0.8052274717440558,
+    "precision": 0.8298487544483986,
+    "recall": 0.9888682745825603,
+    "f1": 0.9024065787882453
+  }
+}

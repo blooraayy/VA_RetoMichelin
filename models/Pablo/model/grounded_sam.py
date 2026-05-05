@@ -201,6 +201,7 @@ class GroundedSAMModel:
         roi_rgb = image_rgb[y1:y2, x1:x2]
         roi_h, roi_w = roi_rgb.shape[:2]
         roi_area = float(roi_h * roi_w)
+        is_fallback_roi = strip_det.label.startswith("strip_fallback")
 
         # The strip's longer side dictates which orientation a cut should have.
         strip_is_horizontal = roi_w >= roi_h
@@ -220,6 +221,14 @@ class GroundedSAMModel:
                 bx1, by1, bx2, by2 = box
                 bw = max(bx2 - bx1, 1.0)
                 bh = max(by2 - by1, 1.0)
+
+                margin_x = 0.05 * roi_w
+                margin_y = 0.05 * roi_h
+
+                # Avoid detections too close to the outer border of the strip ROI
+                if bx1 < margin_x or bx2 > roi_w - margin_x or by1 < margin_y or by2 > roi_h - margin_y:
+                    continue
+
                 area_frac = (bw * bh) / roi_area
                 aspect = max(bw, bh) / min(bw, bh)
 
@@ -230,11 +239,15 @@ class GroundedSAMModel:
                 # Cut must be perpendicular to the strip's long axis:
                 #  - horizontal strip → cut is vertical (bh > bw)
                 #  - vertical   strip → cut is horizontal (bw > bh)
-                #cut_is_vertical = bh > bw
-                #if strip_is_horizontal and not cut_is_vertical:
-                #    continue
-                #if (not strip_is_horizontal) and cut_is_vertical:
-                #    continue
+                if not is_fallback_roi:
+                    cut_is_vertical = bh > bw
+
+                    if strip_is_horizontal and not cut_is_vertical:
+                        continue
+                
+                    if (not strip_is_horizontal) and cut_is_vertical:
+                        continue
+
                 keep_idx.append(i)
 
             if not keep_idx:
@@ -251,6 +264,12 @@ class GroundedSAMModel:
             boxes  = boxes[keep]
             scores = scores[keep]
 
+            # Keep only the best candidate for this strip
+            if len(boxes) > 1:
+                best_idx = int(np.argmax(scores))
+                boxes = boxes[[best_idx]]
+                scores = scores[[best_idx]]
+
             # Map ROI boxes back to full-image coords
             full_boxes = boxes.copy()
             full_boxes[:, [0, 2]] += x1
@@ -259,6 +278,9 @@ class GroundedSAMModel:
             print(f"  [Stage 2 / strip {strip_idx}] prompt='{prompt}' "
                   f"→ {len(full_boxes)} cut candidate(s) kept")
 
+            print(f"    selected boxes full image: {full_boxes.tolist()}")
+            print(f"    selected scores: {scores.tolist()}")
+            
             return self._segment_boxes(full_boxes, scores, "cut_edge", H, W)
 
         print(f"  [Stage 2 / strip {strip_idx}] no cut detected with any prompt")

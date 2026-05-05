@@ -33,7 +33,7 @@ GDINO_WEIGHTS = ""
 
 # ── Prompts ──────────────────────────────────────────────────────────────────
 # Stage 0 — QR markers (pink/magenta squares with white asterisk, NOT black-and-white QRs)
-PROMPT_QR    = "pink square sticker . magenta square marker"
+PROMPT_QR = "pink square sticker . magenta square marker"
 
 # Stage 1 — Rubber strip (whole band)
 PROMPT_STRIP = "black rubber strip on white table"
@@ -42,15 +42,14 @@ PROMPT_STRIP = "black rubber strip on white table"
 # Tried sequentially; first prompt that yields a detection wins.
 # Visual concepts work better than abstract ones for thin features.
 PROMPT_CUT_CANDIDATES = [
-    "dark line .",
-    "thin line .",
-    "black line .",
-    "vertical line .",
-    "horizontal line .",
-    "seam .",
-    "cut line .",
-    "gap .",
-    "crack .",
+    "gap between rubber pieces .",
+    "white gap between black rubber pieces .",
+    "separation between rubber pieces .",
+    "cut edge of rubber strip .",
+    "edge between two rubber strips .",
+    "vertical separation between rubber pieces .",
+    "horizontal separation between rubber pieces .",
+    "seam between rubber pieces .",
 ]
 
 # Legacy alias (some old code still imports PROMPT_EDGE)
@@ -58,12 +57,12 @@ PROMPT_EDGE = PROMPT_STRIP
 
 # ── Detection thresholds ─────────────────────────────────────────────────────
 # Stage 1 (strip) - confident detections only
-GDINO_BOX_THRESHOLD  = 0.10
+GDINO_BOX_THRESHOLD  = 0.12
 GDINO_TEXT_THRESHOLD = 0.10
 
 # Stage 2 (cut) - lower thresholds: thin line is harder to detect
-GDINO_BOX_THRESHOLD_CUT  = 0.05
-GDINO_TEXT_THRESHOLD_CUT = 0.05
+GDINO_BOX_THRESHOLD_CUT  = 0.08
+GDINO_TEXT_THRESHOLD_CUT = 0.08
 
 # ── Post-detection filters (applied AFTER Grounding DINO, BEFORE SAM) ────────
 # Constants are derived from the dataset statistics summarised at the top.
@@ -79,9 +78,9 @@ STRIP_MAX_AREA_FRAC   = 0.65
 STRIP_MIN_AREA_FRAC   = 0.02
 
 # Cut edge — relative to the parent STRIP bbox (not to the full image)
-CUT_MIN_AREA_FRAC_OF_STRIP = 0.005    # >= 0.5 % of strip
-CUT_MAX_AREA_FRAC_OF_STRIP = 0.40     # <= 40 % of strip
-CUT_MIN_ASPECT_RATIO       = 4.0      # very elongated (long/short)
+CUT_MIN_AREA_FRAC_OF_STRIP = 0.002
+CUT_MAX_AREA_FRAC_OF_STRIP = 0.12
+CUT_MIN_ASPECT_RATIO       = 6.0
 # Max aspect not enforced (some are 28:1)
 
 # Non-Maximum Suppression IoU threshold (per prompt, per stage)
