@@ -12,9 +12,13 @@ IMAGE_DIR   = os.path.join(DATA_DIR, "images")
 OUTPUT_DIR  = os.path.join(DATA_DIR, "outputs")
 LABEL_DIR   = os.path.join(DATA_DIR, "labels")
 
+# COCO annotation file exported from Roboflow
+COCO_ANNOTATIONS = os.path.join(LABEL_DIR, "_annotations.coco.json")
+
 # ── Grounding DINO ────────────────────────────────────────────────────────────
-GDINO_CONFIG  = "groundingdino/config/GroundingDINO_SwinT_OGC.py"
-GDINO_WEIGHTS = "weights/groundingdino_swint_ogc.pth"
+# HuggingFace API - model downloaded automatically on first run
+GDINO_CONFIG  = ""   # not used with HuggingFace API
+GDINO_WEIGHTS = ""   # not used with HuggingFace API
 
 # Text prompts sent to Grounding DINO
 # Tip: use ". " as separator between prompts

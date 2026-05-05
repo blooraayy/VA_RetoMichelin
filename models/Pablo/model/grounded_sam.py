@@ -1,19 +1,15 @@
 # =============================================================================
 # model/grounded_sam.py
-# Grounded-SAM pipeline: Grounding DINO (detection) → SAM (segmentation).
+# Grounded-SAM pipeline using Hugging Face API for Grounding DINO + SAM.
 #
-# Pipeline steps
-# --------------
-# 1. Load image
-# 2. Grounding DINO → bounding boxes for "qr code" and "cut edge"
-# 3. SAM           → pixel-level masks for each bounding box
-# 4. Post-processing (contour extraction, edge-boundary sampling)
+# Pipeline steps:
+# 1. Grounding DINO (HuggingFace) -> bounding boxes for "qr code" and "cut edge"
+# 2. SAM (segment-anything)       -> pixel-level masks for each bounding box
+# 3. Post-processing              -> contour extraction, edge sampling
 # =============================================================================
 
 from __future__ import annotations
 
-import os
-import sys
 import numpy as np
 import torch
 import cv2
@@ -21,7 +17,6 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 from config.config import (
-    GDINO_CONFIG, GDINO_WEIGHTS,
     SAM_CHECKPOINT, SAM_MODEL_TYPE,
     PROMPT_QR, PROMPT_EDGE,
     GDINO_BOX_THRESHOLD, GDINO_TEXT_THRESHOLD,
@@ -30,146 +25,116 @@ from config.config import (
 from utils.utils import bgr_to_rgb, sample_points_along_contour
 
 
-# ── Data classes ─────────────────────────────────────────────────────────────
+# ── Data classes ──────────────────────────────────────────────────────────────
 
 @dataclass
 class DetectionResult:
     """One detected object (QR code or cut edge)."""
-    label: str
-    score: float
+    label:    str
+    score:    float
     box_xyxy: np.ndarray        # [x1, y1, x2, y2] in pixels
-    mask: Optional[np.ndarray]  # binary mask H×W (bool), None before SAM
+    mask:     Optional[np.ndarray] = None  # binary (H, W) bool mask
 
 
 @dataclass
 class PipelineResult:
     """Full output of the Grounded-SAM pipeline for one image."""
-    image_path: str
-    image_shape: tuple                          # (H, W, 3)
-    qr_detections: list[DetectionResult]
-    edge_detections: list[DetectionResult]
-    # Sampled pixel coordinates along each detected edge contour
-    edge_sample_points: list[np.ndarray]        # list of (N,2) arrays
-    # Measurements filled in by the Controller after calibration
-    edge_sample_points_mm: list[np.ndarray] = field(default_factory=list)
-    distances_to_bottom_mm: list[np.ndarray] = field(default_factory=list)
+    image_path:          str
+    image_shape:         tuple
+    qr_detections:       list[DetectionResult]
+    edge_detections:     list[DetectionResult]
+    edge_sample_points:  list[np.ndarray]       # pixel coords (N, 2) per edge
+    edge_sample_points_mm:   list[np.ndarray] = field(default_factory=list)
+    distances_to_bottom_mm:  list[np.ndarray] = field(default_factory=list)
 
 
-# ── Grounded-SAM pipeline ────────────────────────────────────────────────────
+# ── Grounded-SAM pipeline ─────────────────────────────────────────────────────
 
 class GroundedSAMModel:
-    """Wraps Grounding DINO + SAM in a single inference pipeline.
-
-    The model is lazy-loaded the first time ``run()`` is called so that
-    importing this module does not require the weights to be present.
+    """Grounding DINO (HuggingFace) + SAM pipeline.
 
     Args:
-        device: "cuda" or "cpu".
-        gdino_config:   Path to Grounding DINO config file.
-        gdino_weights:  Path to Grounding DINO checkpoint.
-        sam_checkpoint: Path to SAM checkpoint.
-        sam_model_type: One of "vit_h", "vit_l", "vit_b".
+        device:         'cuda' or 'cpu'
+        sam_checkpoint: Path to SAM checkpoint (.pth)
+        sam_model_type: 'vit_h', 'vit_l', or 'vit_b'
+        gdino_model_id: HuggingFace model ID for Grounding DINO
     """
+
+    GDINO_MODEL_ID = "IDEA-Research/grounding-dino-base"
 
     def __init__(
         self,
-        device: str = DEVICE,
-        gdino_config: str = GDINO_CONFIG,
-        gdino_weights: str = GDINO_WEIGHTS,
+        device:         str = DEVICE,
         sam_checkpoint: str = SAM_CHECKPOINT,
         sam_model_type: str = SAM_MODEL_TYPE,
+        # Legacy args kept for CLI compatibility (ignored when using HF)
+        gdino_config:   str = "",
+        gdino_weights:  str = "",
     ):
         self.device         = device
-        self.gdino_config   = gdino_config
-        self.gdino_weights  = gdino_weights
         self.sam_checkpoint = sam_checkpoint
         self.sam_model_type = sam_model_type
 
-        self._gdino_model = None
-        self._sam_predictor = None
+        self._gdino_processor = None
+        self._gdino_model     = None
+        self._sam_predictor   = None
 
-    # ── Lazy loading ─────────────────────────────────────────────────────────
+    # ── Lazy loading ──────────────────────────────────────────────────────────
 
     def _load_models(self) -> None:
-        """Load Grounding DINO and SAM weights into memory."""
         if self._gdino_model is not None:
-            return   # already loaded
+            return
 
-        print("[GroundedSAMModel] Loading Grounding DINO …")
-        self._gdino_model = self._load_grounding_dino()
+        print("[GroundedSAMModel] Loading Grounding DINO from HuggingFace...")
+        self._load_grounding_dino_hf()
 
-        print("[GroundedSAMModel] Loading SAM …")
-        self._sam_predictor = self._load_sam()
+        print("[GroundedSAMModel] Loading SAM...")
+        self._load_sam()
 
         print("[GroundedSAMModel] Models ready.")
 
-    def _load_grounding_dino(self):
-        """Load Grounding DINO using the GroundingDINO library."""
-        try:
-            from groundingdino.util.inference import load_model
-        except ImportError as e:
-            raise ImportError(
-                "GroundingDINO not installed. "
-                "Run: pip install groundingdino-py\n"
-                f"Original error: {e}"
-            )
-        model = load_model(self.gdino_config, self.gdino_weights)
-        model = model.to(self.device)
-        model.eval()
-        return model
+    def _load_grounding_dino_hf(self) -> None:
+        from transformers import AutoProcessor, AutoModelForZeroShotObjectDetection
+        self._gdino_processor = AutoProcessor.from_pretrained(self.GDINO_MODEL_ID)
+        self._gdino_model = AutoModelForZeroShotObjectDetection.from_pretrained(
+            self.GDINO_MODEL_ID
+        ).to(self.device)
+        self._gdino_model.eval()
 
-    def _load_sam(self):
-        """Load SAM and return a SamPredictor."""
-        try:
-            from segment_anything import sam_model_registry, SamPredictor
-        except ImportError as e:
-            raise ImportError(
-                "segment_anything not installed. "
-                "Run: pip install segment-anything\n"
-                f"Original error: {e}"
-            )
+    def _load_sam(self) -> None:
+        from segment_anything import sam_model_registry, SamPredictor
         sam = sam_model_registry[self.sam_model_type](
             checkpoint=self.sam_checkpoint
-        )
-        sam = sam.to(self.device)
-        predictor = SamPredictor(sam)
-        return predictor
+        ).to(self.device)
+        self._sam_predictor = SamPredictor(sam)
 
-    # ── Public API ───────────────────────────────────────────────────────────
+    # ── Public API ────────────────────────────────────────────────────────────
 
     def run(self, image_bgr: np.ndarray, image_path: str = "") -> PipelineResult:
-        """Run the full Grounded-SAM pipeline on one image.
-
-        Args:
-            image_bgr:   BGR image (H, W, 3) as loaded by OpenCV.
-            image_path:  Original file path (for bookkeeping only).
-
-        Returns:
-            PipelineResult with all detections, masks, and sampled points.
-        """
+        """Run the full Grounded-SAM pipeline on one image."""
         self._load_models()
 
         image_rgb = bgr_to_rgb(image_bgr)
         H, W = image_bgr.shape[:2]
 
-        # ── Step 1: Grounding DINO detection ────────────────────────────────
-        qr_boxes, qr_scores     = self._detect(image_rgb, PROMPT_QR)
-        edge_boxes, edge_scores = self._detect(image_rgb, PROMPT_EDGE)
+        # 1. Detect QR codes and cut edges
+        qr_boxes,   qr_scores   = self._detect_hf(image_rgb, PROMPT_QR)
+        edge_boxes, edge_scores = self._detect_hf(image_rgb, PROMPT_EDGE)
 
-        # ── Step 2: SAM segmentation ─────────────────────────────────────────
+        # 2. SAM segmentation
         self._sam_predictor.set_image(image_rgb)
 
-        qr_detections   = self._segment_boxes(qr_boxes,   qr_scores,   "qr_code",    H, W)
-        edge_detections = self._segment_boxes(edge_boxes, edge_scores, "cut_edge",   H, W)
+        qr_detections   = self._segment_boxes(qr_boxes,   qr_scores,   "qr_code",  H, W)
+        edge_detections = self._segment_boxes(edge_boxes, edge_scores, "cut_edge", H, W)
 
-        # ── Step 3: Extract contours from edge masks ──────────────────────
+        # 3. Extract sample points from edge masks
         edge_sample_points = []
         for det in edge_detections:
             if det.mask is not None:
                 pts = self._extract_edge_samples(det.mask)
-                edge_sample_points.append(pts)
             else:
-                edge_sample_points.append(np.empty((0, 2), dtype=np.float32))
+                pts = np.empty((0, 2), dtype=np.float32)
+            edge_sample_points.append(pts)
 
         return PipelineResult(
             image_path=image_path,
@@ -179,117 +144,104 @@ class GroundedSAMModel:
             edge_sample_points=edge_sample_points,
         )
 
-    # ── Private helpers ──────────────────────────────────────────────────────
+    # ── Private helpers ───────────────────────────────────────────────────────
 
-    def _detect(
+    def _detect_hf(
         self,
         image_rgb: np.ndarray,
-        prompt: str,
-    ) -> tuple[torch.Tensor, torch.Tensor]:
-        """Run Grounding DINO and return (boxes_xyxy, scores) as tensors."""
-        from groundingdino.util.inference import predict
-        from torchvision.ops import box_convert
-        import torch
+        prompt:    str,
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Run Grounding DINO via HuggingFace API.
 
-        # GroundingDINO expects a PIL image or a transformed tensor.
-        # The library's ``predict`` utility handles the conversion internally.
-        boxes_cxcywh, scores, _ = predict(
-            model=self._gdino_model,
-            image=self._preprocess_for_gdino(image_rgb),
-            caption=prompt,
-            box_threshold=GDINO_BOX_THRESHOLD,
-            text_threshold=GDINO_TEXT_THRESHOLD,
-            device=self.device,
-        )
-
-        # Convert from normalised cx,cy,w,h → absolute x1,y1,x2,y2
-        H, W = image_rgb.shape[:2]
-        boxes_xyxy = box_convert(
-            boxes=boxes_cxcywh * torch.tensor([W, H, W, H], device=boxes_cxcywh.device),
-            in_fmt="cxcywh",
-            out_fmt="xyxy",
-        )
-        return boxes_xyxy, scores
-
-    @staticmethod
-    def _preprocess_for_gdino(image_rgb: np.ndarray):
-        """Convert an RGB numpy array to the tensor format expected by
-        Grounding DINO's ``predict`` helper."""
-        from groundingdino.util.transforms import Compose, Normalize, ToTensor, RandomResize
-        import torchvision.transforms.functional as F
+        Returns:
+            boxes_xyxy: (N, 4) numpy array in pixel coords
+            scores:     (N,)   numpy array of confidence scores
+        """
         from PIL import Image
 
-        pil_img = Image.fromarray(image_rgb)
-        transform = Compose([
-            RandomResize([800], max_size=1333),
-            ToTensor(),
-            Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-        ])
-        img_transformed, _ = transform(pil_img, None)
-        return img_transformed
+        pil_image = Image.fromarray(image_rgb)
+        H, W = image_rgb.shape[:2]
+
+        inputs = self._gdino_processor(
+            images=pil_image,
+            text=prompt,
+            return_tensors="pt"
+        ).to(self.device)
+
+        with torch.no_grad():
+            outputs = self._gdino_model(**inputs)
+
+        # Post-process: filter by threshold and convert to pixel coords
+        # HuggingFace transformers >= 4.38 uses threshold instead of box_threshold
+        try:
+            results = self._gdino_processor.post_process_grounded_object_detection(
+                outputs,
+                inputs.input_ids,
+                box_threshold=GDINO_BOX_THRESHOLD,
+                text_threshold=GDINO_TEXT_THRESHOLD,
+                target_sizes=[(H, W)],
+            )[0]
+        except TypeError:
+            results = self._gdino_processor.post_process_grounded_object_detection(
+                outputs,
+                inputs.input_ids,
+                threshold=GDINO_BOX_THRESHOLD,
+                target_sizes=[(H, W)],
+            )[0]
+
+        boxes  = results["boxes"].cpu().numpy()   # (N, 4) xyxy pixels
+        scores = results["scores"].cpu().numpy()  # (N,)
+
+        return boxes, scores
 
     def _segment_boxes(
         self,
-        boxes: "torch.Tensor",
-        scores: "torch.Tensor",
-        label: str,
-        H: int,
-        W: int,
+        boxes:  np.ndarray,
+        scores: np.ndarray,
+        label:  str,
+        H:      int,
+        W:      int,
     ) -> list[DetectionResult]:
-        """For each bounding box run SAM and return DetectionResult list."""
+        """Run SAM on each bounding box and return DetectionResult list."""
         results = []
         if boxes is None or len(boxes) == 0:
             return results
 
-        boxes_np = boxes.cpu().numpy()
-        scores_np = scores.cpu().numpy()
-
-        # SAM expects boxes in xyxy pixel format
-        input_boxes = torch.tensor(boxes_np, device=self.device)
-        transformed_boxes = self._sam_predictor.transform.apply_boxes_torch(
+        input_boxes = torch.tensor(boxes, device=self.device)
+        transformed = self._sam_predictor.transform.apply_boxes_torch(
             input_boxes, (H, W)
         )
 
         masks_batch, _, _ = self._sam_predictor.predict_torch(
             point_coords=None,
             point_labels=None,
-            boxes=transformed_boxes,
+            boxes=transformed,
             multimask_output=False,
         )
         # masks_batch: (N, 1, H, W) bool tensor
 
-        for i in range(len(boxes_np)):
-            mask = masks_batch[i, 0].cpu().numpy()   # (H, W) bool
+        for i in range(len(boxes)):
+            mask = masks_batch[i, 0].cpu().numpy()
             results.append(DetectionResult(
                 label=label,
-                score=float(scores_np[i]),
-                box_xyxy=boxes_np[i],
+                score=float(scores[i]),
+                box_xyxy=boxes[i],
                 mask=mask,
             ))
         return results
 
     @staticmethod
     def _extract_edge_samples(
-        mask: np.ndarray,
+        mask:     np.ndarray,
         n_points: int = NUM_SAMPLE_POINTS,
     ) -> np.ndarray:
-        """Extract the boundary contour of a binary mask and sample *n* points.
-
-        Returns:
-            Array of shape (n, 2) with (x, y) pixel coordinates.
-        """
+        """Extract contour from mask and sample n points along it."""
         mask_u8 = mask.astype(np.uint8) * 255
         contours, _ = cv2.findContours(
             mask_u8, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE
         )
         if not contours:
             return np.empty((0, 2), dtype=np.float32)
-
-        # Use the longest contour (most likely the cut edge boundary)
         contour = max(contours, key=cv2.contourArea)
-
-        # Keep only the bottom boundary (maximum y per x column) as the
-        # "cut edge" line, since that is the separation we want to measure.
         pts = contour.reshape(-1, 2).astype(np.float32)
-
         return sample_points_along_contour(pts, n=n_points)

@@ -62,7 +62,7 @@ class QRCalibrator:
         Returns:
             QRResult with homography matrix and scale factor.
         """
-        centres = self._detect_qr_centres(image_bgr)
+        centres = []
 
         if len(centres) < 3:
             return QRResult(
