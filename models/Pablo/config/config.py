@@ -61,8 +61,10 @@ GDINO_BOX_THRESHOLD  = 0.12
 GDINO_TEXT_THRESHOLD = 0.10
 
 # Stage 2 (cut) - lower thresholds: thin line is harder to detect
-GDINO_BOX_THRESHOLD_CUT  = 0.08
-GDINO_TEXT_THRESHOLD_CUT = 0.08
+# Raised from 0.08 → 0.14: high recall but too many false positives,
+# especially in images with prominent vertical striations on the rubber.
+GDINO_BOX_THRESHOLD_CUT  = 0.14
+GDINO_TEXT_THRESHOLD_CUT = 0.12
 
 # ── Post-detection filters (applied AFTER Grounding DINO, BEFORE SAM) ────────
 # Constants are derived from the dataset statistics summarised at the top.
