@@ -62,7 +62,7 @@ class QRCalibrator:
         Returns:
             QRResult with homography matrix and scale factor.
         """
-        centres = []
+        centres = self._detect_qr_centres(image_bgr)
 
         if len(centres) < 3:
             return QRResult(
@@ -125,6 +125,13 @@ class QRCalibrator:
                            ) -> list[tuple[float, float]]:
         """Return pixel centres of all detected QR codes, largest first."""
         gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
+        # Redimensionar si la imagen es muy grande (mejora detección QR)
+        h, w = gray.shape
+        if max(h, w) > 2000:
+            scale = 2000 / max(h, w)
+            gray = cv2.resize(gray, (int(w*scale), int(h*scale)))
+        # Mejorar contraste
+        gray = cv2.equalizeHist(gray)
 
         # cv2.QRCodeDetector can find multiple codes via detectAndDecodeMulti
         retval, decoded_info, points, _ = \
@@ -153,24 +160,28 @@ class QRCalibrator:
         return centres
 
     @staticmethod
-    def _detect_with_pyzbar(image_bgr: np.ndarray
-                            ) -> list[tuple[float, float]]:
+    def _detect_with_pyzbar(image_bgr: np.ndarray) -> list[tuple[float, float]]:
         """Fallback QR detection using pyzbar."""
         try:
             from pyzbar.pyzbar import decode as pyzbar_decode
             from pyzbar.pyzbar import ZBarSymbol
-        except ImportError:
+        except Exception as exc:
+            print(f"[QRCalibrator] pyzbar not available, skipping fallback: {exc}")
             return []
-
-        gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
-        barcodes = pyzbar_decode(gray, symbols=[ZBarSymbol.QRCODE])
-        centres = []
-        for bc in barcodes:
-            pts = np.array(bc.polygon, dtype=np.float32)
-            cx = float(pts[:, 0].mean())
-            cy = float(pts[:, 1].mean())
-            centres.append((cx, cy))
-        return centres
+    
+        try:
+            gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
+            barcodes = pyzbar_decode(gray, symbols=[ZBarSymbol.QRCODE])
+            centres = []
+            for bc in barcodes:
+                pts = np.array(bc.polygon, dtype=np.float32)
+                cx = float(pts[:, 0].mean())
+                cy = float(pts[:, 1].mean())
+                centres.append((cx, cy))
+            return centres
+        except Exception as exc:
+            print(f"[QRCalibrator] pyzbar detection failed: {exc}")
+            return []
 
     def _build_homography(self, centres_px: list[tuple[float, float]]
                           ) -> tuple[np.ndarray, float]:

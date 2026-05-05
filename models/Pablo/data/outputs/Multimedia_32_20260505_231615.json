@@ -1,0 +1,15 @@
+{
+  "image_path": "data/images/Multimedia_32.jpg",
+  "n_qr_detected": 0,
+  "n_edges_detected": 0,
+  "edges": [],
+  "inter_edge_distances_mm": [],
+  "evaluation": {
+    "rmse_mm": null,
+    "mae_mm": null,
+    "iou": NaN,
+    "precision": null,
+    "recall": null,
+    "f1": null
+  }
+}

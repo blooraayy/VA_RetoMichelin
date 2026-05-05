@@ -1,0 +1,15 @@
+{
+  "image_path": "data/images/Multimedia_52.jpg",
+  "n_qr_detected": 4,
+  "n_edges_detected": 109,
+  "edges": [],
+  "inter_edge_distances_mm": [],
+  "evaluation": {
+    "rmse_mm": null,
+    "mae_mm": null,
+    "iou": 0.0,
+    "precision": null,
+    "recall": null,
+    "f1": null
+  }
+}

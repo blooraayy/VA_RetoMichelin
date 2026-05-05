@@ -28,7 +28,9 @@ from config.config import (
     GDINO_CONFIG, GDINO_WEIGHTS,
     SAM_CHECKPOINT, SAM_MODEL_TYPE,
     SAVE_VISUALISATIONS, SHOW_VISUALISATIONS,
+    COCO_ANNOTATIONS
 )
+from model.coco_loader import COCOLoader
 from model.qr_calibrator import QRCalibrator
 from model.grounded_sam  import GroundedSAMModel
 from model.metrics       import MeasurementEngine, MetricEvaluator
@@ -73,6 +75,15 @@ class PipelineController:
             sam_model_type=sam_model_type,
         )
         self.metric_evaluator = MetricEvaluator()
+
+        self.coco_loader = None
+        if os.path.isfile(COCO_ANNOTATIONS):
+            self.coco_loader = COCOLoader(
+                coco_json=COCO_ANNOTATIONS,
+                image_dir=IMAGE_DIR,
+            )
+        else:
+            print(f"[Controller] WARNING — COCO annotations not found: {COCO_ANNOTATIONS}")
 
         # ── Instantiate View component ────────────────────────────────────
         self.visualiser = Visualiser(output_dir=output_dir, show=show, save=save)
@@ -127,11 +138,31 @@ class PipelineController:
 
         # ── Evaluation metrics if GT labels available (Model) ─────────────
         eval_metrics = None
-        if gt_label_path and os.path.isfile(gt_label_path):
-            eval_metrics = self._evaluate_against_gt(
-                pipeline_result, measurements, gt_label_path
-            )
+        gt = None
 
+        if self.coco_loader is not None:
+            gt = self.coco_loader.get_by_filename(image_path)
+    
+        if gt is None:
+            print(f"[Controller] WARNING — No COCO GT found for {image_path}")
+        else:
+            if qr_result.success:
+                eval_metrics = self.metric_evaluator.evaluate_against_gt(
+                    pipeline_result=pipeline_result,
+                    measurements=measurements,
+                    gt=gt,
+                    homography=qr_result.homography,
+                    qr_calibrator=self.qr_calibrator,
+                )
+            else:
+                eval_metrics = self.metric_evaluator.evaluate_against_gt(
+                    pipeline_result=pipeline_result,
+                    measurements=measurements,
+                    gt=gt,
+                    homography=None,
+                    qr_calibrator=None,
+                )
+    
         # ── Visualise (View) ──────────────────────────────────────────────
         base_name = os.path.splitext(os.path.basename(image_path))[0]
         canvas    = self.visualiser.render(
@@ -183,13 +214,8 @@ class PipelineController:
         results = []
 
         for img_path in image_paths:
-            gt_path = None
-            if label_folder:
-                stem   = os.path.splitext(os.path.basename(img_path))[0]
-                gt_path = os.path.join(label_folder, f"{stem}.json")
-
             try:
-                res = self.run_image(img_path, gt_label_path=gt_path)
+                res = self.run_image(img_path)
                 results.append(res)
             except Exception as exc:
                 print(f"[Controller] ERROR on {img_path}: {exc}")
@@ -199,30 +225,6 @@ class PipelineController:
         return results
 
     # ── Private helpers ───────────────────────────────────────────────────────
-
-    def _evaluate_against_gt(
-        self,
-        pipeline_result,
-        measurements,
-        gt_label_path: str,
-    ):
-        """Load GT labels and compute evaluation metrics."""
-        with open(gt_label_path) as f:
-            gt = json.load(f)
-
-        from model.metrics import EvaluationMetrics
-        em = EvaluationMetrics()
-
-        # If GT has distance values, compute RMSE/MAE for the first edge
-        gt_dists = gt.get("edges", [{}])[0].get("distances_to_bottom_mm", [])
-        if gt_dists and len(measurements.distances_to_bottom_mm) > 0:
-            pred_dists = measurements.distances_to_bottom_mm[0]
-            em.rmse_mm = self.metric_evaluator.rmse(pred_dists, np.array(gt_dists))
-            em.mae_mm  = self.metric_evaluator.mae(pred_dists,  np.array(gt_dists))
-
-        # Mask IoU / P / R / F1 can be added here when GT masks are available
-        return em
-
     @staticmethod
     def _build_summary_dict(image_path, pipeline_result, measurements,
                              eval_metrics, elapsed_s: float) -> dict:
@@ -245,7 +247,12 @@ class PipelineController:
                 "rmse_mm": eval_metrics.rmse_mm,
                 "mae_mm":  eval_metrics.mae_mm,
                 "iou":     eval_metrics.iou,
+                "precision": eval_metrics.precision,
+                "recall": eval_metrics.recall,
                 "f1":      eval_metrics.f1,
+                "per_edge_iou": eval_metrics.per_edge_iou,
+                "per_edge_rmse_mm": eval_metrics.per_edge_rmse_mm,
+                "per_edge_mae_mm": eval_metrics.per_edge_mae_mm,
             }
         return d
 
@@ -269,7 +276,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
                        help="Path to a folder of input images.")
 
     p.add_argument("--labels",  type=str, default=None,
-                   help="Path to GT label file (--image) or folder (--folder).")
+               help="Path to GT label file (--image) or folder (--folder).")
     p.add_argument("--output",  type=str, default=OUTPUT_DIR,
                    help="Directory for output files.")
     p.add_argument("--device",  type=str, default=DEVICE,
