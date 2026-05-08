@@ -156,7 +156,7 @@ class Visualiser:
             cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
             cv2.drawMarker(canvas, (cx, cy), COLOR_QR_BOX,
                            cv2.MARKER_CROSS, 15, 2)
-            label = f"QR {det.score:.2f}"
+            label = f"QR marker (conf: {det.score:.2f})"
             cv2.putText(canvas, label, (x1, y1 - 6),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_QR_BOX, 1,
                         cv2.LINE_AA)
@@ -172,7 +172,7 @@ class Visualiser:
             # Bounding box
             x1, y1, x2, y2 = det.box_xyxy.astype(int)
             cv2.rectangle(canvas, (x1, y1), (x2, y2), COLOR_EDGE_BOX, 2)
-            label = f"Edge {det.score:.2f}"
+            label = f"Cut edge (conf: {det.score:.2f})"
             cv2.putText(canvas, label, (x1, y1 - 6),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_EDGE_BOX, 1,
                         cv2.LINE_AA)

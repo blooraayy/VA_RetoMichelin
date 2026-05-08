@@ -1,0 +1,31 @@
+{
+  "image_path": "data/images/Multimedia_52.jpg",
+  "n_qr_detected": 4,
+  "n_edges_detected": 1,
+  "edges": [
+    {
+      "edge_id": 1,
+      "distances_to_bottom_mm": [
+        849.2262573242188,
+        853.753662109375,
+        854.3707885742188,
+        852.788330078125,
+        853.1610717773438,
+        854.2669677734375,
+        855.7241821289062,
+        858.6783447265625,
+        858.8067016601562,
+        856.0022583007812
+      ]
+    }
+  ],
+  "inter_edge_distances_mm": [],
+  "evaluation": {
+    "rmse_mm": NaN,
+    "mae_mm": NaN,
+    "iou": 0.0,
+    "precision": null,
+    "recall": null,
+    "f1": null
+  }
+}
