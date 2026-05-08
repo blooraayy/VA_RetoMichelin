@@ -129,14 +129,13 @@ class PipelineController:
 
         # 5. Visualise ──────────────────────────────────────────────────────
         base_name = os.path.splitext(os.path.basename(image_path))[0]
-        canvas    = self.visualiser.render(
-            image_bgr=image_bgr,
-            pipeline_res=pipeline_result,
-            measurements=measurements,
-            eval_metrics=eval_metrics,
-            base_name=base_name,
+        self.visualiser.render(
+                    image_bgr=image_bgr,
+                    pipeline_res=pipeline_result,
+                    measurements=measurements,
+                    eval_metrics=eval_metrics,
+                    base_name=base_name,
         )
-        self.visualiser.draw_sample_points_px(canvas, pipeline_result, measurements)
 
         elapsed = time.perf_counter() - t0
         print(f"[Controller] Done in {elapsed:.2f}s")

@@ -62,43 +62,37 @@ class Visualiser:
         measurements: GeometricMeasurements,
         eval_metrics: EvaluationMetrics | None = None,
         base_name:    str = "result",
-    ) -> np.ndarray:
-        """Produce and (optionally) save / display the annotated image.
-
-        Args:
-            image_bgr:    Original BGR image.
-            pipeline_res: Output from GroundedSAMModel.run().
-            measurements: Output from MeasurementEngine.compute().
-            eval_metrics: Optional evaluation metrics (printed if provided).
-            base_name:    Stem for output file names.
-
-        Returns:
-            The annotated BGR image.
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Create and save two visual outputs:
+           1) detection image
+           2) measurement image
         """
-        canvas = image_bgr.copy()
+        # ── Detection canvas ─────────────────────────────────────────────
+        detection_canvas = image_bgr.copy()
+        self._draw_qr_detections(detection_canvas, pipeline_res)
+        self._draw_edge_detections(detection_canvas, pipeline_res)
 
-        # 1. Draw QR detections
-        self._draw_qr_detections(canvas, pipeline_res)
+        # ── Measurement canvas ───────────────────────────────────────────
+        measurement_canvas = image_bgr.copy()
+        self._draw_qr_detections(measurement_canvas, pipeline_res)
+        self._draw_edge_detections(measurement_canvas, pipeline_res)
+        self._draw_measurement_visuals(measurement_canvas, pipeline_res, measurements)
 
-        # 2. Draw edge masks and bounding boxes
-        self._draw_edge_detections(canvas, pipeline_res)
-
-        # 3. Draw sample points + distance labels
-        self._draw_measurements(canvas, measurements)
-
-        # 4. Console summary
+        # ── Console summary ──────────────────────────────────────────────
         self.print_summary(pipeline_res, measurements, eval_metrics)
 
-        # 5. Save annotated image
+        # ── Save outputs ─────────────────────────────────────────────────
         if self.save:
-            self._save_image(canvas, base_name)
+            self._save_image(detection_canvas,  base_name + "_detection")
+            self._save_image(measurement_canvas, base_name + "_measurement")
             self._save_json(pipeline_res, measurements, eval_metrics, base_name)
 
-        # 6. Optionally display
+        # ── Optional display ─────────────────────────────────────────────
         if self.show:
-            self._show_image(canvas, base_name)
+            self._show_image(detection_canvas,  base_name + "_detection")
+            self._show_image(measurement_canvas, base_name + "_measurement")
 
-        return canvas
+        return detection_canvas, measurement_canvas
 
     def print_summary(
         self,
@@ -156,9 +150,12 @@ class Visualiser:
             cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
             cv2.drawMarker(canvas, (cx, cy), COLOR_QR_BOX,
                            cv2.MARKER_CROSS, 15, 2)
-            label = f"QR marker (conf: {det.score:.2f})"
-            cv2.putText(canvas, label, (x1, y1 - 6),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_QR_BOX, 1,
+            label = f"QR (conf:{det.score:.2f})"
+            (lw, lh), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
+            tx = max(0, min(x1, canvas.shape[1] - lw - 2))
+            ty = max(lh + 2, y1 - 4)
+            cv2.putText(canvas, label, (tx, ty),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.4, COLOR_QR_BOX, 1,
                         cv2.LINE_AA)
 
     def _draw_edge_detections(self, canvas: np.ndarray,
@@ -172,12 +169,59 @@ class Visualiser:
             # Bounding box
             x1, y1, x2, y2 = det.box_xyxy.astype(int)
             cv2.rectangle(canvas, (x1, y1), (x2, y2), COLOR_EDGE_BOX, 2)
-            label = f"Cut edge (conf: {det.score:.2f})"
-            cv2.putText(canvas, label, (x1, y1 - 6),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_EDGE_BOX, 1,
+            label = f"Cut edge (conf:{det.score:.2f})"
+            (lw, lh), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
+            tx = max(0, min(x1, canvas.shape[1] - lw - 2))
+            ty = max(lh + 2, y1 - 4)
+            cv2.putText(canvas, label, (tx, ty),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.4, COLOR_EDGE_BOX, 1,
                         cv2.LINE_AA)
 
         cv2.addWeighted(overlay, MASK_ALPHA, canvas, 1 - MASK_ALPHA, 0, canvas)
+
+    def _draw_measurement_visuals(
+        self,
+        canvas: np.ndarray,
+        pipeline_res: PipelineResult,
+        measurements: GeometricMeasurements,
+    ) -> None:
+        """Draw sampled edge points, vertical lines to the bottom border,
+        and distance labels in mm.
+        """
+        H = canvas.shape[0]
+        bottom_y = H - 1
+    
+        for edge_idx, (pts_px, dists_mm) in enumerate(
+            zip(pipeline_res.edge_sample_points, measurements.distances_to_bottom_mm)
+        ):
+            if len(pts_px) == 0:
+                continue
+            
+            for pt, d_mm in zip(pts_px, dists_mm):
+                px = int(round(pt[0]))
+                py = int(round(pt[1]))
+    
+                # 1) sampled point
+                cv2.circle(canvas, (px, py), 4, COLOR_SAMPLE_PT, -1)
+    
+                # 2) vertical line to bottom image border
+                cv2.line(canvas, (px, py), (px, bottom_y), COLOR_DISTANCE, 1)
+    
+                # 3) distance label
+                label = f"{d_mm:.1f} mm"
+                text_x = min(px + 6, canvas.shape[1] - 80)
+                text_y = max(py - 6, 15)
+    
+                cv2.putText(
+                    canvas,
+                    label,
+                    (text_x, text_y),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.4,
+                    COLOR_DISTANCE,
+                    1,
+                    cv2.LINE_AA,
+                )
 
     @staticmethod
     def _draw_measurements(canvas: np.ndarray,
