@@ -1,0 +1,302 @@
+{
+  "Multimedia_31.jpg": {
+    "image_name": "Multimedia_31.jpg",
+    "threshold": 129.0,
+    "mask_coverage": 0.5973234375,
+    "roi_coverage": 0.670253125,
+    "edge_density": 0.011415625,
+    "canny_low": 35,
+    "canny_high": 65,
+    "median_intensity": 50.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_32.jpg": {
+    "image_name": "Multimedia_32.jpg",
+    "threshold": 126.0,
+    "mask_coverage": 0.5755,
+    "roi_coverage": 0.6473203125,
+    "edge_density": 0.011653125,
+    "canny_low": 35,
+    "canny_high": 65,
+    "median_intensity": 50.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_33.jpg": {
+    "image_name": "Multimedia_33.jpg",
+    "threshold": 127.0,
+    "mask_coverage": 0.5980625,
+    "roi_coverage": 0.670465625,
+    "edge_density": 0.0108796875,
+    "canny_low": 33,
+    "canny_high": 62,
+    "median_intensity": 48.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_34.jpg": {
+    "image_name": "Multimedia_34.jpg",
+    "threshold": 128.0,
+    "mask_coverage": 0.579859375,
+    "roi_coverage": 0.6486484375,
+    "edge_density": 0.0107,
+    "canny_low": 35,
+    "canny_high": 65,
+    "median_intensity": 50.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_35.jpg": {
+    "image_name": "Multimedia_35.jpg",
+    "threshold": 126.0,
+    "mask_coverage": 0.598234375,
+    "roi_coverage": 0.6742296875,
+    "edge_density": 0.0109140625,
+    "canny_low": 33,
+    "canny_high": 62,
+    "median_intensity": 48.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_36.jpg": {
+    "image_name": "Multimedia_36.jpg",
+    "threshold": 126.0,
+    "mask_coverage": 0.598234375,
+    "roi_coverage": 0.6742296875,
+    "edge_density": 0.0109140625,
+    "canny_low": 33,
+    "canny_high": 62,
+    "median_intensity": 48.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_37.jpg": {
+    "image_name": "Multimedia_37.jpg",
+    "threshold": 127.0,
+    "mask_coverage": 0.5877765625,
+    "roi_coverage": 0.6652390625,
+    "edge_density": 0.0116390625,
+    "canny_low": 35,
+    "canny_high": 65,
+    "median_intensity": 50.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_39.jpg": {
+    "image_name": "Multimedia_39.jpg",
+    "threshold": 127.0,
+    "mask_coverage": 0.583109375,
+    "roi_coverage": 0.650153125,
+    "edge_density": 0.009909375,
+    "canny_low": 35,
+    "canny_high": 65,
+    "median_intensity": 50.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_40.jpg": {
+    "image_name": "Multimedia_40.jpg",
+    "threshold": 129.0,
+    "mask_coverage": 0.5919203125,
+    "roi_coverage": 0.660084375,
+    "edge_density": 0.0093,
+    "canny_low": 34,
+    "canny_high": 63,
+    "median_intensity": 49.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_41.jpg": {
+    "image_name": "Multimedia_41.jpg",
+    "threshold": 170.0,
+    "mask_coverage": 0.586353125,
+    "roi_coverage": 0.6539921875,
+    "edge_density": 0.0071109375,
+    "canny_low": 74,
+    "canny_high": 139,
+    "median_intensity": 107.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_42.jpg": {
+    "image_name": "Multimedia_42.jpg",
+    "threshold": 129.0,
+    "mask_coverage": 0.619190625,
+    "roi_coverage": 0.6863640625,
+    "edge_density": 0.011109375,
+    "canny_low": 35,
+    "canny_high": 66,
+    "median_intensity": 51.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_43.jpg": {
+    "image_name": "Multimedia_43.jpg",
+    "threshold": 129.0,
+    "mask_coverage": 0.5862875,
+    "roi_coverage": 0.653046875,
+    "edge_density": 0.01103125,
+    "canny_low": 35,
+    "canny_high": 66,
+    "median_intensity": 51.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_45.jpg": {
+    "image_name": "Multimedia_45.jpg",
+    "threshold": 130.0,
+    "mask_coverage": 0.596509375,
+    "roi_coverage": 0.66561875,
+    "edge_density": 0.0101375,
+    "canny_low": 35,
+    "canny_high": 66,
+    "median_intensity": 51.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_46.jpg": {
+    "image_name": "Multimedia_46.jpg",
+    "threshold": 130.0,
+    "mask_coverage": 0.5848265625,
+    "roi_coverage": 0.6513125,
+    "edge_density": 0.0103703125,
+    "canny_low": 35,
+    "canny_high": 66,
+    "median_intensity": 51.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_47.jpg": {
+    "image_name": "Multimedia_47.jpg",
+    "threshold": 130.0,
+    "mask_coverage": 0.5986859375,
+    "roi_coverage": 0.668340625,
+    "edge_density": 0.0110703125,
+    "canny_low": 36,
+    "canny_high": 67,
+    "median_intensity": 52.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_48.jpg": {
+    "image_name": "Multimedia_48.jpg",
+    "threshold": 132.0,
+    "mask_coverage": 0.6102421875,
+    "roi_coverage": 0.6728671875,
+    "edge_density": 0.0092359375,
+    "canny_low": 37,
+    "canny_high": 68,
+    "median_intensity": 53.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_49.jpg": {
+    "image_name": "Multimedia_49.jpg",
+    "threshold": 130.0,
+    "mask_coverage": 0.611946875,
+    "roi_coverage": 0.67656875,
+    "edge_density": 0.009534375,
+    "canny_low": 35,
+    "canny_high": 66,
+    "median_intensity": 51.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_50.jpg": {
+    "image_name": "Multimedia_50.jpg",
+    "threshold": 130.0,
+    "mask_coverage": 0.605525,
+    "roi_coverage": 0.670328125,
+    "edge_density": 0.00906875,
+    "canny_low": 37,
+    "canny_high": 68,
+    "median_intensity": 53.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_51.jpg": {
+    "image_name": "Multimedia_51.jpg",
+    "threshold": 132.0,
+    "mask_coverage": 0.612725,
+    "roi_coverage": 0.6774296875,
+    "edge_density": 0.0064390625,
+    "canny_low": 42,
+    "canny_high": 79,
+    "median_intensity": 61.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  },
+  "Multimedia_52.jpg": {
+    "image_name": "Multimedia_52.jpg",
+    "threshold": 135.0,
+    "mask_coverage": 0.6798171875,
+    "roi_coverage": 0.7316390625,
+    "edge_density": 0.00615625,
+    "canny_low": 44,
+    "canny_high": 81,
+    "median_intensity": 63.0,
+    "blur_kernel": [
+      9,
+      9
+    ],
+    "edge_source": "gray_roi"
+  }
+}
