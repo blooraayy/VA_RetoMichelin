@@ -4,13 +4,13 @@
     "threshold": 129.0,
     "mask_coverage": 0.5973234375,
     "roi_coverage": 0.670253125,
-    "edge_density": 0.008803125,
-    "canny_low": 40,
-    "canny_high": 60,
+    "edge_density": 0.011415625,
+    "canny_low": 35,
+    "canny_high": 65,
     "median_intensity": 50.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -19,13 +19,13 @@
     "threshold": 126.0,
     "mask_coverage": 0.5755,
     "roi_coverage": 0.6473203125,
-    "edge_density": 0.00905,
-    "canny_low": 40,
-    "canny_high": 60,
+    "edge_density": 0.011653125,
+    "canny_low": 35,
+    "canny_high": 65,
     "median_intensity": 50.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -34,13 +34,13 @@
     "threshold": 127.0,
     "mask_coverage": 0.5980625,
     "roi_coverage": 0.670465625,
-    "edge_density": 0.0090265625,
-    "canny_low": 39,
-    "canny_high": 58,
-    "median_intensity": 49.0,
+    "edge_density": 0.0108796875,
+    "canny_low": 33,
+    "canny_high": 62,
+    "median_intensity": 48.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -49,13 +49,13 @@
     "threshold": 128.0,
     "mask_coverage": 0.579859375,
     "roi_coverage": 0.6486484375,
-    "edge_density": 0.0083171875,
-    "canny_low": 40,
-    "canny_high": 60,
+    "edge_density": 0.0107,
+    "canny_low": 35,
+    "canny_high": 65,
     "median_intensity": 50.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -64,13 +64,13 @@
     "threshold": 126.0,
     "mask_coverage": 0.598234375,
     "roi_coverage": 0.6742296875,
-    "edge_density": 0.00864375,
-    "canny_low": 38,
-    "canny_high": 57,
+    "edge_density": 0.0109140625,
+    "canny_low": 33,
+    "canny_high": 62,
     "median_intensity": 48.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -79,13 +79,13 @@
     "threshold": 126.0,
     "mask_coverage": 0.598234375,
     "roi_coverage": 0.6742296875,
-    "edge_density": 0.00864375,
-    "canny_low": 38,
-    "canny_high": 57,
+    "edge_density": 0.0109140625,
+    "canny_low": 33,
+    "canny_high": 62,
     "median_intensity": 48.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -94,13 +94,13 @@
     "threshold": 127.0,
     "mask_coverage": 0.5877765625,
     "roi_coverage": 0.6652390625,
-    "edge_density": 0.0092296875,
-    "canny_low": 40,
-    "canny_high": 60,
+    "edge_density": 0.0116390625,
+    "canny_low": 35,
+    "canny_high": 65,
     "median_intensity": 50.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -109,13 +109,13 @@
     "threshold": 127.0,
     "mask_coverage": 0.583109375,
     "roi_coverage": 0.650153125,
-    "edge_density": 0.007828125,
-    "canny_low": 40,
-    "canny_high": 60,
+    "edge_density": 0.009909375,
+    "canny_low": 35,
+    "canny_high": 65,
     "median_intensity": 50.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -124,13 +124,13 @@
     "threshold": 129.0,
     "mask_coverage": 0.5919203125,
     "roi_coverage": 0.660084375,
-    "edge_density": 0.0077984375,
-    "canny_low": 39,
-    "canny_high": 58,
+    "edge_density": 0.0093,
+    "canny_low": 34,
+    "canny_high": 63,
     "median_intensity": 49.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -139,13 +139,13 @@
     "threshold": 170.0,
     "mask_coverage": 0.586353125,
     "roi_coverage": 0.6539921875,
-    "edge_density": 0.006559375,
-    "canny_low": 86,
-    "canny_high": 129,
-    "median_intensity": 108.0,
+    "edge_density": 0.0071109375,
+    "canny_low": 74,
+    "canny_high": 139,
+    "median_intensity": 107.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -154,13 +154,13 @@
     "threshold": 129.0,
     "mask_coverage": 0.619190625,
     "roi_coverage": 0.6863640625,
-    "edge_density": 0.0081359375,
-    "canny_low": 41,
-    "canny_high": 62,
-    "median_intensity": 52.0,
+    "edge_density": 0.011109375,
+    "canny_low": 35,
+    "canny_high": 66,
+    "median_intensity": 51.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -169,13 +169,13 @@
     "threshold": 129.0,
     "mask_coverage": 0.5862875,
     "roi_coverage": 0.653046875,
-    "edge_density": 0.008584375,
-    "canny_low": 40,
-    "canny_high": 61,
+    "edge_density": 0.01103125,
+    "canny_low": 35,
+    "canny_high": 66,
     "median_intensity": 51.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -184,13 +184,13 @@
     "threshold": 130.0,
     "mask_coverage": 0.596509375,
     "roi_coverage": 0.66561875,
-    "edge_density": 0.0084015625,
-    "canny_low": 40,
-    "canny_high": 61,
+    "edge_density": 0.0101375,
+    "canny_low": 35,
+    "canny_high": 66,
     "median_intensity": 51.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -199,13 +199,13 @@
     "threshold": 130.0,
     "mask_coverage": 0.5848265625,
     "roi_coverage": 0.6513125,
-    "edge_density": 0.008203125,
-    "canny_low": 40,
-    "canny_high": 61,
+    "edge_density": 0.0103703125,
+    "canny_low": 35,
+    "canny_high": 66,
     "median_intensity": 51.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -214,13 +214,13 @@
     "threshold": 130.0,
     "mask_coverage": 0.5986859375,
     "roi_coverage": 0.668340625,
-    "edge_density": 0.00849375,
-    "canny_low": 41,
-    "canny_high": 62,
+    "edge_density": 0.0110703125,
+    "canny_low": 36,
+    "canny_high": 67,
     "median_intensity": 52.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -229,13 +229,13 @@
     "threshold": 132.0,
     "mask_coverage": 0.6102421875,
     "roi_coverage": 0.6728671875,
-    "edge_density": 0.00734375,
-    "canny_low": 42,
-    "canny_high": 63,
+    "edge_density": 0.0092359375,
+    "canny_low": 37,
+    "canny_high": 68,
     "median_intensity": 53.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -244,13 +244,13 @@
     "threshold": 130.0,
     "mask_coverage": 0.611946875,
     "roi_coverage": 0.67656875,
-    "edge_density": 0.0075875,
-    "canny_low": 40,
-    "canny_high": 61,
+    "edge_density": 0.009534375,
+    "canny_low": 35,
+    "canny_high": 66,
     "median_intensity": 51.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -259,13 +259,13 @@
     "threshold": 130.0,
     "mask_coverage": 0.605525,
     "roi_coverage": 0.670328125,
-    "edge_density": 0.007471875,
-    "canny_low": 42,
-    "canny_high": 63,
+    "edge_density": 0.00906875,
+    "canny_low": 37,
+    "canny_high": 68,
     "median_intensity": 53.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -274,13 +274,13 @@
     "threshold": 132.0,
     "mask_coverage": 0.612725,
     "roi_coverage": 0.6774296875,
-    "edge_density": 0.0059359375,
-    "canny_low": 48,
-    "canny_high": 73,
+    "edge_density": 0.0064390625,
+    "canny_low": 42,
+    "canny_high": 79,
     "median_intensity": 61.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   },
@@ -289,13 +289,13 @@
     "threshold": 135.0,
     "mask_coverage": 0.6798171875,
     "roi_coverage": 0.7316390625,
-    "edge_density": 0.005215625,
-    "canny_low": 50,
-    "canny_high": 75,
+    "edge_density": 0.00615625,
+    "canny_low": 44,
+    "canny_high": 81,
     "median_intensity": 63.0,
     "blur_kernel": [
-      11,
-      11
+      9,
+      9
     ],
     "edge_source": "gray_roi"
   }
