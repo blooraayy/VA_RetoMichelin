@@ -1,146 +1,122 @@
 {
   "Multimedia_31.jpg": {
     "image_name": "Multimedia_31.jpg",
-    "threshold": 140.0,
-    "mask_coverage": 0.5652754060193945,
-    "edge_density": 0.0075388583765377964
+    "threshold": 129.0,
+    "mask_coverage": 0.597771875,
+    "edge_density": 0.006675
   },
   "Multimedia_32.jpg": {
     "image_name": "Multimedia_32.jpg",
-    "threshold": 136.0,
-    "mask_coverage": 0.5658339251395258,
-    "edge_density": 0.00830534792185751
+    "threshold": 126.0,
+    "mask_coverage": 0.576221875,
+    "edge_density": 0.0064875
   },
   "Multimedia_33.jpg": {
     "image_name": "Multimedia_33.jpg",
-    "threshold": 136.0,
-    "mask_coverage": 0.5676044401474116,
-    "edge_density": 0.007530875933964135
+    "threshold": 127.0,
+    "mask_coverage": 0.598628125,
+    "edge_density": 0.0067171875
   },
   "Multimedia_34.jpg": {
     "image_name": "Multimedia_34.jpg",
-    "threshold": 141.0,
-    "mask_coverage": 0.5618668980337459,
-    "edge_density": 0.00723649700619158
+    "threshold": 128.0,
+    "mask_coverage": 0.5803828125,
+    "edge_density": 0.0063265625
   },
   "Multimedia_35.jpg": {
     "image_name": "Multimedia_35.jpg",
-    "threshold": 128.0,
-    "mask_coverage": 0.6916076557249334,
-    "edge_density": 0.008115603306938292
+    "threshold": 126.0,
+    "mask_coverage": 0.5984421875,
+    "edge_density": 0.007096875
   },
   "Multimedia_36.jpg": {
     "image_name": "Multimedia_36.jpg",
-    "threshold": 89.0,
-    "mask_coverage": 0.8231856532799245,
-    "edge_density": 0.0018439863254946648
+    "threshold": 126.0,
+    "mask_coverage": 0.5984421875,
+    "edge_density": 0.007096875
   },
   "Multimedia_37.jpg": {
     "image_name": "Multimedia_37.jpg",
-    "threshold": 123.0,
-    "mask_coverage": 0.7513197757062905,
-    "edge_density": 0.009992606583081317
-  },
-  "Multimedia_38.jpg": {
-    "image_name": "Multimedia_38.jpg",
-    "threshold": 101.0,
-    "mask_coverage": 0.39577252791737394,
-    "edge_density": 0.0017774751019294468
+    "threshold": 127.0,
+    "mask_coverage": 0.5882703125,
+    "edge_density": 0.007403125
   },
   "Multimedia_39.jpg": {
     "image_name": "Multimedia_39.jpg",
-    "threshold": 137.0,
-    "mask_coverage": 0.5575295342817657,
-    "edge_density": 0.007596683857667736
+    "threshold": 127.0,
+    "mask_coverage": 0.5831453125,
+    "edge_density": 0.0064328125
   },
   "Multimedia_40.jpg": {
     "image_name": "Multimedia_40.jpg",
-    "threshold": 126.0,
-    "mask_coverage": 0.7103151801907117,
-    "edge_density": 0.007779446516057533
+    "threshold": 129.0,
+    "mask_coverage": 0.5919375,
+    "edge_density": 0.0064203125
   },
   "Multimedia_41.jpg": {
     "image_name": "Multimedia_41.jpg",
-    "threshold": 90.0,
-    "mask_coverage": 0.3640318857759659,
-    "edge_density": 0.029675166970248936
+    "threshold": 170.0,
+    "mask_coverage": 0.587040625,
+    "edge_density": 0.006684375
   },
   "Multimedia_42.jpg": {
     "image_name": "Multimedia_42.jpg",
-    "threshold": 113.0,
-    "mask_coverage": 0.7866943081486539,
-    "edge_density": 0.004486567855860445
+    "threshold": 129.0,
+    "mask_coverage": 0.6206171875,
+    "edge_density": 0.006103125
   },
   "Multimedia_43.jpg": {
     "image_name": "Multimedia_43.jpg",
-    "threshold": 80.0,
-    "mask_coverage": 0.7330397248269948,
-    "edge_density": 0.0036716661552079386
-  },
-  "Multimedia_44.jpg": {
-    "image_name": "Multimedia_44.jpg",
-    "threshold": 91.0,
-    "mask_coverage": 0.727815918413856,
-    "edge_density": 0.00306019257064722
+    "threshold": 129.0,
+    "mask_coverage": 0.5883640625,
+    "edge_density": 0.006059375
   },
   "Multimedia_45.jpg": {
     "image_name": "Multimedia_45.jpg",
-    "threshold": 113.0,
-    "mask_coverage": 0.7344088133188049,
-    "edge_density": 0.007936548159035045
+    "threshold": 130.0,
+    "mask_coverage": 0.597103125,
+    "edge_density": 0.0064625
   },
   "Multimedia_46.jpg": {
     "image_name": "Multimedia_46.jpg",
-    "threshold": 102.0,
-    "mask_coverage": 0.751119548787134,
-    "edge_density": 0.008045069872183775
+    "threshold": 130.0,
+    "mask_coverage": 0.585065625,
+    "edge_density": 0.0061453125
   },
   "Multimedia_47.jpg": {
     "image_name": "Multimedia_47.jpg",
-    "threshold": 129.0,
-    "mask_coverage": 0.6972956358534638,
-    "edge_density": 0.00789453063783106
+    "threshold": 130.0,
+    "mask_coverage": 0.59915,
+    "edge_density": 0.0067265625
   },
   "Multimedia_48.jpg": {
     "image_name": "Multimedia_48.jpg",
-    "threshold": 119.0,
-    "mask_coverage": 0.7504875963182875,
-    "edge_density": 0.006090150073980131
+    "threshold": 132.0,
+    "mask_coverage": 0.61025625,
+    "edge_density": 0.0051703125
   },
   "Multimedia_49.jpg": {
     "image_name": "Multimedia_49.jpg",
-    "threshold": 99.0,
-    "mask_coverage": 0.9087830523309379,
-    "edge_density": 0.004245554634236226
+    "threshold": 130.0,
+    "mask_coverage": 0.612025,
+    "edge_density": 0.0054484375
   },
   "Multimedia_50.jpg": {
     "image_name": "Multimedia_50.jpg",
     "threshold": 130.0,
-    "mask_coverage": 0.7381675082756084,
-    "edge_density": 0.005181354594495188
+    "mask_coverage": 0.60626875,
+    "edge_density": 0.0057
   },
   "Multimedia_51.jpg": {
     "image_name": "Multimedia_51.jpg",
-    "threshold": 83.0,
-    "mask_coverage": 0.8490162132610466,
-    "edge_density": 0.0072928352990085255
+    "threshold": 132.0,
+    "mask_coverage": 0.6131640625,
+    "edge_density": 0.00553125
   },
   "Multimedia_52.jpg": {
     "image_name": "Multimedia_52.jpg",
-    "threshold": 101.0,
-    "mask_coverage": 0.9893623841785535,
-    "edge_density": 0.00022070684060710835
-  },
-  "histogram_comparison.png": {
-    "image_name": "histogram_comparison.png",
-    "threshold": 127.0,
-    "mask_coverage": 0.47980185185185187,
-    "edge_density": 0.004105555555555556
-  },
-  "preprocessing_example.png": {
-    "image_name": "preprocessing_example.png",
-    "threshold": 145.0,
-    "mask_coverage": 0.2324511111111111,
-    "edge_density": 0.013125333333333333
+    "threshold": 135.0,
+    "mask_coverage": 0.68025625,
+    "edge_density": 0.0045578125
   }
 }
