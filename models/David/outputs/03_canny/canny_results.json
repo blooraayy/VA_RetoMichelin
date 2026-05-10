@@ -2,121 +2,301 @@
   "Multimedia_31.jpg": {
     "image_name": "Multimedia_31.jpg",
     "threshold": 129.0,
-    "mask_coverage": 0.597771875,
-    "edge_density": 0.006675
+    "mask_coverage": 0.5973234375,
+    "roi_coverage": 0.670253125,
+    "edge_density": 0.008803125,
+    "canny_low": 40,
+    "canny_high": 60,
+    "median_intensity": 50.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_32.jpg": {
     "image_name": "Multimedia_32.jpg",
     "threshold": 126.0,
-    "mask_coverage": 0.576221875,
-    "edge_density": 0.0064875
+    "mask_coverage": 0.5755,
+    "roi_coverage": 0.6473203125,
+    "edge_density": 0.00905,
+    "canny_low": 40,
+    "canny_high": 60,
+    "median_intensity": 50.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_33.jpg": {
     "image_name": "Multimedia_33.jpg",
     "threshold": 127.0,
-    "mask_coverage": 0.598628125,
-    "edge_density": 0.0067171875
+    "mask_coverage": 0.5980625,
+    "roi_coverage": 0.670465625,
+    "edge_density": 0.0090265625,
+    "canny_low": 39,
+    "canny_high": 58,
+    "median_intensity": 49.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_34.jpg": {
     "image_name": "Multimedia_34.jpg",
     "threshold": 128.0,
-    "mask_coverage": 0.5803828125,
-    "edge_density": 0.0063265625
+    "mask_coverage": 0.579859375,
+    "roi_coverage": 0.6486484375,
+    "edge_density": 0.0083171875,
+    "canny_low": 40,
+    "canny_high": 60,
+    "median_intensity": 50.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_35.jpg": {
     "image_name": "Multimedia_35.jpg",
     "threshold": 126.0,
-    "mask_coverage": 0.5984421875,
-    "edge_density": 0.007096875
+    "mask_coverage": 0.598234375,
+    "roi_coverage": 0.6742296875,
+    "edge_density": 0.00864375,
+    "canny_low": 38,
+    "canny_high": 57,
+    "median_intensity": 48.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_36.jpg": {
     "image_name": "Multimedia_36.jpg",
     "threshold": 126.0,
-    "mask_coverage": 0.5984421875,
-    "edge_density": 0.007096875
+    "mask_coverage": 0.598234375,
+    "roi_coverage": 0.6742296875,
+    "edge_density": 0.00864375,
+    "canny_low": 38,
+    "canny_high": 57,
+    "median_intensity": 48.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_37.jpg": {
     "image_name": "Multimedia_37.jpg",
     "threshold": 127.0,
-    "mask_coverage": 0.5882703125,
-    "edge_density": 0.007403125
+    "mask_coverage": 0.5877765625,
+    "roi_coverage": 0.6652390625,
+    "edge_density": 0.0092296875,
+    "canny_low": 40,
+    "canny_high": 60,
+    "median_intensity": 50.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_39.jpg": {
     "image_name": "Multimedia_39.jpg",
     "threshold": 127.0,
-    "mask_coverage": 0.5831453125,
-    "edge_density": 0.0064328125
+    "mask_coverage": 0.583109375,
+    "roi_coverage": 0.650153125,
+    "edge_density": 0.007828125,
+    "canny_low": 40,
+    "canny_high": 60,
+    "median_intensity": 50.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_40.jpg": {
     "image_name": "Multimedia_40.jpg",
     "threshold": 129.0,
-    "mask_coverage": 0.5919375,
-    "edge_density": 0.0064203125
+    "mask_coverage": 0.5919203125,
+    "roi_coverage": 0.660084375,
+    "edge_density": 0.0077984375,
+    "canny_low": 39,
+    "canny_high": 58,
+    "median_intensity": 49.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_41.jpg": {
     "image_name": "Multimedia_41.jpg",
     "threshold": 170.0,
-    "mask_coverage": 0.587040625,
-    "edge_density": 0.006684375
+    "mask_coverage": 0.586353125,
+    "roi_coverage": 0.6539921875,
+    "edge_density": 0.006559375,
+    "canny_low": 86,
+    "canny_high": 129,
+    "median_intensity": 108.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_42.jpg": {
     "image_name": "Multimedia_42.jpg",
     "threshold": 129.0,
-    "mask_coverage": 0.6206171875,
-    "edge_density": 0.006103125
+    "mask_coverage": 0.619190625,
+    "roi_coverage": 0.6863640625,
+    "edge_density": 0.0081359375,
+    "canny_low": 41,
+    "canny_high": 62,
+    "median_intensity": 52.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_43.jpg": {
     "image_name": "Multimedia_43.jpg",
     "threshold": 129.0,
-    "mask_coverage": 0.5883640625,
-    "edge_density": 0.006059375
+    "mask_coverage": 0.5862875,
+    "roi_coverage": 0.653046875,
+    "edge_density": 0.008584375,
+    "canny_low": 40,
+    "canny_high": 61,
+    "median_intensity": 51.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_45.jpg": {
     "image_name": "Multimedia_45.jpg",
     "threshold": 130.0,
-    "mask_coverage": 0.597103125,
-    "edge_density": 0.0064625
+    "mask_coverage": 0.596509375,
+    "roi_coverage": 0.66561875,
+    "edge_density": 0.0084015625,
+    "canny_low": 40,
+    "canny_high": 61,
+    "median_intensity": 51.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_46.jpg": {
     "image_name": "Multimedia_46.jpg",
     "threshold": 130.0,
-    "mask_coverage": 0.585065625,
-    "edge_density": 0.0061453125
+    "mask_coverage": 0.5848265625,
+    "roi_coverage": 0.6513125,
+    "edge_density": 0.008203125,
+    "canny_low": 40,
+    "canny_high": 61,
+    "median_intensity": 51.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_47.jpg": {
     "image_name": "Multimedia_47.jpg",
     "threshold": 130.0,
-    "mask_coverage": 0.59915,
-    "edge_density": 0.0067265625
+    "mask_coverage": 0.5986859375,
+    "roi_coverage": 0.668340625,
+    "edge_density": 0.00849375,
+    "canny_low": 41,
+    "canny_high": 62,
+    "median_intensity": 52.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_48.jpg": {
     "image_name": "Multimedia_48.jpg",
     "threshold": 132.0,
-    "mask_coverage": 0.61025625,
-    "edge_density": 0.0051703125
+    "mask_coverage": 0.6102421875,
+    "roi_coverage": 0.6728671875,
+    "edge_density": 0.00734375,
+    "canny_low": 42,
+    "canny_high": 63,
+    "median_intensity": 53.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_49.jpg": {
     "image_name": "Multimedia_49.jpg",
     "threshold": 130.0,
-    "mask_coverage": 0.612025,
-    "edge_density": 0.0054484375
+    "mask_coverage": 0.611946875,
+    "roi_coverage": 0.67656875,
+    "edge_density": 0.0075875,
+    "canny_low": 40,
+    "canny_high": 61,
+    "median_intensity": 51.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_50.jpg": {
     "image_name": "Multimedia_50.jpg",
     "threshold": 130.0,
-    "mask_coverage": 0.60626875,
-    "edge_density": 0.0057
+    "mask_coverage": 0.605525,
+    "roi_coverage": 0.670328125,
+    "edge_density": 0.007471875,
+    "canny_low": 42,
+    "canny_high": 63,
+    "median_intensity": 53.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_51.jpg": {
     "image_name": "Multimedia_51.jpg",
     "threshold": 132.0,
-    "mask_coverage": 0.6131640625,
-    "edge_density": 0.00553125
+    "mask_coverage": 0.612725,
+    "roi_coverage": 0.6774296875,
+    "edge_density": 0.0059359375,
+    "canny_low": 48,
+    "canny_high": 73,
+    "median_intensity": 61.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   },
   "Multimedia_52.jpg": {
     "image_name": "Multimedia_52.jpg",
     "threshold": 135.0,
-    "mask_coverage": 0.68025625,
-    "edge_density": 0.0045578125
+    "mask_coverage": 0.6798171875,
+    "roi_coverage": 0.7316390625,
+    "edge_density": 0.005215625,
+    "canny_low": 50,
+    "canny_high": 75,
+    "median_intensity": 63.0,
+    "blur_kernel": [
+      11,
+      11
+    ],
+    "edge_source": "gray_roi"
   }
 }
