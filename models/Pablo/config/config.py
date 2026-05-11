@@ -47,9 +47,6 @@ PROMPT_CUT_CANDIDATES = [
     "separation between rubber pieces .",
     "cut edge of rubber strip .",
     "edge between two rubber strips .",
-    "vertical separation between rubber pieces .",
-    "horizontal separation between rubber pieces .",
-    "seam between rubber pieces .",
 ]
 
 # Legacy alias (some old code still imports PROMPT_EDGE)
@@ -63,8 +60,24 @@ GDINO_TEXT_THRESHOLD = 0.10
 # Stage 2 (cut) - lower thresholds: thin line is harder to detect
 # Raised from 0.08 → 0.14: high recall but too many false positives,
 # especially in images with prominent vertical striations on the rubber.
-GDINO_BOX_THRESHOLD_CUT  = 0.14
-GDINO_TEXT_THRESHOLD_CUT = 0.12
+# Raised from 0.08 → 0.14: too many FP.
+# Raised from 0.14 → 0.22: too aggressive, real TP lost (images 40,44-47).
+# Settled at 0.17: images 48-52 (no GT) stay at 0 predictions while
+# real cuts in 40,44-47 are recovered.
+GDINO_BOX_THRESHOLD_CUT  = 0.17
+GDINO_TEXT_THRESHOLD_CUT = 0.14
+
+# Fallback thresholds used ONLY on strips where no cut was found in the first
+# pass, and only when at least one other strip already yielded a cut.
+# This recovers the second cut per image without increasing FP globally.
+GDINO_BOX_THRESHOLD_CUT_FALLBACK  = 0.13
+GDINO_TEXT_THRESHOLD_CUT_FALLBACK = 0.11
+
+# Last-resort thresholds: used on ALL strips when the entire image produced
+# zero detections after both previous passes. Targets images like M35/36/37
+# where cuts are subtle (confidence ~0.14) and no first-pass anchor exists.
+GDINO_BOX_THRESHOLD_CUT_LAST_RESORT  = 0.14
+GDINO_TEXT_THRESHOLD_CUT_LAST_RESORT = 0.12
 
 # ── Post-detection filters (applied AFTER Grounding DINO, BEFORE SAM) ────────
 # Constants are derived from the dataset statistics summarised at the top.
@@ -82,12 +95,16 @@ STRIP_MIN_AREA_FRAC   = 0.02
 # Cut edge — relative to the parent STRIP bbox (not to the full image)
 CUT_MIN_AREA_FRAC_OF_STRIP = 0.002
 CUT_MAX_AREA_FRAC_OF_STRIP = 0.12
-CUT_MIN_ASPECT_RATIO       = 6.0
+# Raised from 6.0 → 8.0: real cuts have aspect ratio ~13:1; filtering
+# out less elongated shapes reduces FP from texture/shadow artefacts.
+CUT_MIN_ASPECT_RATIO       = 8.0
 # Max aspect not enforced (some are 28:1)
 
 # Non-Maximum Suppression IoU threshold (per prompt, per stage)
 NMS_IOU_THRESHOLD     = 0.5
-STRIP_MAX_DETECTIONS  = 3     # max strips passed to Stage 2 (keeps highest-score ones)
+# Reduced from 3 → 2: dataset analysis showed images 31 and 36 produced
+# 3 predictions vs 2 GT cuts because all 3 strips were passed to Stage 2.
+STRIP_MAX_DETECTIONS  = 2     # max strips passed to Stage 2 (keeps highest-score ones)
 
 # Backwards-compat aliases (used by old name in grounded_sam.py if any)
 EDGE_MAX_AREA_FRAC    = STRIP_MAX_AREA_FRAC

@@ -26,6 +26,8 @@ from config.config import (
     PROMPT_QR, PROMPT_STRIP, PROMPT_CUT_CANDIDATES,
     GDINO_BOX_THRESHOLD, GDINO_TEXT_THRESHOLD,
     GDINO_BOX_THRESHOLD_CUT, GDINO_TEXT_THRESHOLD_CUT,
+    GDINO_BOX_THRESHOLD_CUT_FALLBACK, GDINO_TEXT_THRESHOLD_CUT_FALLBACK,
+    GDINO_BOX_THRESHOLD_CUT_LAST_RESORT, GDINO_TEXT_THRESHOLD_CUT_LAST_RESORT,
     NUM_SAMPLE_POINTS, DEVICE,
     QR_MAX_AREA_FRAC, QR_MIN_AREA_FRAC,
     QR_ASPECT_RATIO_MIN, QR_ASPECT_RATIO_MAX,
@@ -211,30 +213,46 @@ class GroundedSAMModel:
             ]
 
         # ── Stage 2: cut gap inside each strip ────────────────────────────
-        edge_detections = []
+        edge_detections    = []
         edge_sample_points = []
+        strip_had_cut      = [False] * len(strip_detections)
 
+        # First pass — normal threshold
         for strip_idx, strip_det in enumerate(strip_detections):
             cuts = self._detect_cut_in_strip(
                 image_rgb=image_rgb,
                 strip_det=strip_det,
-                H=H,
-                W=W,
+                H=H, W=W,
                 strip_idx=strip_idx,
             )
-
+            if cuts:
+                strip_had_cut[strip_idx] = True
             for cut in cuts:
                 edge_detections.append(cut)
-
-                # New behaviour:
-                # Extract 5 points from one border of the gap
-                # and 5 points from the opposite border.
-                pts = self._extract_cut_gap_borders(
-                    cut.mask,
-                    n_points=NUM_SAMPLE_POINTS,
+                edge_sample_points.append(
+                    self._extract_cut_gap_borders(cut.mask, n_points=NUM_SAMPLE_POINTS)
                 )
 
-                edge_sample_points.append(pts)
+        # Second pass — fallback threshold only on strips that yielded nothing,
+        # and only when at least one other strip already found a cut.
+        if any(strip_had_cut):
+            for strip_idx, strip_det in enumerate(strip_detections):
+                if strip_had_cut[strip_idx]:
+                    continue
+                print(f"  [Stage 2 / strip {strip_idx}] retrying with fallback threshold")
+                cuts = self._detect_cut_in_strip(
+                    image_rgb=image_rgb,
+                    strip_det=strip_det,
+                    H=H, W=W,
+                    strip_idx=strip_idx,
+                    box_thr=GDINO_BOX_THRESHOLD_CUT_FALLBACK,
+                    text_thr=GDINO_TEXT_THRESHOLD_CUT_FALLBACK,
+                )
+                for cut in cuts:
+                    edge_detections.append(cut)
+                    edge_sample_points.append(
+                        self._extract_cut_gap_borders(cut.mask, n_points=NUM_SAMPLE_POINTS)
+                    )
 
         print(f"[Stage 2] CUT detected={len(edge_detections)}")
 
@@ -335,6 +353,8 @@ class GroundedSAMModel:
         H: int,
         W: int,
         strip_idx: int,
+        box_thr: float = GDINO_BOX_THRESHOLD_CUT,
+        text_thr: float = GDINO_TEXT_THRESHOLD_CUT,
     ) -> list[DetectionResult]:
         """Try several prompts on the strip ROI and keep the best valid cut gap."""
         x1, y1, x2, y2 = strip_det.box_xyxy.astype(int)
@@ -362,8 +382,8 @@ class GroundedSAMModel:
             boxes, scores = self._detect_hf(
                 roi_rgb,
                 prompt,
-                box_thr=GDINO_BOX_THRESHOLD_CUT,
-                text_thr=GDINO_TEXT_THRESHOLD_CUT,
+                box_thr=box_thr,
+                text_thr=text_thr,
             )
 
             if len(boxes) == 0:

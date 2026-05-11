@@ -133,65 +133,99 @@ class MetricEvaluator:
         gt,                              # GTAnnotation from coco_loader
         homography:      Optional[np.ndarray]    = None,
         qr_calibrator:   Optional[QRCalibrator]  = None,
+        mm_match_iou_threshold: float = 0.30,
     ) -> EvaluationMetrics:
-        """Compare predictions against COCO ground truth."""
+        """Compare predictions against COCO ground truth.
+
+        Important change:
+        MAE/RMSE are now computed only after matching each prediction with the
+        ground-truth cut-edge mask that has the highest IoU. This avoids the old
+        failure case where a visually correct detection was compared against the
+        wrong GT cut simply because both lists had a different order.
+        """
         em = EvaluationMetrics()
         H, W = pipeline_result.image_shape[:2]
 
         pred_masks = [det.mask for det in pipeline_result.edge_detections
                       if det.mask is not None]
-        gt_masks   = gt.cut_edge_masks
+        gt_masks_raw = gt.cut_edge_masks
 
-        # ── IoU per edge ──────────────────────────────────────────────────────
-        iou_scores = []
-        for pred_mask in pred_masks:
-            best = 0.0
-            for gt_mask in gt_masks:
-                if gt_mask.shape != pred_mask.shape:
-                    gt_r = cv2.resize(
+        # Resize GT masks once so every comparison is done in prediction space.
+        gt_masks = []
+        for gt_mask in gt_masks_raw:
+            if gt_mask.shape != (H, W):
+                gt_masks.append(
+                    cv2.resize(
                         gt_mask.astype(np.uint8),
-                        (pred_mask.shape[1], pred_mask.shape[0]),
-                        interpolation=cv2.INTER_NEAREST
+                        (W, H),
+                        interpolation=cv2.INTER_NEAREST,
                     ).astype(bool)
-                else:
-                    gt_r = gt_mask
-                best = max(best, self.iou(pred_mask, gt_r))
-            iou_scores.append(best)
+                )
+            else:
+                gt_masks.append(gt_mask.astype(bool))
 
-        em.per_edge_iou = iou_scores
-        em.iou = float(np.mean(iou_scores)) if iou_scores else float("nan")
+        # ── IoU matrix and IoU per predicted edge ────────────────────────────
+        iou_matrix = np.zeros((len(pred_masks), len(gt_masks)), dtype=np.float32)
+        for i, pred_mask in enumerate(pred_masks):
+            for j, gt_mask in enumerate(gt_masks):
+                iou_matrix[i, j] = self.iou(pred_mask, gt_mask)
 
-        # ── Precision / Recall / F1 ───────────────────────────────────────────
+        if len(pred_masks) > 0 and len(gt_masks) > 0:
+            em.per_edge_iou = [float(v) for v in iou_matrix.max(axis=1)]
+        else:
+            em.per_edge_iou = []
+        em.iou = float(np.mean(em.per_edge_iou)) if em.per_edge_iou else float("nan")
+
+        # ── Precision / Recall / F1 at pixel level ──────────────────────────
         if pred_masks and gt_masks:
             pred_combined = np.zeros((H, W), bool)
             gt_combined   = np.zeros((H, W), bool)
             for m in pred_masks:
                 pred_combined |= m.astype(bool)
             for m in gt_masks:
-                m_r = (cv2.resize(m.astype(np.uint8), (W, H),
-                                  interpolation=cv2.INTER_NEAREST).astype(bool)
-                       if m.shape != (H, W) else m.astype(bool))
-                gt_combined |= m_r
+                gt_combined |= m.astype(bool)
             em.precision, em.recall, em.f1 = \
                 self.precision_recall_f1(pred_combined, gt_combined)
 
-        # ── Distance RMSE / MAE ───────────────────────────────────────────────
+        # ── Distance RMSE / MAE ──────────────────────────────────────────────
         if homography is not None and qr_calibrator is not None:
             gt_dists = self._gt_to_distances(gt, homography, qr_calibrator, H, W)
 
-            # Sort both lists by mean distance so edges are paired spatially,
-            # not by detection order (which may differ between GT and predictions).
-            pred_valid = [(np.mean(d), d)
-                          for d in measurements.distances_to_bottom_mm if len(d) > 0]
-            gt_valid   = [(np.mean(d), d)
-                          for d in gt_dists if len(d) > 0]
-            pred_valid.sort(key=lambda x: x[0])
-            gt_valid.sort(key=lambda x: x[0])
+            # Greedy one-to-one matching by mask IoU.
+            # Only matched true positives contribute to the geometric error;
+            # misses and false positives are already represented by FN/FP.
+            candidate_pairs = []
+            for pred_idx in range(iou_matrix.shape[0]):
+                for gt_idx in range(iou_matrix.shape[1]):
+                    candidate_pairs.append(
+                        (float(iou_matrix[pred_idx, gt_idx]), pred_idx, gt_idx)
+                    )
+            candidate_pairs.sort(reverse=True, key=lambda x: x[0])
 
+            used_pred: set[int] = set()
+            used_gt: set[int] = set()
             rmse_vals, mae_vals = [], []
-            for (_, pred_d), (_, gt_d) in zip(pred_valid, gt_valid):
+
+            for iou_value, pred_idx, gt_idx in candidate_pairs:
+                if iou_value < mm_match_iou_threshold:
+                    break
+                if pred_idx in used_pred or gt_idx in used_gt:
+                    continue
+                if pred_idx >= len(measurements.distances_to_bottom_mm):
+                    continue
+                if gt_idx >= len(gt_dists):
+                    continue
+
+                pred_d = measurements.distances_to_bottom_mm[pred_idx]
+                gt_d   = gt_dists[gt_idx]
+                if len(pred_d) == 0 or len(gt_d) == 0:
+                    continue
+
                 rmse_vals.append(self.rmse(pred_d, gt_d))
-                mae_vals.append(self.mae(pred_d,  gt_d))
+                mae_vals.append(self.mae(pred_d, gt_d))
+                used_pred.add(pred_idx)
+                used_gt.add(gt_idx)
+
             em.per_edge_rmse_mm = rmse_vals
             em.per_edge_mae_mm  = mae_vals
             em.rmse_mm = float(np.nanmean(rmse_vals)) if rmse_vals else float("nan")
@@ -203,7 +237,13 @@ class MetricEvaluator:
     def _gt_to_distances(
         gt, homography, qr_calibrator, H: int, W: int
     ) -> list[np.ndarray]:
-        # Local import avoids circular dependency while keeping models lazy-loaded.
+        """Convert GT cut-edge masks into bottom-edge distances in mm.
+
+        The GT is sampled with the same 5+5 border strategy used for predicted
+        cut gaps. This makes MAE/RMSE compare equivalent points instead of
+        comparing prediction borders against an old contour-centre sampling.
+        """
+        # Local import avoids adding any extra model-loading side effect.
         from model.grounded_sam import GroundedSAMModel
 
         bl = qr_calibrator.pixel_to_mm((0.0, float(H - 1)), homography)
@@ -216,17 +256,18 @@ class MetricEvaluator:
                 dists_list.append(np.array([], np.float32))
                 continue
 
-            # Resize GT mask to prediction image size if needed.
             if gt_mask.shape != (H, W):
                 gt_mask = cv2.resize(
-                    gt_mask.astype(np.uint8), (W, H),
+                    gt_mask.astype(np.uint8),
+                    (W, H),
                     interpolation=cv2.INTER_NEAREST,
                 ).astype(bool)
+            else:
+                gt_mask = gt_mask.astype(bool)
 
-            # Use the same 5+5 border sampling as predictions so that
-            # RMSE/MAE compares spatially equivalent points.
             pts_px = GroundedSAMModel._extract_cut_gap_borders(
-                gt_mask, n_points=NUM_SAMPLE_POINTS
+                gt_mask,
+                n_points=NUM_SAMPLE_POINTS,
             )
             if len(pts_px) == 0:
                 dists_list.append(np.array([], np.float32))
