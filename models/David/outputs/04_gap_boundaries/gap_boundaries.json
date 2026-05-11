@@ -17,17 +17,28 @@
         "bbox_px": [
           170,
           82,
-          17,
-          213
+          18,
+          243
         ],
-        "area_px": 1798,
-        "length_px": 213,
-        "thickness_px": 17,
-        "mean_width_px": 7.4332632861786605,
-        "mean_width_mm": 7.4332632861786605,
-        "mean_sample_distance_mm": 7.414280482707545,
-        "std_sample_distance_mm": 4.084968346241317,
-        "score": 504.750105070732,
+        "area_px": 1911,
+        "length_px": 243,
+        "thickness_px": 18,
+        "mean_width_px": 6.857141017913818,
+        "mean_width_mm": 6.857141017913818,
+        "mean_sample_distance_mm": 6.750788273895159,
+        "std_sample_distance_mm": 4.106362299248581,
+        "score": 725.6032041651721,
+        "context": {
+          "left_rubber_ratio": 1.0,
+          "right_rubber_ratio": 0.9987139917695473,
+          "left_rubber_count": 7776,
+          "right_rubber_count": 7766
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 3.8076729774475098,
+          "mean_width_px": 6.857141017913818
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -47,127 +58,127 @@
             "sample_id": 1,
             "orientation": "vertical",
             "point_a_px": [
-              172.36509898351505,
-              105.55555725097656
+              172.84127420093864,
+              108.88888549804688
             ],
             "point_b_px": [
               185.0,
-              105.55555725097656
+              108.88888549804688
             ],
-            "distance_px": 12.634901016484946,
-            "distance_mm": 12.634901016484946
+            "distance_px": 12.158725799061358,
+            "distance_mm": 12.158725799061358
           },
           {
             "sample_id": 2,
             "orientation": "vertical",
             "point_a_px": [
-              174.00001525878906,
-              129.11111450195312
+              174.25397479347885,
+              135.77777099609375
             ],
             "point_b_px": [
-              185.0,
-              129.11111450195312
+              184.6031876821071,
+              135.77777099609375
             ],
-            "distance_px": 10.999984741210938,
-            "distance_mm": 10.999984741210938
+            "distance_px": 10.349212888628244,
+            "distance_mm": 10.349212888628244
           },
           {
             "sample_id": 3,
             "orientation": "vertical",
             "point_a_px": [
-              175.00001525878906,
-              152.66665649414062
+              175.80953034898266,
+              162.6666717529297
             ],
             "point_b_px": [
               184.00001525878906,
-              152.66665649414062
+              162.6666717529297
             ],
-            "distance_px": 9.0,
-            "distance_mm": 9.0
+            "distance_px": 8.1904849098064,
+            "distance_mm": 8.1904849098064
           },
           {
             "sample_id": 4,
             "orientation": "vertical",
             "point_a_px": [
-              176.0,
-              176.22222900390625
-            ],
-            "point_b_px": [
-              184.00001525878906,
-              176.22222900390625
-            ],
-            "distance_px": 8.000015258789062,
-            "distance_mm": 8.000015258789062
-          },
-          {
-            "sample_id": 5,
-            "orientation": "vertical",
-            "point_a_px": [
               177.00001525878906,
-              199.77777099609375
+              189.55555725097656
             ],
             "point_b_px": [
               184.00001525878906,
-              199.77777099609375
+              189.55555725097656
             ],
             "distance_px": 7.0,
             "distance_mm": 7.0
           },
           {
-            "sample_id": 6,
+            "sample_id": 5,
             "orientation": "vertical",
             "point_a_px": [
-              178.0,
-              223.3333282470703
+              177.20635792566463,
+              216.44444274902344
             ],
             "point_b_px": [
               183.0,
-              223.3333282470703
+              216.44444274902344
             ],
-            "distance_px": 5.0,
-            "distance_mm": 5.0
+            "distance_px": 5.7936420743353665,
+            "distance_mm": 5.7936420743353665
+          },
+          {
+            "sample_id": 6,
+            "orientation": "vertical",
+            "point_a_px": [
+              180.00003051757812,
+              243.33334350585938
+            ],
+            "point_b_px": [
+              183.61906578438357,
+              243.33334350585938
+            ],
+            "distance_px": 3.61903526680544,
+            "distance_mm": 3.61903526680544
           },
           {
             "sample_id": 7,
             "orientation": "vertical",
             "point_a_px": [
-              180.26986306812614,
-              246.88888549804688
+              182.31746685691178,
+              270.22222900390625
             ],
             "point_b_px": [
-              184.4127005925402,
-              246.88888549804688
+              185.0,
+              270.22222900390625
             ],
-            "distance_px": 4.1428375244140625,
-            "distance_mm": 4.1428375244140625
+            "distance_px": 2.6825331430882215,
+            "distance_mm": 2.6825331430882215
           },
           {
             "sample_id": 8,
             "orientation": "vertical",
             "point_a_px": [
-              182.34921288862824,
-              270.4444580078125
+              184.00001525878906,
+              297.1111145019531
             ],
             "point_b_px": [
-              185.0,
-              270.4444580078125
+              186.0,
+              297.1111145019531
             ],
-            "distance_px": 2.6507871113717556,
-            "distance_mm": 2.6507871113717556
+            "distance_px": 1.9999847412109375,
+            "distance_mm": 1.9999847412109375
           },
           {
             "sample_id": 9,
             "orientation": "vertical",
             "point_a_px": [
               184.57144165039062,
-              294.0
+              324.0
             ],
             "point_b_px": [
-              185.4285888671875,
-              294.0
+              186.42857360839844,
+              324.0
             ],
-            "distance_px": 0.857147216796875,
-            "distance_mm": 0.857147216796875
+            "distance_px": 1.8571319580078125,
+            "distance_mm": 1.8571319580078125
           }
         ]
       },
@@ -183,11 +194,22 @@
         "area_px": 1291,
         "length_px": 154,
         "thickness_px": 22,
-        "mean_width_px": 7.372911824808492,
-        "mean_width_mm": 7.372911824808492,
+        "mean_width_px": 7.3729119300842285,
+        "mean_width_mm": 7.3729119300842285,
         "mean_sample_distance_mm": 7.228572082519531,
         "std_sample_distance_mm": 3.6512165946164594,
-        "score": 361.49063226278724,
+        "score": 516.748386379341,
+        "context": {
+          "left_rubber_ratio": 1.0,
+          "right_rubber_ratio": 0.9951298701298701,
+          "left_rubber_count": 4928,
+          "right_rubber_count": 4904
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 3.282254457473755,
+          "mean_width_px": 7.3729119300842285
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -357,11 +379,22 @@
         "area_px": 1197,
         "length_px": 166,
         "thickness_px": 18,
-        "mean_width_px": 6.201371342302805,
-        "mean_width_mm": 6.201371342302805,
+        "mean_width_px": 6.201371192932129,
+        "mean_width_mm": 6.201371192932129,
         "mean_sample_distance_mm": 6.119045330234803,
         "std_sample_distance_mm": 3.6300720331510004,
-        "score": 382.5479429865458,
+        "score": 537.4491528074426,
+        "context": {
+          "left_rubber_ratio": 1.0,
+          "right_rubber_ratio": 0.9935993975903614,
+          "left_rubber_count": 5312,
+          "right_rubber_count": 5278
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 3.223576784133911,
+          "mean_width_px": 6.201371192932129
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -517,11 +550,22 @@
         "area_px": 894,
         "length_px": 123,
         "thickness_px": 21,
-        "mean_width_px": 6.2543557019737674,
-        "mean_width_mm": 6.2543557019737674,
+        "mean_width_px": 6.2543559074401855,
+        "mean_width_mm": 6.2543559074401855,
         "mean_sample_distance_mm": 6.13968547033146,
         "std_sample_distance_mm": 3.0934928642413833,
-        "score": 281.3184664470393,
+        "score": 435.41196545236477,
+        "context": {
+          "left_rubber_ratio": 0.9735772357723578,
+          "right_rubber_ratio": 1.0,
+          "left_rubber_count": 3832,
+          "right_rubber_count": 3936
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 2.8344931602478027,
+          "mean_width_px": 6.2543559074401855
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -686,16 +730,27 @@
           184,
           91,
           16,
-          200
+          248
         ],
-        "area_px": 1630,
-        "length_px": 200,
+        "area_px": 1821,
+        "length_px": 248,
         "thickness_px": 16,
-        "mean_width_px": 7.142139892578125,
-        "mean_width_mm": 7.142139892578125,
-        "mean_sample_distance_mm": 7.04285888671875,
-        "std_sample_distance_mm": 3.8896296118064035,
-        "score": 470.7867901611328,
+        "mean_width_px": 6.3364081382751465,
+        "mean_width_mm": 6.3364081382751465,
+        "mean_sample_distance_mm": 6.393650115490891,
+        "std_sample_distance_mm": 4.067633626629895,
+        "score": 732.0177316573357,
+        "context": {
+          "left_rubber_ratio": 1.0,
+          "right_rubber_ratio": 0.9965977822580645,
+          "left_rubber_count": 7936,
+          "right_rubber_count": 7909
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 3.578200578689575,
+          "mean_width_px": 6.3364081382751465
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -716,126 +771,126 @@
             "orientation": "vertical",
             "point_a_px": [
               186.0,
-              113.11111450195312
+              118.44444274902344
             ],
             "point_b_px": [
-              198.00001525878906,
-              113.11111450195312
+              197.79365055146627,
+              118.44444274902344
             ],
-            "distance_px": 12.000015258789062,
-            "distance_mm": 12.000015258789062
+            "distance_px": 11.793650551466271,
+            "distance_mm": 11.793650551466271
           },
           {
             "sample_id": 2,
             "orientation": "vertical",
             "point_a_px": [
-              186.74604046531022,
-              135.22222900390625
+              187.00003051757812,
+              145.88888549804688
             ],
             "point_b_px": [
               197.0,
-              135.22222900390625
+              145.88888549804688
             ],
-            "distance_px": 10.253959534689784,
-            "distance_mm": 10.253959534689784
+            "distance_px": 9.999969482421875,
+            "distance_mm": 9.999969482421875
           },
           {
             "sample_id": 3,
             "orientation": "vertical",
             "point_a_px": [
-              187.00003051757812,
-              157.3333282470703
+              187.19050234835595,
+              173.33334350585938
             ],
             "point_b_px": [
-              196.00001525878906,
-              157.3333282470703
+              195.00001525878906,
+              173.33334350585938
             ],
-            "distance_px": 8.999984741210938,
-            "distance_mm": 8.999984741210938
+            "distance_px": 7.809512910433114,
+            "distance_mm": 7.809512910433114
           },
           {
             "sample_id": 4,
             "orientation": "vertical",
             "point_a_px": [
               188.00001525878906,
-              179.44444274902344
+              200.77777099609375
             ],
             "point_b_px": [
-              195.00001525878906,
-              179.44444274902344
+              194.00003051757812,
+              200.77777099609375
             ],
-            "distance_px": 7.0,
-            "distance_mm": 7.0
+            "distance_px": 6.0000152587890625,
+            "distance_mm": 6.0000152587890625
           },
           {
             "sample_id": 5,
             "orientation": "vertical",
             "point_a_px": [
               188.00001525878906,
-              201.55555725097656
-            ],
-            "point_b_px": [
-              194.00003051757812,
-              201.55555725097656
-            ],
-            "distance_px": 6.0000152587890625,
-            "distance_mm": 6.0000152587890625
-          },
-          {
-            "sample_id": 6,
-            "orientation": "vertical",
-            "point_a_px": [
-              188.00001525878906,
-              223.66665649414062
+              228.22222900390625
             ],
             "point_b_px": [
               193.0,
-              223.66665649414062
+              228.22222900390625
             ],
             "distance_px": 4.9999847412109375,
             "distance_mm": 4.9999847412109375
           },
           {
+            "sample_id": 6,
+            "orientation": "vertical",
+            "point_a_px": [
+              189.09525117417797,
+              255.6666717529297
+            ],
+            "point_b_px": [
+              193.0,
+              255.6666717529297
+            ],
+            "distance_px": 3.9047488258220255,
+            "distance_mm": 3.9047488258220255
+          },
+          {
             "sample_id": 7,
             "orientation": "vertical",
             "point_a_px": [
-              188.39682757668197,
-              245.77777099609375
+              191.00001525878906,
+              283.1111145019531
             ],
             "point_b_px": [
-              192.00001525878906,
-              245.77777099609375
+              194.00003051757812,
+              283.1111145019531
             ],
-            "distance_px": 3.603187682107091,
-            "distance_mm": 3.603187682107091
+            "distance_px": 3.0000152587890625,
+            "distance_mm": 3.0000152587890625
           },
           {
             "sample_id": 8,
             "orientation": "vertical",
             "point_a_px": [
-              190.0,
-              267.8888854980469
+              192.00001525878906,
+              310.5555419921875
             ],
             "point_b_px": [
-              193.0,
-              267.8888854980469
+              194.00003051757812,
+              310.5555419921875
             ],
-            "distance_px": 3.0,
-            "distance_mm": 3.0
+            "distance_px": 2.0000152587890625,
+            "distance_mm": 2.0000152587890625
           },
           {
             "sample_id": 9,
             "orientation": "vertical",
             "point_a_px": [
-              191.57144165039062,
-              290.0
+              192.57142639160156,
+              338.0
             ],
             "point_b_px": [
-              192.57144165039062,
-              290.0
+              193.42857360839844,
+              338.0
             ],
-            "distance_px": 1.0,
-            "distance_mm": 1.0
+            "distance_px": 0.857147216796875,
+            "distance_mm": 0.857147216796875
           }
         ]
       },
@@ -851,11 +906,22 @@
         "area_px": 1432,
         "length_px": 160,
         "thickness_px": 17,
-        "mean_width_px": 7.9392860412597654,
-        "mean_width_mm": 7.9392860412597654,
+        "mean_width_px": 7.939286231994629,
+        "mean_width_mm": 7.939286231994629,
         "mean_sample_distance_mm": 7.661902582086623,
         "std_sample_distance_mm": 3.4439128654753266,
-        "score": 379.6910709381104,
+        "score": 535.1528421401978,
+        "context": {
+          "left_rubber_ratio": 1.0,
+          "right_rubber_ratio": 0.99296875,
+          "left_rubber_count": 5120,
+          "right_rubber_count": 5084
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 3.1787571907043457,
+          "mean_width_px": 7.939286231994629
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -1025,11 +1091,22 @@
         "area_px": 1324,
         "length_px": 184,
         "thickness_px": 14,
-        "mean_width_px": 6.186330048934273,
-        "mean_width_mm": 6.186330048934273,
+        "mean_width_px": 6.1863298416137695,
+        "mean_width_mm": 6.1863298416137695,
         "mean_sample_distance_mm": 6.14285194760887,
         "std_sample_distance_mm": 3.430158852633389,
-        "score": 424.9205049265986,
+        "score": 580.5408636134604,
+        "context": {
+          "left_rubber_ratio": 1.0,
+          "right_rubber_ratio": 0.9988111413043478,
+          "left_rubber_count": 5888,
+          "right_rubber_count": 5881
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 3.070215940475464,
+          "mean_width_px": 6.1863298416137695
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -1185,11 +1262,22 @@
         "area_px": 1263,
         "length_px": 151,
         "thickness_px": 15,
-        "mean_width_px": 7.352891025164269,
-        "mean_width_mm": 7.352891025164269,
+        "mean_width_px": 7.3528900146484375,
+        "mean_width_mm": 7.3528900146484375,
         "mean_sample_distance_mm": 7.219051324762404,
         "std_sample_distance_mm": 3.345164827004306,
-        "score": 354.12066346225356,
+        "score": 509.75913320061386,
+        "context": {
+          "left_rubber_ratio": 1.0,
+          "right_rubber_ratio": 0.9948261589403974,
+          "left_rubber_count": 4832,
+          "right_rubber_count": 4807
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 3.0767457485198975,
+          "mean_width_px": 7.3528900146484375
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -1356,42 +1444,53 @@
           246,
           23
         ],
-        "area_px": 2828,
+        "area_px": 2886,
         "length_px": 246,
         "thickness_px": 23,
-        "mean_width_px": 10.488977447757875,
-        "mean_width_mm": 10.488977447757875,
-        "mean_sample_distance_mm": 10.395258537307381,
-        "std_sample_distance_mm": 1.9197144074091854,
-        "score": 617.6665338283632,
+        "mean_width_px": 10.724748611450195,
+        "mean_width_mm": 10.724748611450195,
+        "mean_sample_distance_mm": 10.688901871070266,
+        "std_sample_distance_mm": 1.843125507141579,
+        "score": 780.0014786720276,
+        "context": {
+          "top_rubber_ratio": 1.0,
+          "bottom_rubber_ratio": 1.0,
+          "top_rubber_count": 7872,
+          "bottom_rubber_count": 7872
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.7144114971160889,
+          "mean_width_px": 10.724748611450195
+        },
         "samples": [
           {
             "sample_id": 0,
             "orientation": "horizontal",
             "point_a_px": [
               130.0,
-              596.7142944335938
+              596.5714721679688
             ],
             "point_b_px": [
               130.0,
               610.4285888671875
             ],
-            "distance_px": 13.71429443359375,
-            "distance_mm": 13.71429443359375
+            "distance_px": 13.85711669921875,
+            "distance_mm": 13.85711669921875
           },
           {
             "sample_id": 1,
             "orientation": "horizontal",
             "point_a_px": [
               157.22222900390625,
-              596.8254249207675
+              596.0
             ],
             "point_b_px": [
               157.22222900390625,
               609.0000610351562
             ],
-            "distance_px": 12.174636114388704,
-            "distance_mm": 12.174636114388704
+            "distance_px": 13.00006103515625,
+            "distance_mm": 13.00006103515625
           },
           {
             "sample_id": 2,
@@ -1486,10 +1585,10 @@
             ],
             "point_b_px": [
               347.77777099609375,
-              599.0317528136075
+              600.0
             ],
-            "distance_px": 7.571363661438227,
-            "distance_mm": 7.571363661438227
+            "distance_px": 8.539610847830772,
+            "distance_mm": 8.539610847830772
           },
           {
             "sample_id": 9,
@@ -1500,10 +1599,10 @@
             ],
             "point_b_px": [
               375.0,
-              598.4286499023438
+              599.4285888671875
             ],
-            "distance_px": 8.85723876953125,
-            "distance_mm": 8.85723876953125
+            "distance_px": 9.857177734375,
+            "distance_mm": 9.857177734375
           }
         ]
       },
@@ -1516,14 +1615,25 @@
           238,
           30
         ],
-        "area_px": 2807,
+        "area_px": 2833,
         "length_px": 238,
         "thickness_px": 30,
-        "mean_width_px": 10.788116455078125,
-        "mean_width_mm": 10.788116455078125,
-        "mean_sample_distance_mm": 11.642859758809209,
-        "std_sample_distance_mm": 3.246652325206011,
-        "score": 600.1678253173828,
+        "mean_width_px": 10.897367477416992,
+        "mean_width_mm": 10.897367477416992,
+        "mean_sample_distance_mm": 11.742865862324834,
+        "std_sample_distance_mm": 3.1467655901556975,
+        "score": 760.163026218254,
+        "context": {
+          "top_rubber_ratio": 0.9973739495798319,
+          "bottom_rubber_ratio": 0.9967174369747899,
+          "top_rubber_count": 7596,
+          "bottom_rubber_count": 7591
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.968721866607666,
+          "mean_width_px": 10.897367477416992
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -1544,14 +1654,14 @@
             "orientation": "horizontal",
             "point_a_px": [
               502.3333435058594,
-              605.0000610351562
+              604.0
             ],
             "point_b_px": [
               502.3333435058594,
               613.0
             ],
-            "distance_px": 7.99993896484375,
-            "distance_mm": 7.99993896484375
+            "distance_px": 9.0,
+            "distance_mm": 9.0
           },
           {
             "sample_id": 2,
@@ -1690,42 +1800,53 @@
           246,
           23
         ],
-        "area_px": 2828,
+        "area_px": 2886,
         "length_px": 246,
         "thickness_px": 23,
-        "mean_width_px": 10.488977447757875,
-        "mean_width_mm": 10.488977447757875,
-        "mean_sample_distance_mm": 10.395258537307381,
-        "std_sample_distance_mm": 1.9197144074091854,
-        "score": 617.6665338283632,
+        "mean_width_px": 10.724748611450195,
+        "mean_width_mm": 10.724748611450195,
+        "mean_sample_distance_mm": 10.688901871070266,
+        "std_sample_distance_mm": 1.843125507141579,
+        "score": 780.0014786720276,
+        "context": {
+          "top_rubber_ratio": 1.0,
+          "bottom_rubber_ratio": 1.0,
+          "top_rubber_count": 7872,
+          "bottom_rubber_count": 7872
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.7144114971160889,
+          "mean_width_px": 10.724748611450195
+        },
         "samples": [
           {
             "sample_id": 0,
             "orientation": "horizontal",
             "point_a_px": [
               130.0,
-              596.7142944335938
+              596.5714721679688
             ],
             "point_b_px": [
               130.0,
               610.4285888671875
             ],
-            "distance_px": 13.71429443359375,
-            "distance_mm": 13.71429443359375
+            "distance_px": 13.85711669921875,
+            "distance_mm": 13.85711669921875
           },
           {
             "sample_id": 1,
             "orientation": "horizontal",
             "point_a_px": [
               157.22222900390625,
-              596.8254249207675
+              596.0
             ],
             "point_b_px": [
               157.22222900390625,
               609.0000610351562
             ],
-            "distance_px": 12.174636114388704,
-            "distance_mm": 12.174636114388704
+            "distance_px": 13.00006103515625,
+            "distance_mm": 13.00006103515625
           },
           {
             "sample_id": 2,
@@ -1820,10 +1941,10 @@
             ],
             "point_b_px": [
               347.77777099609375,
-              599.0317528136075
+              600.0
             ],
-            "distance_px": 7.571363661438227,
-            "distance_mm": 7.571363661438227
+            "distance_px": 8.539610847830772,
+            "distance_mm": 8.539610847830772
           },
           {
             "sample_id": 9,
@@ -1834,10 +1955,10 @@
             ],
             "point_b_px": [
               375.0,
-              598.4286499023438
+              599.4285888671875
             ],
-            "distance_px": 8.85723876953125,
-            "distance_mm": 8.85723876953125
+            "distance_px": 9.857177734375,
+            "distance_mm": 9.857177734375
           }
         ]
       },
@@ -1850,14 +1971,25 @@
           238,
           30
         ],
-        "area_px": 2807,
+        "area_px": 2833,
         "length_px": 238,
         "thickness_px": 30,
-        "mean_width_px": 10.788116455078125,
-        "mean_width_mm": 10.788116455078125,
-        "mean_sample_distance_mm": 11.642859758809209,
-        "std_sample_distance_mm": 3.246652325206011,
-        "score": 600.1678253173828,
+        "mean_width_px": 10.897367477416992,
+        "mean_width_mm": 10.897367477416992,
+        "mean_sample_distance_mm": 11.742865862324834,
+        "std_sample_distance_mm": 3.1467655901556975,
+        "score": 760.163026218254,
+        "context": {
+          "top_rubber_ratio": 0.9973739495798319,
+          "bottom_rubber_ratio": 0.9967174369747899,
+          "top_rubber_count": 7596,
+          "bottom_rubber_count": 7591
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.968721866607666,
+          "mean_width_px": 10.897367477416992
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -1878,14 +2010,14 @@
             "orientation": "horizontal",
             "point_a_px": [
               502.3333435058594,
-              605.0000610351562
+              604.0
             ],
             "point_b_px": [
               502.3333435058594,
               613.0
             ],
-            "distance_px": 7.99993896484375,
-            "distance_mm": 7.99993896484375
+            "distance_px": 9.0,
+            "distance_mm": 9.0
           },
           {
             "sample_id": 2,
@@ -2027,11 +2159,22 @@
         "area_px": 2132,
         "length_px": 233,
         "thickness_px": 27,
-        "mean_width_px": 8.14286627380633,
-        "mean_width_mm": 8.14286627380633,
+        "mean_width_px": 8.142866134643555,
+        "mean_width_mm": 8.142866134643555,
         "mean_sample_distance_mm": 8.187299988605082,
         "std_sample_distance_mm": 1.794801303168791,
-        "score": 560.3857005892905,
+        "score": 718.7128286736206,
+        "context": {
+          "top_rubber_ratio": 0.9983905579399142,
+          "bottom_rubber_ratio": 0.9954399141630901,
+          "top_rubber_count": 7444,
+          "bottom_rubber_count": 7422
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.8110848665237427,
+          "mean_width_px": 8.142866134643555
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -2184,14 +2327,25 @@
           225,
           33
         ],
-        "area_px": 2203,
+        "area_px": 2224,
         "length_px": 225,
         "thickness_px": 33,
-        "mean_width_px": 8.784128960503471,
-        "mean_width_mm": 8.784128960503471,
-        "mean_sample_distance_mm": 9.26985512394458,
-        "std_sample_distance_mm": 2.312240198590915,
-        "score": 546.9738065592447,
+        "mean_width_px": 8.877456665039062,
+        "mean_width_mm": 8.877456665039062,
+        "mean_sample_distance_mm": 9.328583877906203,
+        "std_sample_distance_mm": 2.227076164012861,
+        "score": 705.8117874092526,
+        "context": {
+          "top_rubber_ratio": 0.9981944444444445,
+          "bottom_rubber_ratio": 0.9906944444444444,
+          "top_rubber_count": 7187,
+          "bottom_rubber_count": 7133
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.9231878519058228,
+          "mean_width_px": 8.877456665039062
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -2212,14 +2366,14 @@
             "orientation": "horizontal",
             "point_a_px": [
               476.8888854980469,
-              603.5873485747725
+              603.0000610351562
             ],
             "point_b_px": [
               476.8888854980469,
               609.3016362264752
             ],
-            "distance_px": 5.714287651702762,
-            "distance_mm": 5.714287651702762
+            "distance_px": 6.301575191318989,
+            "distance_mm": 6.301575191318989
           },
           {
             "sample_id": 2,
@@ -2361,11 +2515,22 @@
         "area_px": 2330,
         "length_px": 232,
         "thickness_px": 17,
-        "mean_width_px": 9.035713721965921,
-        "mean_width_mm": 9.035713721965921,
+        "mean_width_px": 9.035714149475098,
+        "mean_width_mm": 9.035714149475098,
         "mean_sample_distance_mm": 9.266659691231325,
         "std_sample_distance_mm": 1.8427115254759507,
-        "score": 566.9464294170511,
+        "score": 725.5782270711044,
+        "context": {
+          "left_rubber_ratio": 0.9950161637931034,
+          "right_rubber_ratio": 0.9969019396551724,
+          "left_rubber_count": 7387,
+          "right_rubber_count": 7401
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.7161821126937866,
+          "mean_width_px": 9.035714149475098
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -2521,11 +2686,22 @@
         "area_px": 1642,
         "length_px": 229,
         "thickness_px": 17,
-        "mean_width_px": 6.1634454185785685,
-        "mean_width_mm": 6.1634454185785685,
+        "mean_width_px": 6.163444995880127,
+        "mean_width_mm": 6.163444995880127,
         "mean_sample_distance_mm": 6.800002470519393,
         "std_sample_distance_mm": 2.7279436504373904,
-        "score": 530.8548318721322,
+        "score": 688.0291139236184,
+        "context": {
+          "left_rubber_ratio": 0.9927674672489083,
+          "right_rubber_ratio": 0.9991812227074236,
+          "left_rubber_count": 7275,
+          "right_rubber_count": 7322
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 2.0153236389160156,
+          "mean_width_px": 6.163444995880127
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -2695,11 +2871,22 @@
         "area_px": 2695,
         "length_px": 235,
         "thickness_px": 18,
-        "mean_width_px": 10.44438067497091,
-        "mean_width_mm": 10.44438067497091,
+        "mean_width_px": 10.444380760192871,
+        "mean_width_mm": 10.444380760192871,
         "mean_sample_distance_mm": 10.128572082519531,
         "std_sample_distance_mm": 2.2383028214562124,
-        "score": 589.0834289875436,
+        "score": 748.8678804701948,
+        "context": {
+          "left_rubber_ratio": 0.995345744680851,
+          "right_rubber_ratio": 0.995345744680851,
+          "left_rubber_count": 7485,
+          "right_rubber_count": 7485
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.3020908832550049,
+          "mean_width_px": 10.444380760192871
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -2855,11 +3042,22 @@
         "area_px": 2087,
         "length_px": 238,
         "thickness_px": 19,
-        "mean_width_px": 7.762897651736476,
-        "mean_width_mm": 7.762897651736476,
+        "mean_width_px": 7.7628984451293945,
+        "mean_width_mm": 7.7628984451293945,
         "mean_sample_distance_mm": 8.552372669056059,
         "std_sample_distance_mm": 2.7537833646014613,
-        "score": 568.7056535223953,
+        "score": 727.1601847836952,
+        "context": {
+          "left_rubber_ratio": 1.0,
+          "right_rubber_ratio": 0.9989495798319328,
+          "left_rubber_count": 7616,
+          "right_rubber_count": 7608
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.8951517343521118,
+          "mean_width_px": 7.7628984451293945
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -3026,14 +3224,25 @@
           21,
           231
         ],
-        "area_px": 2751,
+        "area_px": 2774,
         "length_px": 231,
         "thickness_px": 21,
-        "mean_width_px": 10.902291962594697,
-        "mean_width_mm": 10.902291962594697,
-        "mean_sample_distance_mm": 11.087307157972827,
-        "std_sample_distance_mm": 1.4564541790651093,
-        "score": 583.196562056108,
+        "mean_width_px": 11.00185775756836,
+        "mean_width_mm": 11.00185775756836,
+        "mean_sample_distance_mm": 11.150799003476276,
+        "std_sample_distance_mm": 1.4155378260328793,
+        "score": 743.713459626524,
+        "context": {
+          "left_rubber_ratio": 0.9928300865800865,
+          "right_rubber_ratio": 0.9963474025974026,
+          "left_rubber_count": 7339,
+          "right_rubber_count": 7365
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.4592550992965698,
+          "mean_width_px": 11.00185775756836
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -3113,11 +3322,11 @@
               231.77777099609375
             ],
             "point_b_px": [
-              220.74604046531022,
+              221.0,
               231.77777099609375
             ],
-            "distance_px": 10.285717434249818,
-            "distance_mm": 10.285717434249818
+            "distance_px": 10.539676968939602,
+            "distance_mm": 10.539676968939602
           },
           {
             "sample_id": 6,
@@ -3127,11 +3336,11 @@
               257.33331298828125
             ],
             "point_b_px": [
-              220.6190410796553,
+              221.0,
               257.33331298828125
             ],
-            "distance_px": 9.857142130844295,
-            "distance_mm": 9.857142130844295
+            "distance_px": 10.238101051189005,
+            "distance_mm": 10.238101051189005
           },
           {
             "sample_id": 7,
@@ -3189,11 +3398,22 @@
         "area_px": 2065,
         "length_px": 234,
         "thickness_px": 18,
-        "mean_width_px": 7.817448803502271,
-        "mean_width_mm": 7.817448803502271,
+        "mean_width_px": 7.81744909286499,
+        "mean_width_mm": 7.81744909286499,
         "mean_sample_distance_mm": 8.58887864369899,
         "std_sample_distance_mm": 2.7132036498784085,
-        "score": 559.5238267947466,
+        "score": 717.3849200179435,
+        "context": {
+          "left_rubber_ratio": 0.9941239316239316,
+          "right_rubber_ratio": 0.9987980769230769,
+          "left_rubber_count": 7444,
+          "right_rubber_count": 7479
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.9589508771896362,
+          "mean_width_px": 7.81744909286499
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -3346,14 +3566,25 @@
           107,
           20
         ],
-        "area_px": 886,
+        "area_px": 939,
         "length_px": 107,
         "thickness_px": 20,
-        "mean_width_px": 7.503357504015771,
-        "mean_width_mm": 7.503357504015771,
-        "mean_sample_distance_mm": 6.9936729552224275,
-        "std_sample_distance_mm": 6.204072548935617,
-        "score": 247.04496374397635,
+        "mean_width_px": 7.998684406280518,
+        "mean_width_mm": 7.998684406280518,
+        "mean_sample_distance_mm": 7.477797662653029,
+        "std_sample_distance_mm": 6.391420099875035,
+        "score": 385.1443967640957,
+        "context": {
+          "top_rubber_ratio": 0.9158878504672897,
+          "bottom_rubber_ratio": 0.9039135514018691,
+          "top_rubber_count": 3136,
+          "bottom_rubber_count": 3095
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 5.895647048950195,
+          "mean_width_px": 7.998684406280518
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -3388,84 +3619,84 @@
             "orientation": "horizontal",
             "point_a_px": [
               142.55555725097656,
-              566.7936742873862
+              566.0
             ],
             "point_b_px": [
               142.55555725097656,
               583.9365575881675
             ],
-            "distance_px": 17.14288330078125,
-            "distance_mm": 17.14288330078125
+            "distance_px": 17.93655758816749,
+            "distance_mm": 17.93655758816749
           },
           {
             "sample_id": 3,
             "orientation": "horizontal",
             "point_a_px": [
               154.3333282470703,
-              567.0
+              566.0
             ],
             "point_b_px": [
               154.3333282470703,
               583.095278785564
             ],
-            "distance_px": 16.095278785564005,
-            "distance_mm": 16.095278785564005
+            "distance_px": 17.095278785564005,
+            "distance_mm": 17.095278785564005
           },
           {
             "sample_id": 4,
             "orientation": "horizontal",
             "point_a_px": [
               166.11111450195312,
-              566.4127192422748
+              565.71435546875
             ],
             "point_b_px": [
               166.11111450195312,
               579.6984407939017
             ],
-            "distance_px": 13.28572155162692,
-            "distance_mm": 13.28572155162692
+            "distance_px": 13.984085325151682,
+            "distance_mm": 13.984085325151682
           },
           {
             "sample_id": 5,
             "orientation": "horizontal",
             "point_a_px": [
               177.88888549804688,
-              566.69841802679
+              566.0
             ],
             "point_b_px": [
               177.88888549804688,
               570.0000610351562
             ],
-            "distance_px": 3.301643008366227,
-            "distance_mm": 3.301643008366227
+            "distance_px": 4.00006103515625,
+            "distance_mm": 4.00006103515625
           },
           {
             "sample_id": 6,
             "orientation": "horizontal",
             "point_a_px": [
               189.66665649414062,
-              567.0
+              566.0
             ],
             "point_b_px": [
               189.66665649414062,
               569.0
             ],
-            "distance_px": 2.0,
-            "distance_mm": 2.0
+            "distance_px": 3.0,
+            "distance_mm": 3.0
           },
           {
             "sample_id": 7,
             "orientation": "horizontal",
             "point_a_px": [
               201.44444274902344,
-              566.650790986605
+              566.0
             ],
             "point_b_px": [
               201.44444274902344,
               569.0
             ],
-            "distance_px": 2.3492090133950114,
-            "distance_mm": 2.3492090133950114
+            "distance_px": 3.0,
+            "distance_mm": 3.0
           },
           {
             "sample_id": 8,
@@ -3502,158 +3733,169 @@
         "orientation": "vertical",
         "bbox_px": [
           146,
-          539,
+          533,
           19,
-          71
+          81
         ],
-        "area_px": 385,
-        "length_px": 71,
+        "area_px": 682,
+        "length_px": 81,
         "thickness_px": 19,
-        "mean_width_px": 5.989935216769366,
-        "mean_width_mm": 5.989935216769366,
-        "mean_sample_distance_mm": 5.611097571998835,
-        "std_sample_distance_mm": 5.516300298175976,
-        "score": 152.26509717484595,
+        "mean_width_px": 13.112874031066895,
+        "mean_width_mm": 13.112874031066895,
+        "mean_sample_distance_mm": 12.155559406615794,
+        "std_sample_distance_mm": 5.275976611802228,
+        "score": 331.4944441124245,
+        "context": {
+          "left_rubber_ratio": 0.9992283950617284,
+          "right_rubber_ratio": 0.9996141975308642,
+          "left_rubber_count": 2590,
+          "right_rubber_count": 2591
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 4.388757228851318,
+          "mean_width_px": 13.112874031066895
+        },
         "samples": [
           {
             "sample_id": 0,
             "orientation": "vertical",
             "point_a_px": [
-              153.57144165039062,
-              539.0
+              160.57144165039062,
+              533.0
             ],
             "point_b_px": [
-              155.14285278320312,
-              539.0
+              161.7143096923828,
+              533.0
             ],
-            "distance_px": 1.5714111328125,
-            "distance_mm": 1.5714111328125
+            "distance_px": 1.1428680419921875,
+            "distance_mm": 1.1428680419921875
           },
           {
             "sample_id": 1,
             "orientation": "vertical",
             "point_a_px": [
-              153.00001525878906,
-              546.7777709960938
+              153.25396728515625,
+              541.888916015625
             ],
             "point_b_px": [
-              155.0,
-              546.7777709960938
+              162.0,
+              541.888916015625
             ],
-            "distance_px": 1.9999847412109375,
-            "distance_mm": 1.9999847412109375
+            "distance_px": 8.74603271484375,
+            "distance_mm": 8.74603271484375
           },
           {
             "sample_id": 2,
             "orientation": "vertical",
             "point_a_px": [
-              150.09526037797332,
-              554.5555419921875
+              153.00001525878906,
+              550.7777709960938
             ],
             "point_b_px": [
-              155.0,
-              554.5555419921875
+              162.0,
+              550.7777709960938
             ],
-            "distance_px": 4.904739622026682,
-            "distance_mm": 4.904739622026682
+            "distance_px": 8.999984741210938,
+            "distance_mm": 8.999984741210938
           },
           {
             "sample_id": 3,
             "orientation": "vertical",
             "point_a_px": [
-              146.09525335393846,
-              562.3333129882812
+              146.47620355524123,
+              559.6666870117188
             ],
             "point_b_px": [
-              155.0,
-              562.3333129882812
+              162.0,
+              559.6666870117188
             ],
-            "distance_px": 8.90474664606154,
-            "distance_mm": 8.90474664606154
+            "distance_px": 15.523796444758773,
+            "distance_mm": 15.523796444758773
           },
           {
             "sample_id": 4,
             "orientation": "vertical",
             "point_a_px": [
               146.00001525878906,
-              570.111083984375
+              568.5555419921875
             ],
             "point_b_px": [
-              162.74603174626827,
-              570.111083984375
+              162.5079495869577,
+              568.5555419921875
             ],
-            "distance_px": 16.74601648747921,
-            "distance_mm": 16.74601648747921
+            "distance_px": 16.50793432816863,
+            "distance_mm": 16.50793432816863
           },
           {
             "sample_id": 5,
             "orientation": "vertical",
             "point_a_px": [
-              146.41270495206118,
-              577.888916015625
+              146.34921288862824,
+              577.4444580078125
             ],
             "point_b_px": [
-              161.07931518554688,
-              577.888916015625
+              163.00001525878906,
+              577.4444580078125
             ],
-            "distance_px": 14.666610233485699,
-            "distance_mm": 14.666610233485699
+            "distance_px": 16.650802370160818,
+            "distance_mm": 16.650802370160818
           },
           {
             "sample_id": 6,
             "orientation": "vertical",
             "point_a_px": [
               147.0,
-              585.6666870117188
+              586.3333129882812
             ],
             "point_b_px": [
-              149.0,
-              585.6666870117188
+              163.00001525878906,
+              586.3333129882812
             ],
-            "distance_px": 2.0,
-            "distance_mm": 2.0
+            "distance_px": 16.000015258789062,
+            "distance_mm": 16.000015258789062
           },
           {
             "sample_id": 7,
             "orientation": "vertical",
             "point_a_px": [
               147.0,
-              593.4444580078125
+              595.2222290039062
             ],
             "point_b_px": [
-              149.0,
-              593.4444580078125
+              163.00001525878906,
+              595.2222290039062
             ],
-            "distance_px": 2.0,
-            "distance_mm": 2.0
+            "distance_px": 16.000015258789062,
+            "distance_mm": 16.000015258789062
           },
           {
             "sample_id": 8,
             "orientation": "vertical",
             "point_a_px": [
-              147.0,
-              601.2222290039062
+              147.17459179088473,
+              604.111083984375
             ],
             "point_b_px": [
-              149.03174603171647,
-              601.2222290039062
+              163.30158948153257,
+              604.111083984375
             ],
-            "distance_px": 2.031746031716466,
-            "distance_mm": 2.031746031716466
+            "distance_px": 16.12699769064784,
+            "distance_mm": 16.12699769064784
           },
           {
             "sample_id": 9,
             "orientation": "vertical",
             "point_a_px": [
-              149.1428680419922,
-              609.0
+              157.57142639160156,
+              613.0
             ],
             "point_b_px": [
-              150.4285888671875,
-              609.0
+              163.42857360839844,
+              613.0
             ],
-            "distance_px": 1.2857208251953125,
-            "distance_mm": 1.2857208251953125
+            "distance_px": 5.857147216796875,
+            "distance_mm": 5.857147216796875
           }
         ]
       }
@@ -3683,11 +3925,22 @@
         "area_px": 342,
         "length_px": 71,
         "thickness_px": 7,
-        "mean_width_px": 3.7927714603047975,
-        "mean_width_mm": 3.7927714603047975,
+        "mean_width_px": 3.792771577835083,
+        "mean_width_mm": 3.792771577835083,
         "mean_sample_distance_mm": 3.6587436736561356,
         "std_sample_distance_mm": 1.4305158213897178,
-        "score": 153.4108428095428,
+        "score": 310.77011827012177,
+        "context": {
+          "left_rubber_ratio": 0.9850352112676056,
+          "right_rubber_ratio": 1.0,
+          "left_rubber_count": 2238,
+          "right_rubber_count": 2272
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.2906863689422607,
+          "mean_width_px": 3.792771577835083
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -3843,11 +4096,22 @@
         "area_px": 276,
         "length_px": 69,
         "thickness_px": 9,
-        "mean_width_px": 2.975160460541214,
-        "mean_width_mm": 2.975160460541214,
+        "mean_width_px": 2.9751603603363037,
+        "mean_width_mm": 2.9751603603363037,
         "mean_sample_distance_mm": 2.863497440330684,
         "std_sample_distance_mm": 0.9137234698854737,
-        "score": 147.3372593091882,
+        "score": 305.0439533572266,
+        "context": {
+          "left_rubber_ratio": 1.0,
+          "right_rubber_ratio": 0.9805253623188406,
+          "left_rubber_count": 2208,
+          "right_rubber_count": 2165
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 0.8139415979385376,
+          "mean_width_px": 2.9751603603363037
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -4017,11 +4281,22 @@
         "area_px": 266,
         "length_px": 70,
         "thickness_px": 10,
-        "mean_width_px": 2.7775523594447544,
-        "mean_width_mm": 2.7775523594447544,
+        "mean_width_px": 2.777552366256714,
+        "mean_width_mm": 2.777552366256714,
         "mean_sample_distance_mm": 2.7333311535418034,
         "std_sample_distance_mm": 1.005921421675499,
-        "score": 149.1336714608329,
+        "score": 305.9261663743428,
+        "context": {
+          "left_rubber_ratio": 0.9808035714285714,
+          "right_rubber_ratio": 0.990625,
+          "left_rubber_count": 2197,
+          "right_rubber_count": 2219
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 0.8775282502174377,
+          "mean_width_px": 2.777552366256714
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -4177,11 +4452,22 @@
         "area_px": 238,
         "length_px": 57,
         "thickness_px": 7,
-        "mean_width_px": 3.1478533828467654,
-        "mean_width_mm": 3.1478533828467654,
+        "mean_width_px": 3.147853374481201,
+        "mean_width_mm": 3.147853374481201,
         "mean_sample_distance_mm": 3.0793534172931687,
         "std_sample_distance_mm": 1.1432978691478628,
-        "score": 121.17821992572986,
+        "score": 277.29149403321117,
+        "context": {
+          "left_rubber_ratio": 0.9791666666666666,
+          "right_rubber_ratio": 0.9862938596491229,
+          "left_rubber_count": 1786,
+          "right_rubber_count": 1799
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.0339620113372803,
+          "mean_width_px": 3.147853374481201
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -4348,14 +4634,25 @@
           238,
           16
         ],
-        "area_px": 2574,
+        "area_px": 2597,
         "length_px": 238,
         "thickness_px": 16,
-        "mean_width_px": 9.807889537650999,
-        "mean_width_mm": 9.807889537650999,
-        "mean_sample_distance_mm": 9.861885724775494,
-        "std_sample_distance_mm": 1.6136418718875367,
-        "score": 589.9881656935236,
+        "mean_width_px": 9.904528617858887,
+        "mean_width_mm": 9.904528617858887,
+        "mean_sample_distance_mm": 9.91426413403824,
+        "std_sample_distance_mm": 1.591904596445403,
+        "score": 750.4726215719174,
+        "context": {
+          "top_rubber_ratio": 0.9972426470588235,
+          "bottom_rubber_ratio": 0.9971113445378151,
+          "top_rubber_count": 7595,
+          "bottom_rubber_count": 7594
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.5201317071914673,
+          "mean_width_px": 9.904528617858887
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -4422,10 +4719,10 @@
             ],
             "point_b_px": [
               216.33334350585938,
-              574.8095485139638
+              575.0
             ],
-            "distance_px": 9.809548513963819,
-            "distance_mm": 9.809548513963819
+            "distance_px": 10.0,
+            "distance_mm": 10.0
           },
           {
             "sample_id": 5,
@@ -4436,10 +4733,10 @@
             ],
             "point_b_px": [
               242.6666717529297,
-              574.6666673934087
+              575.0
             ],
-            "distance_px": 8.666667393408716,
-            "distance_mm": 8.666667393408716
+            "distance_px": 9.0,
+            "distance_mm": 9.0
           },
           {
             "sample_id": 6,
@@ -4511,11 +4808,22 @@
         "area_px": 1092,
         "length_px": 167,
         "thickness_px": 18,
-        "mean_width_px": 5.529520914226235,
-        "mean_width_mm": 5.529520914226235,
+        "mean_width_px": 5.5295209884643555,
+        "mean_width_mm": 5.5295209884643555,
         "mean_sample_distance_mm": 5.414282904565335,
         "std_sample_distance_mm": 2.2006228594038553,
-        "score": 380.30571862866066,
+        "score": 538.4385375976562,
+        "context": {
+          "top_rubber_ratio": 1.0,
+          "bottom_rubber_ratio": 1.0,
+          "top_rubber_count": 5344,
+          "bottom_rubber_count": 5344
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.7630186080932617,
+          "mean_width_px": 5.5295209884643555
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -4685,11 +4993,22 @@
         "area_px": 2215,
         "length_px": 230,
         "thickness_px": 15,
-        "mean_width_px": 8.623589026409647,
-        "mean_width_mm": 8.623589026409647,
+        "mean_width_px": 8.623589515686035,
+        "mean_width_mm": 8.623589515686035,
         "mean_sample_distance_mm": 8.741258118674159,
         "std_sample_distance_mm": 1.6495757953356507,
-        "score": 557.8146164603855,
+        "score": 717.1840034298275,
+        "context": {
+          "top_rubber_ratio": 1.0,
+          "bottom_rubber_ratio": 0.9971467391304348,
+          "top_rubber_count": 7360,
+          "bottom_rubber_count": 7339
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.4947141408920288,
+          "mean_width_px": 8.623589515686035
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -4842,14 +5161,25 @@
           147,
           14
         ],
-        "area_px": 890,
+        "area_px": 916,
         "length_px": 147,
         "thickness_px": 14,
-        "mean_width_px": 5.042740802375638,
-        "mean_width_mm": 5.042740802375638,
-        "mean_sample_distance_mm": 4.8364954389631745,
-        "std_sample_distance_mm": 1.9444863426667716,
-        "score": 330.93588879643653,
+        "mean_width_px": 5.219610214233398,
+        "mean_width_mm": 5.219610214233398,
+        "mean_sample_distance_mm": 4.957128228247166,
+        "std_sample_distance_mm": 1.9410741315818205,
+        "score": 490.3551740883159,
+        "context": {
+          "top_rubber_ratio": 1.0,
+          "bottom_rubber_ratio": 0.9997874149659864,
+          "top_rubber_count": 4704,
+          "bottom_rubber_count": 4703
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.5821434259414673,
+          "mean_width_px": 5.219610214233398
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -4888,10 +5218,10 @@
             ],
             "point_b_px": [
               563.4444580078125,
-              568.7936721071601
+              569.0
             ],
-            "distance_px": 3.8571506068110466,
-            "distance_mm": 3.8571506068110466
+            "distance_px": 4.063478499650955,
+            "distance_mm": 4.063478499650955
           },
           {
             "sample_id": 3,
@@ -4902,10 +5232,10 @@
             ],
             "point_b_px": [
               579.6666870117188,
-              568.0
+              569.0
             ],
-            "distance_px": 4.523745581507683,
-            "distance_mm": 4.523745581507683
+            "distance_px": 5.523745581507683,
+            "distance_mm": 5.523745581507683
           },
           {
             "sample_id": 4,
@@ -5019,11 +5349,22 @@
         "area_px": 1945,
         "length_px": 241,
         "thickness_px": 21,
-        "mean_width_px": 7.064020053974326,
-        "mean_width_mm": 7.064020053974326,
+        "mean_width_px": 7.064020156860352,
+        "mean_width_mm": 7.064020156860352,
         "mean_sample_distance_mm": 7.0333348591811955,
         "std_sample_distance_mm": 1.7557331670894112,
-        "score": 568.6539699190386,
+        "score": 726.9001195187391,
+        "context": {
+          "top_rubber_ratio": 0.9983143153526971,
+          "bottom_rubber_ratio": 0.9953319502074689,
+          "top_rubber_count": 7699,
+          "bottom_rubber_count": 7676
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.6823787689208984,
+          "mean_width_px": 7.064020156860352
+        },
         "samples": [
           {
             "sample_id": 0,
@@ -5179,11 +5520,22 @@
         "area_px": 785,
         "length_px": 147,
         "thickness_px": 21,
-        "mean_width_px": 4.328476678757441,
-        "mean_width_mm": 4.328476678757441,
+        "mean_width_px": 4.328476905822754,
+        "mean_width_mm": 4.328476905822754,
         "mean_sample_distance_mm": 4.195244780182838,
         "std_sample_distance_mm": 1.7247452162074435,
-        "score": 326.75728498186385,
+        "score": 484.97670428736683,
+        "context": {
+          "top_rubber_ratio": 1.0,
+          "bottom_rubber_ratio": 0.9997874149659864,
+          "top_rubber_count": 4704,
+          "bottom_rubber_count": 4703
+        },
+        "quality": {
+          "boundary_coverage": 1.0,
+          "width_std_px": 1.5310583114624023,
+          "mean_width_px": 4.328476905822754
+        },
         "samples": [
           {
             "sample_id": 0,

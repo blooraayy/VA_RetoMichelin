@@ -1,0 +1,16 @@
+image_name,n_detected_gaps,n_ok_gaps,n_warning_gaps,n_vertical_gaps,n_horizontal_gaps,image_recommended_gap_width_mm,image_mean_robust_cv,image_quality_status,image_quality_reasons
+Multimedia_31.jpg,2,1,1,2,0,6.92,0.456,warning,gap_quality_warnings:1
+Multimedia_32.jpg,2,1,1,2,0,6.11,0.418,warning,gap_quality_warnings:1
+Multimedia_33.jpg,2,1,1,2,0,7.08,0.421,warning,gap_quality_warnings:1
+Multimedia_34.jpg,2,2,0,2,0,6.76,0.387,ok,
+Multimedia_35.jpg,2,2,0,0,2,10.87,0.135,ok,
+Multimedia_36.jpg,2,2,0,0,2,10.87,0.135,ok,
+Multimedia_37.jpg,2,2,0,0,2,8.61,0.177,ok,
+Multimedia_39.jpg,2,2,0,2,0,7.84,0.219,ok,
+Multimedia_40.jpg,2,2,0,2,0,9.21,0.138,ok,
+Multimedia_41.jpg,4,3,1,3,1,9.84,0.355,warning,unexpected_number_of_gaps:4;gap_quality_warnings:1;known_problematic_after_visual_inspection
+Multimedia_42.jpg,2,2,0,2,0,3.34,0.227,ok,
+Multimedia_43.jpg,2,2,0,2,0,2.94,0.242,ok,
+Multimedia_45.jpg,2,2,0,0,2,7.68,0.198,ok,
+Multimedia_46.jpg,2,2,0,0,2,6.85,0.202,ok,
+Multimedia_47.jpg,2,2,0,0,2,5.55,0.233,ok,

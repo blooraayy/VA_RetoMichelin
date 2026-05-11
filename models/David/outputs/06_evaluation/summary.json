@@ -1,0 +1,20 @@
+{
+  "n_images_evaluated": 15,
+  "n_total_gaps": 32,
+  "n_valid_metric_gaps": 32,
+  "n_ok_quality_gaps": 28,
+  "n_gap_warnings": 4,
+  "n_image_warnings": 4,
+  "mean_recommended_gap_width_mm_all": 7.518352493643761,
+  "std_recommended_gap_width_mm_all": 2.641605559826931,
+  "mean_recommended_gap_width_mm_ok_only": 7.677011540957859,
+  "mean_robust_cv_all": 0.26869718037246515,
+  "median_robust_cv_all": 0.24041381185203764,
+  "orientation_counts": {
+    "vertical": 19,
+    "horizontal": 13
+  },
+  "known_problematic_images": [
+    "Multimedia_41.jpg"
+  ]
+}
