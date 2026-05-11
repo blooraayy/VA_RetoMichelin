@@ -1,7 +1,7 @@
 [
   {
     "image_path": "data/images\\Multimedia_31.jpg",
-    "elapsed_s": 18.659,
+    "elapsed_s": 21.412,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -61,7 +61,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_32.jpg",
-    "elapsed_s": 4.993,
+    "elapsed_s": 5.067,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -103,7 +103,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_33.jpg",
-    "elapsed_s": 2.545,
+    "elapsed_s": 2.491,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -165,7 +165,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_34.jpg",
-    "elapsed_s": 4.026,
+    "elapsed_s": 4.021,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -227,7 +227,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_35.jpg",
-    "elapsed_s": 5.745,
+    "elapsed_s": 5.825,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 0,
@@ -247,7 +247,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_36.jpg",
-    "elapsed_s": 6.589,
+    "elapsed_s": 6.538,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -289,7 +289,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_37.jpg",
-    "elapsed_s": 5.682,
+    "elapsed_s": 5.731,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -349,7 +349,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_38.jpg",
-    "elapsed_s": 5.051,
+    "elapsed_s": 5.064,
     "calibration_valid": false,
     "n_qr": 2,
     "n_edges": 1,
@@ -376,7 +376,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_39.jpg",
-    "elapsed_s": 4.974,
+    "elapsed_s": 5.012,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -418,7 +418,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_40.jpg",
-    "elapsed_s": 2.389,
+    "elapsed_s": 2.383,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -480,7 +480,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_41.jpg",
-    "elapsed_s": 5.237,
+    "elapsed_s": 5.08,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -522,7 +522,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_42.jpg",
-    "elapsed_s": 3.127,
+    "elapsed_s": 3.162,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -578,7 +578,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_43.jpg",
-    "elapsed_s": 4.735,
+    "elapsed_s": 4.798,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -620,7 +620,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_44.jpg",
-    "elapsed_s": 4.75,
+    "elapsed_s": 4.792,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -662,7 +662,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_45.jpg",
-    "elapsed_s": 4.889,
+    "elapsed_s": 4.912,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -704,7 +704,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_46.jpg",
-    "elapsed_s": 4.96,
+    "elapsed_s": 5.025,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -746,7 +746,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_47.jpg",
-    "elapsed_s": 2.328,
+    "elapsed_s": 2.305,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -788,7 +788,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_48.jpg",
-    "elapsed_s": 6.262,
+    "elapsed_s": 6.63,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 0,
@@ -808,7 +808,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_49.jpg",
-    "elapsed_s": 6.179,
+    "elapsed_s": 6.865,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 0,
@@ -828,27 +828,11 @@
   },
   {
     "image_path": "data/images\\Multimedia_50.jpg",
-    "elapsed_s": 5.996,
+    "elapsed_s": 6.577,
     "calibration_valid": true,
     "n_qr": 3,
-    "n_edges": 1,
-    "edges": [
-      {
-        "edge_id": 1,
-        "distances_to_bottom_mm": [
-          13.34246826171875,
-          22.54254150390625,
-          35.4998779296875,
-          74.51531982421875,
-          78.98858642578125,
-          5.82806396484375,
-          12.14959716796875,
-          18.53179931640625,
-          26.64105224609375,
-          72.62554931640625
-        ]
-      }
-    ],
+    "n_edges": 0,
+    "edges": [],
     "inter_edge_distances_mm": [],
     "evaluation": {
       "rmse_mm": NaN,
@@ -864,7 +848,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_51.jpg",
-    "elapsed_s": 6.706,
+    "elapsed_s": 7.79,
     "calibration_valid": false,
     "n_qr": 3,
     "n_edges": 1,
@@ -889,11 +873,27 @@
   },
   {
     "image_path": "data/images\\Multimedia_52.jpg",
-    "elapsed_s": 7.372,
+    "elapsed_s": 8.366,
     "calibration_valid": true,
     "n_qr": 3,
-    "n_edges": 0,
-    "edges": [],
+    "n_edges": 1,
+    "edges": [
+      {
+        "edge_id": 1,
+        "distances_to_bottom_mm": [
+          577.9031982421875,
+          577.7896728515625,
+          577.6761474609375,
+          577.5626220703125,
+          577.4490356445312,
+          571.5489501953125,
+          571.4354248046875,
+          571.3218383789062,
+          571.208251953125,
+          571.0947265625
+        ]
+      }
+    ],
     "inter_edge_distances_mm": [],
     "evaluation": {
       "rmse_mm": NaN,

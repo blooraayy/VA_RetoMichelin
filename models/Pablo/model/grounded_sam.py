@@ -287,6 +287,17 @@ class GroundedSAMModel:
                 )
                 continue
 
+            # Extra safety: a cut-gap must be substantially inside at least one
+            # detected rubber strip. This removes many no-cut false positives
+            # located on the table/image border while keeping true cuts inside
+            # the rubber pieces.
+            if not self._cut_is_inside_any_strip(det, strip_detections):
+                print(
+                    "[Stage 2] Removed cut gap outside strips: "
+                    f"{det.box_xyxy.tolist()}"
+                )
+                continue
+
             filtered_edges.append(det)
             filtered_points.append(pts)
 
@@ -495,6 +506,38 @@ class GroundedSAMModel:
 
         print(f"  [Stage 2 / strip {strip_idx}] no cut detected with any prompt")
         return []
+
+    @staticmethod
+    def _cut_is_inside_any_strip(
+        cut_det: DetectionResult,
+        strip_detections: list[DetectionResult],
+        min_center_margin_frac: float = 0.01,
+    ) -> bool:
+        """Return True when the cut center is inside a detected strip ROI.
+
+        This is deliberately mild: it does not require a perfect strip mask,
+        only that the cut center lies inside one strip bounding box with a tiny
+        margin. It helps suppress false positives in images without cuts, where
+        detections often appear on the table or the image border.
+        """
+        if not strip_detections:
+            return True
+
+        x1, y1, x2, y2 = [float(v) for v in cut_det.box_xyxy]
+        cx = 0.5 * (x1 + x2)
+        cy = 0.5 * (y1 + y2)
+
+        for strip in strip_detections:
+            sx1, sy1, sx2, sy2 = [float(v) for v in strip.box_xyxy]
+            sw = max(1.0, sx2 - sx1)
+            sh = max(1.0, sy2 - sy1)
+            mx = min_center_margin_frac * sw
+            my = min_center_margin_frac * sh
+            if (sx1 + mx) <= cx <= (sx2 - mx) and (sy1 + my) <= cy <= (sy2 - my):
+                return True
+
+        return False
+
 
     # ── Classical fallback integration ───────────────────────────────────────
 
