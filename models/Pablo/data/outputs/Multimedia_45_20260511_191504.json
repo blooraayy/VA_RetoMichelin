@@ -1,7 +1,7 @@
 {
   "image_path": "data/images\\Multimedia_45.jpg",
   "calibration_valid": true,
-  "n_qr_detected": 4,
+  "n_qr_detected": 3,
   "n_cut_gaps_detected": 2,
   "edges": [
     {

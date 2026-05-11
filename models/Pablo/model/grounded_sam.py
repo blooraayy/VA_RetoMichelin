@@ -132,6 +132,7 @@ class GroundedSAMModel:
             aspect_max=QR_ASPECT_RATIO_MAX,
         )
         qr_detections = self._segment_boxes(qr_boxes, qr_scores, "qr_code", H, W)
+        qr_detections = qr_detections[:3]   # at most 3 calibration markers
         print(f"[Stage 0] QR  raw={len(qr_boxes_raw)}  kept={len(qr_detections)}")
 
         # ── Stage 1 : rubber strips ──────────────────────────────────────

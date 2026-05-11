@@ -1,7 +1,7 @@
 [
   {
     "image_path": "data/images\\Multimedia_31.jpg",
-    "elapsed_s": 17.69,
+    "elapsed_s": 16.509,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -63,7 +63,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_32.jpg",
-    "elapsed_s": 2.835,
+    "elapsed_s": 2.553,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -125,7 +125,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_33.jpg",
-    "elapsed_s": 2.628,
+    "elapsed_s": 2.888,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -187,7 +187,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_34.jpg",
-    "elapsed_s": 2.744,
+    "elapsed_s": 2.575,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -247,24 +247,24 @@
   },
   {
     "image_path": "data/images\\Multimedia_35.jpg",
-    "elapsed_s": 5.129,
+    "elapsed_s": 5.166,
     "calibration_valid": true,
-    "n_qr": 4,
+    "n_qr": 3,
     "n_edges": 1,
     "edges": [
       {
         "edge_id": 1,
         "distances_to_bottom_mm": [
-          258.14404296875,
-          230.48455810546875,
-          202.99920654296875,
-          175.53546142578125,
-          148.0882568359375,
-          258.23675537109375,
-          230.72564697265625,
-          203.18463134765625,
-          175.683837890625,
-          148.12530517578125
+          480.5861511230469,
+          447.5706787109375,
+          420.064453125,
+          393.2427978515625,
+          366.9427185058594,
+          483.52008056640625,
+          455.1988525390625,
+          425.9322814941406,
+          397.9370422363281,
+          368.1163330078125
         ]
       }
     ],
@@ -285,48 +285,48 @@
   },
   {
     "image_path": "data/images\\Multimedia_36.jpg",
-    "elapsed_s": 5.556,
+    "elapsed_s": 5.53,
     "calibration_valid": true,
-    "n_qr": 4,
+    "n_qr": 3,
     "n_edges": 2,
     "edges": [
       {
         "edge_id": 1,
         "distances_to_bottom_mm": [
-          215.93328857421875,
-          228.5045166015625,
-          230.3907470703125,
-          233.017578125,
-          232.43536376953125,
-          212.759521484375,
-          215.80950927734375,
-          218.96527099609375,
-          223.496337890625,
-          230.5311279296875
+          345.72528076171875,
+          365.852783203125,
+          368.87274169921875,
+          373.0784912109375,
+          372.146240234375,
+          340.64385986328125,
+          345.52703857421875,
+          350.5797119140625,
+          357.834228515625,
+          369.09747314453125
         ]
       },
       {
         "edge_id": 2,
         "distances_to_bottom_mm": [
-          237.188232421875,
-          238.7591552734375,
-          240.33001708984375,
-          241.90093994140625,
-          243.47186279296875,
-          214.971923828125,
-          216.5428466796875,
-          218.11370849609375,
-          219.68463134765625,
-          221.25555419921875
+          379.7559814453125,
+          382.2711181640625,
+          384.7862548828125,
+          387.3013916015625,
+          389.8165283203125,
+          344.18603515625,
+          346.701171875,
+          349.21630859375,
+          351.7314453125,
+          354.24658203125
         ]
       }
     ],
     "inter_edge_distances_mm": [
-      5.03753662109375
+      8.0654296875
     ],
     "evaluation": {
-      "rmse_mm": 5.802926800990208,
-      "mae_mm": 4.292721557617187,
+      "rmse_mm": 9.290932536512106,
+      "mae_mm": 6.872979736328125,
       "iou": 0.7084285169839859,
       "precision": 0.6652542372881356,
       "recall": 0.9646104694028017,
@@ -336,18 +336,18 @@
         0.48139718174934387
       ],
       "per_edge_rmse_mm": [
-        3.16350078529919,
-        8.442352816681225
+        5.065036181669461,
+        13.51682889135475
       ],
       "per_edge_mae_mm": [
-        1.9443359375,
-        6.641107177734375
+        3.11304931640625,
+        10.63291015625
       ]
     }
   },
   {
     "image_path": "data/images\\Multimedia_37.jpg",
-    "elapsed_s": 2.706,
+    "elapsed_s": 2.785,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -407,7 +407,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_38.jpg",
-    "elapsed_s": 4.722,
+    "elapsed_s": 4.836,
     "calibration_valid": false,
     "n_qr": 2,
     "n_edges": 2,
@@ -439,7 +439,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_39.jpg",
-    "elapsed_s": 2.904,
+    "elapsed_s": 2.701,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -501,7 +501,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_40.jpg",
-    "elapsed_s": 2.432,
+    "elapsed_s": 2.473,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -563,7 +563,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_41.jpg",
-    "elapsed_s": 3.0,
+    "elapsed_s": 2.879,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -625,7 +625,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_42.jpg",
-    "elapsed_s": 2.975,
+    "elapsed_s": 2.616,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -685,9 +685,9 @@
   },
   {
     "image_path": "data/images\\Multimedia_43.jpg",
-    "elapsed_s": 2.68,
+    "elapsed_s": 2.653,
     "calibration_valid": true,
-    "n_qr": 4,
+    "n_qr": 3,
     "n_edges": 2,
     "edges": [
       {
@@ -747,7 +747,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_44.jpg",
-    "elapsed_s": 4.491,
+    "elapsed_s": 4.367,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -807,9 +807,9 @@
   },
   {
     "image_path": "data/images\\Multimedia_45.jpg",
-    "elapsed_s": 3.068,
+    "elapsed_s": 3.08,
     "calibration_valid": true,
-    "n_qr": 4,
+    "n_qr": 3,
     "n_edges": 2,
     "edges": [
       {
@@ -867,7 +867,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_46.jpg",
-    "elapsed_s": 3.151,
+    "elapsed_s": 3.09,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -927,48 +927,48 @@
   },
   {
     "image_path": "data/images\\Multimedia_47.jpg",
-    "elapsed_s": 5.737,
+    "elapsed_s": 5.251,
     "calibration_valid": true,
-    "n_qr": 4,
+    "n_qr": 3,
     "n_edges": 2,
     "edges": [
       {
         "edge_id": 1,
         "distances_to_bottom_mm": [
-          258.6590576171875,
-          267.85833740234375,
-          268.21246337890625,
-          270.93359375,
-          274.55792236328125,
-          254.1741943359375,
-          257.206787109375,
-          260.36395263671875,
-          263.64569091796875,
-          272.87615966796875
+          20.525421142578125,
+          79.25613403320312,
+          129.14840698242188,
+          181.40582275390625,
+          234.56582641601562,
+          16.04400634765625,
+          68.61264038085938,
+          121.30581665039062,
+          174.12353515625,
+          232.88531494140625
         ]
       },
       {
         "edge_id": 2,
         "distances_to_bottom_mm": [
-          291.62896728515625,
-          295.37347412109375,
-          299.1180419921875,
-          302.862548828125,
-          306.60711669921875,
-          277.61376953125,
-          281.35833740234375,
-          285.10284423828125,
-          288.84735107421875,
-          292.5919189453125
+          341.8319091796875,
+          392.7047424316406,
+          443.5776062011719,
+          494.4504699707031,
+          545.3233032226562,
+          327.827392578125,
+          378.70025634765625,
+          429.5731201171875,
+          480.4459533691406,
+          531.31884765625
         ]
       }
     ],
     "inter_edge_distances_mm": [
-      27.2615966796875
+      310.7880630493164
     ],
     "evaluation": {
-      "rmse_mm": 1.634673086917594,
-      "mae_mm": 1.214654541015625,
+      "rmse_mm": 1.6334288630422311,
+      "mae_mm": 1.21373291015625,
       "iou": 0.5877481549978256,
       "precision": 0.5351139905873724,
       "recall": 0.9849251884351445,
@@ -978,16 +978,16 @@
         0.28188881278038025
       ],
       "per_edge_rmse_mm": [
-        1.634673086917594
+        1.6334288630422311
       ],
       "per_edge_mae_mm": [
-        1.214654541015625
+        1.21373291015625
       ]
     }
   },
   {
     "image_path": "data/images\\Multimedia_48.jpg",
-    "elapsed_s": 4.752,
+    "elapsed_s": 4.635,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 0,
@@ -1007,9 +1007,9 @@
   },
   {
     "image_path": "data/images\\Multimedia_49.jpg",
-    "elapsed_s": 4.786,
+    "elapsed_s": 4.435,
     "calibration_valid": true,
-    "n_qr": 4,
+    "n_qr": 3,
     "n_edges": 0,
     "edges": [],
     "inter_edge_distances_mm": [],
@@ -1027,7 +1027,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_50.jpg",
-    "elapsed_s": 4.735,
+    "elapsed_s": 4.734,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 0,
@@ -1047,7 +1047,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_51.jpg",
-    "elapsed_s": 4.778,
+    "elapsed_s": 4.735,
     "calibration_valid": false,
     "n_qr": 3,
     "n_edges": 0,
@@ -1067,15 +1067,15 @@
   },
   {
     "image_path": "data/images\\Multimedia_52.jpg",
-    "elapsed_s": 4.9,
-    "calibration_valid": true,
-    "n_qr": 4,
+    "elapsed_s": 4.86,
+    "calibration_valid": false,
+    "n_qr": 3,
     "n_edges": 0,
     "edges": [],
     "inter_edge_distances_mm": [],
     "evaluation": {
-      "rmse_mm": NaN,
-      "mae_mm": NaN,
+      "rmse_mm": null,
+      "mae_mm": null,
       "iou": NaN,
       "precision": null,
       "recall": null,
