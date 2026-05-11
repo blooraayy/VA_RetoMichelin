@@ -1,7 +1,7 @@
 [
   {
     "image_path": "data/images\\Multimedia_31.jpg",
-    "elapsed_s": 61.579,
+    "elapsed_s": 18.659,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -61,7 +61,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_32.jpg",
-    "elapsed_s": 15.231,
+    "elapsed_s": 4.993,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -103,7 +103,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_33.jpg",
-    "elapsed_s": 6.271,
+    "elapsed_s": 2.545,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -165,7 +165,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_34.jpg",
-    "elapsed_s": 12.165,
+    "elapsed_s": 4.026,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -227,7 +227,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_35.jpg",
-    "elapsed_s": 12.943,
+    "elapsed_s": 5.745,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 0,
@@ -247,47 +247,109 @@
   },
   {
     "image_path": "data/images\\Multimedia_36.jpg",
-    "elapsed_s": 6.699,
+    "elapsed_s": 6.589,
     "calibration_valid": true,
     "n_qr": 3,
-    "n_edges": 0,
-    "edges": [],
+    "n_edges": 1,
+    "edges": [
+      {
+        "edge_id": 1,
+        "distances_to_bottom_mm": [
+          222.4571533203125,
+          228.5045166015625,
+          230.67291259765625,
+          233.54656982421875,
+          236.420166015625,
+          211.17266845703125,
+          215.80950927734375,
+          218.68316650390625,
+          222.96734619140625,
+          229.0147705078125
+        ]
+      }
+    ],
     "inter_edge_distances_mm": [],
     "evaluation": {
-      "rmse_mm": NaN,
-      "mae_mm": NaN,
-      "iou": NaN,
-      "precision": null,
-      "recall": null,
-      "f1": null,
-      "per_edge_iou": [],
-      "per_edge_rmse_mm": [],
-      "per_edge_mae_mm": []
+      "rmse_mm": 1.1053689513972236,
+      "mae_mm": 0.71827392578125,
+      "iou": 0.9354598522186279,
+      "precision": 0.9543795620437956,
+      "recall": 0.5141312361759646,
+      "f1": 0.668263855614119,
+      "per_edge_iou": [
+        0.9354598522186279
+      ],
+      "per_edge_rmse_mm": [
+        1.1053689513972236
+      ],
+      "per_edge_mae_mm": [
+        0.71827392578125
+      ]
     }
   },
   {
     "image_path": "data/images\\Multimedia_37.jpg",
-    "elapsed_s": 14.172,
+    "elapsed_s": 5.682,
     "calibration_valid": true,
     "n_qr": 3,
-    "n_edges": 0,
-    "edges": [],
-    "inter_edge_distances_mm": [],
+    "n_edges": 2,
+    "edges": [
+      {
+        "edge_id": 1,
+        "distances_to_bottom_mm": [
+          840.9195556640625,
+          847.1731567382812,
+          850.7194213867188,
+          852.2352294921875,
+          853.4802856445312,
+          839.5658569335938,
+          834.9901733398438,
+          838.5364990234375,
+          834.6376342773438,
+          849.6900024414062
+        ]
+      },
+      {
+        "edge_id": 2,
+        "distances_to_bottom_mm": [
+          205.0711669921875,
+          210.60211181640625,
+          218.16351318359375,
+          221.6978759765625,
+          227.1949462890625,
+          197.62603759765625,
+          202.4801025390625,
+          207.334228515625,
+          210.12396240234375,
+          215.24884033203125
+        ]
+      }
+    ],
+    "inter_edge_distances_mm": [
+      632.6405220031738
+    ],
     "evaluation": {
-      "rmse_mm": NaN,
-      "mae_mm": NaN,
-      "iou": NaN,
-      "precision": null,
-      "recall": null,
-      "f1": null,
-      "per_edge_iou": [],
-      "per_edge_rmse_mm": [],
-      "per_edge_mae_mm": []
+      "rmse_mm": 0.7700799576024575,
+      "mae_mm": 0.572198486328125,
+      "iou": 0.46424949169158936,
+      "precision": 0.5946092227754926,
+      "recall": 0.4659823549372243,
+      "f1": 0.5224959573860934,
+      "per_edge_iou": [
+        0.0,
+        0.9284989833831787
+      ],
+      "per_edge_rmse_mm": [
+        0.7700799576024575
+      ],
+      "per_edge_mae_mm": [
+        0.572198486328125
+      ]
     }
   },
   {
     "image_path": "data/images\\Multimedia_38.jpg",
-    "elapsed_s": 16.844,
+    "elapsed_s": 5.051,
     "calibration_valid": false,
     "n_qr": 2,
     "n_edges": 1,
@@ -314,7 +376,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_39.jpg",
-    "elapsed_s": 14.92,
+    "elapsed_s": 4.974,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -356,7 +418,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_40.jpg",
-    "elapsed_s": 6.09,
+    "elapsed_s": 2.389,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -418,7 +480,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_41.jpg",
-    "elapsed_s": 15.551,
+    "elapsed_s": 5.237,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -460,7 +522,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_42.jpg",
-    "elapsed_s": 10.401,
+    "elapsed_s": 3.127,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -516,7 +578,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_43.jpg",
-    "elapsed_s": 14.552,
+    "elapsed_s": 4.735,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -558,7 +620,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_44.jpg",
-    "elapsed_s": 15.25,
+    "elapsed_s": 4.75,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -600,7 +662,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_45.jpg",
-    "elapsed_s": 15.046,
+    "elapsed_s": 4.889,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -642,7 +704,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_46.jpg",
-    "elapsed_s": 15.076,
+    "elapsed_s": 4.96,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -684,7 +746,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_47.jpg",
-    "elapsed_s": 14.485,
+    "elapsed_s": 2.328,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -692,41 +754,41 @@
       {
         "edge_id": 1,
         "distances_to_bottom_mm": [
-          263.89141845703125,
-          267.82720947265625,
+          263.22821044921875,
+          267.80706787109375,
           268.64849853515625,
-          271.3385009765625,
-          275.3365478515625,
-          252.67926025390625,
-          257.1134033203125,
+          271.358642578125,
+          275.345703125,
+          252.63897705078125,
+          257.155517578125,
           259.92791748046875,
-          263.2408447265625,
-          267.73724365234375
+          263.26092529296875,
+          267.80859375
         ]
       }
     ],
     "inter_edge_distances_mm": [],
     "evaluation": {
-      "rmse_mm": 0.7717369607706502,
-      "mae_mm": 0.66649169921875,
-      "iou": 0.893607497215271,
-      "precision": 0.90004502476362,
-      "recall": 0.6746540668241647,
-      "f1": 0.7712191358024691,
+      "rmse_mm": 0.7123114911636501,
+      "mae_mm": 0.60419921875,
+      "iou": 0.888642430305481,
+      "precision": 0.8933987511150758,
+      "recall": 0.6760040499493757,
+      "f1": 0.7696445725264169,
       "per_edge_iou": [
-        0.893607497215271
+        0.888642430305481
       ],
       "per_edge_rmse_mm": [
-        0.7717369607706502
+        0.7123114911636501
       ],
       "per_edge_mae_mm": [
-        0.66649169921875
+        0.60419921875
       ]
     }
   },
   {
     "image_path": "data/images\\Multimedia_48.jpg",
-    "elapsed_s": 12.858,
+    "elapsed_s": 6.262,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 0,
@@ -746,7 +808,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_49.jpg",
-    "elapsed_s": 13.006,
+    "elapsed_s": 6.179,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 0,
@@ -766,11 +828,27 @@
   },
   {
     "image_path": "data/images\\Multimedia_50.jpg",
-    "elapsed_s": 12.879,
+    "elapsed_s": 5.996,
     "calibration_valid": true,
     "n_qr": 3,
-    "n_edges": 0,
-    "edges": [],
+    "n_edges": 1,
+    "edges": [
+      {
+        "edge_id": 1,
+        "distances_to_bottom_mm": [
+          13.34246826171875,
+          22.54254150390625,
+          35.4998779296875,
+          74.51531982421875,
+          78.98858642578125,
+          5.82806396484375,
+          12.14959716796875,
+          18.53179931640625,
+          26.64105224609375,
+          72.62554931640625
+        ]
+      }
+    ],
     "inter_edge_distances_mm": [],
     "evaluation": {
       "rmse_mm": NaN,
@@ -786,11 +864,16 @@
   },
   {
     "image_path": "data/images\\Multimedia_51.jpg",
-    "elapsed_s": 15.574,
+    "elapsed_s": 6.706,
     "calibration_valid": false,
     "n_qr": 3,
-    "n_edges": 0,
-    "edges": [],
+    "n_edges": 1,
+    "edges": [
+      {
+        "edge_id": 1,
+        "distances_to_bottom_mm": []
+      }
+    ],
     "inter_edge_distances_mm": [],
     "evaluation": {
       "rmse_mm": null,
@@ -806,7 +889,7 @@
   },
   {
     "image_path": "data/images\\Multimedia_52.jpg",
-    "elapsed_s": 14.177,
+    "elapsed_s": 7.372,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 0,
