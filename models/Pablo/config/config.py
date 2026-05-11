@@ -87,6 +87,7 @@ CUT_MIN_ASPECT_RATIO       = 6.0
 
 # Non-Maximum Suppression IoU threshold (per prompt, per stage)
 NMS_IOU_THRESHOLD     = 0.5
+STRIP_MAX_DETECTIONS  = 3     # max strips passed to Stage 2 (keeps highest-score ones)
 
 # Backwards-compat aliases (used by old name in grounded_sam.py if any)
 EDGE_MAX_AREA_FRAC    = STRIP_MAX_AREA_FRAC

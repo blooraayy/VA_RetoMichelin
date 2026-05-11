@@ -1,0 +1,131 @@
+{
+  "image_path": "data/images\\Multimedia_51.jpg",
+  "calibration_valid": false,
+  "n_qr_detected": 3,
+  "n_cut_gaps_detected": 1,
+  "edges": [
+    {
+      "edge_id": 1,
+      "calibration_available": false,
+      "interpretation": "Detected region is treated as the cut gap between two rubber bands. Points P1-P5 belong to one border and points P6-P10 belong to the opposite border.",
+      "n_sample_points": 10,
+      "sample_points_px": [
+        [
+          362.0,
+          224.10000610351562
+        ],
+        [
+          465.5,
+          225.0
+        ],
+        [
+          569.0,
+          226.0
+        ],
+        [
+          672.5,
+          233.0
+        ],
+        [
+          776.0,
+          235.10000610351562
+        ],
+        [
+          362.0,
+          249.89999389648438
+        ],
+        [
+          465.5,
+          249.0
+        ],
+        [
+          569.0,
+          251.0
+        ],
+        [
+          672.5,
+          251.0
+        ],
+        [
+          776.0,
+          257.0
+        ]
+      ],
+      "sample_points_mm": [],
+      "distances_to_bottom_mm": [],
+      "border_points_px": {
+        "border_1": [
+          [
+            362.0,
+            224.10000610351562
+          ],
+          [
+            465.5,
+            225.0
+          ],
+          [
+            569.0,
+            226.0
+          ],
+          [
+            672.5,
+            233.0
+          ],
+          [
+            776.0,
+            235.10000610351562
+          ]
+        ],
+        "border_2": [
+          [
+            362.0,
+            249.89999389648438
+          ],
+          [
+            465.5,
+            249.0
+          ],
+          [
+            569.0,
+            251.0
+          ],
+          [
+            672.5,
+            251.0
+          ],
+          [
+            776.0,
+            257.0
+          ]
+        ]
+      },
+      "border_points_mm": {
+        "border_1": [],
+        "border_2": []
+      },
+      "border_distances_to_bottom_mm": {
+        "border_1": [],
+        "border_2": []
+      },
+      "distance_summary_mm": {
+        "mean_mm": null,
+        "std_mm": null,
+        "min_mm": null,
+        "max_mm": null
+      },
+      "border_summary_mm": {
+        "border_1": null,
+        "border_2": null
+      }
+    }
+  ],
+  "inter_edge_distances_mm": [],
+  "evaluation": {
+    "rmse_mm": null,
+    "mae_mm": null,
+    "iou": 0.0,
+    "precision": null,
+    "recall": null,
+    "f1": null
+  }
+}

@@ -178,11 +178,20 @@ class MetricEvaluator:
         # ── Distance RMSE / MAE ───────────────────────────────────────────────
         if homography is not None and qr_calibrator is not None:
             gt_dists = self._gt_to_distances(gt, homography, qr_calibrator, H, W)
+
+            # Sort both lists by mean distance so edges are paired spatially,
+            # not by detection order (which may differ between GT and predictions).
+            pred_valid = [(np.mean(d), d)
+                          for d in measurements.distances_to_bottom_mm if len(d) > 0]
+            gt_valid   = [(np.mean(d), d)
+                          for d in gt_dists if len(d) > 0]
+            pred_valid.sort(key=lambda x: x[0])
+            gt_valid.sort(key=lambda x: x[0])
+
             rmse_vals, mae_vals = [], []
-            for i, pred_d in enumerate(measurements.distances_to_bottom_mm):
-                if i < len(gt_dists) and len(pred_d) > 0:
-                    rmse_vals.append(self.rmse(pred_d, gt_dists[i]))
-                    mae_vals.append(self.mae(pred_d,  gt_dists[i]))
+            for (_, pred_d), (_, gt_d) in zip(pred_valid, gt_valid):
+                rmse_vals.append(self.rmse(pred_d, gt_d))
+                mae_vals.append(self.mae(pred_d,  gt_d))
             em.per_edge_rmse_mm = rmse_vals
             em.per_edge_mae_mm  = mae_vals
             em.rmse_mm = float(np.nanmean(rmse_vals)) if rmse_vals else float("nan")
@@ -194,15 +203,38 @@ class MetricEvaluator:
     def _gt_to_distances(
         gt, homography, qr_calibrator, H: int, W: int
     ) -> list[np.ndarray]:
+        # Local import avoids circular dependency while keeping models lazy-loaded.
+        from model.grounded_sam import GroundedSAMModel
+
         bl = qr_calibrator.pixel_to_mm((0.0, float(H - 1)), homography)
         br = qr_calibrator.pixel_to_mm((float(W - 1), float(H - 1)), homography)
         table_bottom_y_mm = (bl[1] + br[1]) / 2.0
+
         dists_list = []
-        for pts_px in gt.cut_edge_points:
+        for gt_mask in gt.cut_edge_masks:
+            if gt_mask is None or gt_mask.sum() == 0:
+                dists_list.append(np.array([], np.float32))
+                continue
+
+            # Resize GT mask to prediction image size if needed.
+            if gt_mask.shape != (H, W):
+                gt_mask = cv2.resize(
+                    gt_mask.astype(np.uint8), (W, H),
+                    interpolation=cv2.INTER_NEAREST,
+                ).astype(bool)
+
+            # Use the same 5+5 border sampling as predictions so that
+            # RMSE/MAE compares spatially equivalent points.
+            pts_px = GroundedSAMModel._extract_cut_gap_borders(
+                gt_mask, n_points=NUM_SAMPLE_POINTS
+            )
             if len(pts_px) == 0:
                 dists_list.append(np.array([], np.float32))
                 continue
+
             pts_mm = qr_calibrator.pixels_to_mm_bulk(pts_px, homography)
             dists_list.append(
-                np.abs(table_bottom_y_mm - pts_mm[:, 1]).astype(np.float32))
+                np.abs(table_bottom_y_mm - pts_mm[:, 1]).astype(np.float32)
+            )
+
         return dists_list
