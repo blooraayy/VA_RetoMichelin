@@ -1,0 +1,60 @@
+{
+  "primary_iou_threshold": 0.3,
+  "summary_by_iou": [
+    {
+      "iou_threshold": 0.3,
+      "n_images_evaluated": 17,
+      "n_gt_total": 34,
+      "n_pred_total": 32,
+      "tp": 25,
+      "fp": 7,
+      "fn": 9,
+      "precision": 0.78125,
+      "recall": 0.7352941176470589,
+      "f1": 0.7575757575757576,
+      "mean_iou_matches": 0.6207248885003945,
+      "mae_mm": 21.062225704193114,
+      "rmse_mm": 23.019803456974046,
+      "mape_percent": 69.9429383397693
+    },
+    {
+      "iou_threshold": 0.5,
+      "n_images_evaluated": 17,
+      "n_gt_total": 34,
+      "n_pred_total": 32,
+      "tp": 17,
+      "fp": 15,
+      "fn": 17,
+      "precision": 0.53125,
+      "recall": 0.5,
+      "f1": 0.5151515151515151,
+      "mean_iou_matches": 0.7157873061677702,
+      "mae_mm": 17.350515646093033,
+      "rmse_mm": 18.521194280122916,
+      "mape_percent": 64.85623888709756
+    }
+  ],
+  "primary_summary": {
+    "iou_threshold": 0.3,
+    "n_images_evaluated": 17.0,
+    "n_gt_total": 34.0,
+    "n_pred_total": 32.0,
+    "tp": 25.0,
+    "fp": 7.0,
+    "fn": 9.0,
+    "precision": 0.78125,
+    "recall": 0.7352941176470589,
+    "f1": 0.7575757575757576,
+    "mean_iou_matches": 0.6207248885003945,
+    "mae_mm": 21.062225704193114,
+    "rmse_mm": 23.019803456974046,
+    "mape_percent": 69.9429383397693
+  },
+  "notes": {
+    "gt_source": "labels\\_annotations.coco.json",
+    "predictions_source": "outputs\\05_metric\\measurements.json",
+    "calibration_source": "outputs\\02_rectified\\calibration.json",
+    "gt_transform": "A_image_to_metric from calibration.json when available",
+    "primary_metric_value": "recommended_distance_mm from NB05"
+  }
+}
