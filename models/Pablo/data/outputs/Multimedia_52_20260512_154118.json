@@ -1,0 +1,16 @@
+{
+  "image_path": "data/images/Multimedia_52.jpg",
+  "calibration_valid": false,
+  "n_qr_detected": 3,
+  "n_cut_gaps_detected": 0,
+  "edges": [],
+  "inter_edge_distances_mm": [],
+  "evaluation": {
+    "rmse_mm": null,
+    "mae_mm": null,
+    "iou": NaN,
+    "precision": null,
+    "recall": null,
+    "f1": null
+  }
+}

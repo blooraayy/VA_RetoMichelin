@@ -113,6 +113,7 @@ def build_dataframe(summary: list[dict], gt_counts: dict[str, int],
             "det_precision": det_p,
             "det_recall":    det_r,
             "det_f1":        det_f1,
+            "elapsed_s":     rec.get("elapsed_s", float("nan")),
         })
 
     return pd.DataFrame(rows)
@@ -501,6 +502,48 @@ def plot_ap_curve(summary: list[dict], gt_counts: dict[str, int],
     print(f"  AUC={auc_pr:.4f}  P@IoU0.50={p_iou50:.4f}  P@IoU0.75={p_iou75:.4f}")
 
 
+def plot_processing_time(df: pd.DataFrame, outdir: str) -> None:
+    valid = df.dropna(subset=["elapsed_s"])
+    x = np.arange(len(valid))
+    labels = [_short(n) for n in valid["image"]]
+
+    # First image includes model loading — flag it
+    first_img = labels[0] if len(labels) > 0 else ""
+    colors = [
+        "#FF8A65" if lbl == first_img else PALETTE["deep"]
+        for lbl in labels
+    ]
+
+    fig, ax = plt.subplots(figsize=(14, 5))
+    bars = ax.bar(x, valid["elapsed_s"], color=colors, alpha=0.88)
+
+    mean_all  = valid["elapsed_s"].mean()
+    mean_rest = valid["elapsed_s"].iloc[1:].mean() if len(valid) > 1 else mean_all
+
+    ax.axhline(mean_all,  color="red",    lw=1.5, linestyle="--",
+               label=f"Mean (all) = {mean_all:.2f} s")
+    ax.axhline(mean_rest, color="orange", lw=1.5, linestyle="-.",
+               label=f"Mean (excl. 1st) = {mean_rest:.2f} s  "
+                     f"≈ {60/mean_rest:.1f} imgs/min")
+
+    # Value labels on bars
+    for bar, val in zip(bars, valid["elapsed_s"]):
+        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.1,
+                f"{val:.1f}s", ha="center", va="bottom", fontsize=7)
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, rotation=45, ha="right", fontsize=8)
+    ax.set_ylabel("Time (s)")
+    ax.set_title(
+        "Processing time per image  "
+        f"(orange = includes model loading,  mean excl. 1st ≈ {mean_rest:.2f} s/img)",
+        fontsize=11,
+    )
+    ax.legend(fontsize=9)
+    fig.tight_layout()
+    _save(fig, outdir, "10_processing_time.png")
+
+
 def save_csv_report(df: pd.DataFrame, outdir: str) -> None:
     path = os.path.join(outdir, "evaluation_report.csv")
     df.to_csv(path, index=False, float_format="%.4f")
@@ -589,6 +632,7 @@ def main() -> None:
     plot_detections_counts(df, args.outdir)
     plot_summary_table(df, args.outdir)
     plot_ap_curve(summary, gt_counts, args.outdir)
+    plot_processing_time(df, args.outdir)
     save_csv_report(df, args.outdir)
 
     print_aggregate_summary(df, args.iou_thr)

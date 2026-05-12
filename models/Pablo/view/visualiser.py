@@ -65,13 +65,15 @@ class Visualiser:
         """
         detection_canvas = image_bgr.copy()
 
+        per_edge_iou = (eval_metrics.per_edge_iou or []) if eval_metrics else []
+
         self._draw_qr_detections(detection_canvas, pipeline_res)
-        self._draw_edge_detections(detection_canvas, pipeline_res)
+        self._draw_edge_detections(detection_canvas, pipeline_res, per_edge_iou)
 
         measurement_canvas = image_bgr.copy()
 
         self._draw_qr_detections(measurement_canvas, pipeline_res)
-        self._draw_edge_detections(measurement_canvas, pipeline_res)
+        self._draw_edge_detections(measurement_canvas, pipeline_res, per_edge_iou)
         self._draw_measurement_visuals(
             measurement_canvas,
             pipeline_res,
@@ -241,6 +243,7 @@ class Visualiser:
         self,
         canvas: np.ndarray,
         pipeline_res: PipelineResult,
+        per_edge_iou: list[float] | None = None,
     ) -> None:
         """Draw cut-gap masks and boxes."""
         overlay = canvas.copy()
@@ -261,7 +264,7 @@ class Visualiser:
                 canvas,
             )
 
-        for det in pipeline_res.edge_detections:
+        for i, det in enumerate(pipeline_res.edge_detections):
             x1, y1, x2, y2 = det.box_xyxy.astype(int)
 
             cv2.rectangle(
@@ -272,7 +275,11 @@ class Visualiser:
                 2,
             )
 
-            label = f"Cut gap (conf:{det.score:.2f})"
+            iou_val = per_edge_iou[i] if per_edge_iou and i < len(per_edge_iou) else None
+            if iou_val is not None:
+                label = f"Cut gap  conf:{det.score:.2f}  IoU:{iou_val:.2f}"
+            else:
+                label = f"Cut gap (conf:{det.score:.2f})"
 
             (lw, lh), _ = cv2.getTextSize(
                 label,

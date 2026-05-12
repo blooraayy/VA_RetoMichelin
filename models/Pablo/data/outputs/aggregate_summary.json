@@ -1,7 +1,7 @@
 [
   {
-    "image_path": "data/images\\Multimedia_31.jpg",
-    "elapsed_s": 16.509,
+    "image_path": "data/images/Multimedia_31.jpg",
+    "elapsed_s": 22.973,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -62,8 +62,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_32.jpg",
-    "elapsed_s": 2.553,
+    "image_path": "data/images/Multimedia_32.jpg",
+    "elapsed_s": 4.772,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -124,8 +124,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_33.jpg",
-    "elapsed_s": 2.888,
+    "image_path": "data/images/Multimedia_33.jpg",
+    "elapsed_s": 5.856,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -186,8 +186,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_34.jpg",
-    "elapsed_s": 2.575,
+    "image_path": "data/images/Multimedia_34.jpg",
+    "elapsed_s": 7.161,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -246,8 +246,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_35.jpg",
-    "elapsed_s": 5.166,
+    "image_path": "data/images/Multimedia_35.jpg",
+    "elapsed_s": 13.873,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 1,
@@ -284,8 +284,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_36.jpg",
-    "elapsed_s": 5.53,
+    "image_path": "data/images/Multimedia_36.jpg",
+    "elapsed_s": 14.276,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -346,8 +346,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_37.jpg",
-    "elapsed_s": 2.785,
+    "image_path": "data/images/Multimedia_37.jpg",
+    "elapsed_s": 7.173,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -406,8 +406,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_38.jpg",
-    "elapsed_s": 4.836,
+    "image_path": "data/images/Multimedia_38.jpg",
+    "elapsed_s": 12.858,
     "calibration_valid": false,
     "n_qr": 2,
     "n_edges": 2,
@@ -438,8 +438,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_39.jpg",
-    "elapsed_s": 2.701,
+    "image_path": "data/images/Multimedia_39.jpg",
+    "elapsed_s": 5.719,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -500,8 +500,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_40.jpg",
-    "elapsed_s": 2.473,
+    "image_path": "data/images/Multimedia_40.jpg",
+    "elapsed_s": 6.694,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -562,8 +562,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_41.jpg",
-    "elapsed_s": 2.879,
+    "image_path": "data/images/Multimedia_41.jpg",
+    "elapsed_s": 7.126,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -624,8 +624,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_42.jpg",
-    "elapsed_s": 2.616,
+    "image_path": "data/images/Multimedia_42.jpg",
+    "elapsed_s": 6.314,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -684,8 +684,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_43.jpg",
-    "elapsed_s": 2.653,
+    "image_path": "data/images/Multimedia_43.jpg",
+    "elapsed_s": 5.929,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -746,8 +746,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_44.jpg",
-    "elapsed_s": 4.367,
+    "image_path": "data/images/Multimedia_44.jpg",
+    "elapsed_s": 11.48,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -806,8 +806,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_45.jpg",
-    "elapsed_s": 3.08,
+    "image_path": "data/images/Multimedia_45.jpg",
+    "elapsed_s": 7.863,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -866,8 +866,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_46.jpg",
-    "elapsed_s": 3.09,
+    "image_path": "data/images/Multimedia_46.jpg",
+    "elapsed_s": 9.429,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -926,8 +926,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_47.jpg",
-    "elapsed_s": 5.251,
+    "image_path": "data/images/Multimedia_47.jpg",
+    "elapsed_s": 13.007,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 2,
@@ -986,8 +986,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_48.jpg",
-    "elapsed_s": 4.635,
+    "image_path": "data/images/Multimedia_48.jpg",
+    "elapsed_s": 12.023,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 0,
@@ -1006,8 +1006,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_49.jpg",
-    "elapsed_s": 4.435,
+    "image_path": "data/images/Multimedia_49.jpg",
+    "elapsed_s": 10.958,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 0,
@@ -1026,8 +1026,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_50.jpg",
-    "elapsed_s": 4.734,
+    "image_path": "data/images/Multimedia_50.jpg",
+    "elapsed_s": 12.471,
     "calibration_valid": true,
     "n_qr": 3,
     "n_edges": 0,
@@ -1046,8 +1046,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_51.jpg",
-    "elapsed_s": 4.735,
+    "image_path": "data/images/Multimedia_51.jpg",
+    "elapsed_s": 13.384,
     "calibration_valid": false,
     "n_qr": 3,
     "n_edges": 0,
@@ -1066,8 +1066,8 @@
     }
   },
   {
-    "image_path": "data/images\\Multimedia_52.jpg",
-    "elapsed_s": 4.86,
+    "image_path": "data/images/Multimedia_52.jpg",
+    "elapsed_s": 13.576,
     "calibration_valid": false,
     "n_qr": 3,
     "n_edges": 0,

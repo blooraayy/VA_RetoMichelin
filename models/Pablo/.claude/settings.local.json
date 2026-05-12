@@ -4,7 +4,8 @@
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\ruizm\\\\Escritorio\\\\VA_RetoMichelin\\\\models\\\\Pablo\" -Recurse -Force)",
       "Bash(Select-Object FullName)",
       "Bash(Sort-Object FullName)",
-      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\ruizm\\\\Escritorio\\\\VA_RetoMichelin\\\\models\\\\Pablo\" -Recurse | Where-Object { $_.Extension -match \"\\\\.\\(py|json|csv|txt|ipynb\\)\" } | Select-Object FullName)"
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\ruizm\\\\Escritorio\\\\VA_RetoMichelin\\\\models\\\\Pablo\" -Recurse | Where-Object { $_.Extension -match \"\\\\.\\(py|json|csv|txt|ipynb\\)\" } | Select-Object FullName)",
+      "Bash(dir C:\\\\Users\\\\ruizm\\\\Escritorio\\\\VA_RetoMichelin\\\\models\\\\David\\\\outputs *)"
     ]
   }
 }
