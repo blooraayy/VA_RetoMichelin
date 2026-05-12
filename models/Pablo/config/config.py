@@ -49,7 +49,7 @@ USE_CLASSICAL_FALLBACK = True
 CLASSICAL_FALLBACK_MAX_DETECTIONS = 2
 
 # ── Post-detection filters ───────────────────────────────────────────────────
-QR_MAX_AREA_FRAC      = 0.05
+QR_MAX_AREA_FRAC      = 0.012
 QR_MIN_AREA_FRAC      = 1e-5
 QR_ASPECT_RATIO_MIN   = 0.6
 QR_ASPECT_RATIO_MAX   = 1.7
