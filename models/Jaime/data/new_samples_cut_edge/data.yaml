@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 2
+names: ['cut_edge', 'qr_code']
+
+roboflow:
+  workspace: pablos-workspace-lg5ac
+  project: michelin-proyect-challenge-seg
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/pablos-workspace-lg5ac/michelin-proyect-challenge-seg/dataset/1
