@@ -56,10 +56,12 @@ class MeasurementEngine:
         meas = GeometricMeasurements()
         W    = result.image_shape[1]
 
-        bottom_left_mm  = self.calibrator.pixel_to_mm(
-            (0.0, float(self.img_height_px - 1)), homography)
-        bottom_right_mm = self.calibrator.pixel_to_mm(
-            (float(W - 1), float(self.img_height_px - 1)), homography)
+        if result.qr_detections:
+            ref_y_px = float(max(det.box_xyxy[3] for det in result.qr_detections))
+        else:
+            ref_y_px = float(self.img_height_px - 1)
+        bottom_left_mm  = self.calibrator.pixel_to_mm((0.0, ref_y_px), homography)
+        bottom_right_mm = self.calibrator.pixel_to_mm((float(W - 1), ref_y_px), homography)
         table_bottom_y_mm = (bottom_left_mm[1] + bottom_right_mm[1]) / 2.0
 
         edge_centres_y_mm: list[float] = []
@@ -189,7 +191,10 @@ class MetricEvaluator:
 
         # ── Distance RMSE / MAE ──────────────────────────────────────────────
         if homography is not None and qr_calibrator is not None:
-            gt_dists = self._gt_to_distances(gt, homography, qr_calibrator, H, W)
+            gt_dists = self._gt_to_distances(
+                gt, homography, qr_calibrator, H, W,
+                qr_detections=pipeline_result.qr_detections,
+            )
 
             # Greedy one-to-one matching by mask IoU.
             # Only matched true positives contribute to the geometric error;
@@ -235,7 +240,8 @@ class MetricEvaluator:
 
     @staticmethod
     def _gt_to_distances(
-        gt, homography, qr_calibrator, H: int, W: int
+        gt, homography, qr_calibrator, H: int, W: int,
+        qr_detections=None,
     ) -> list[np.ndarray]:
         """Convert GT cut-edge masks into bottom-edge distances in mm.
 
@@ -246,8 +252,12 @@ class MetricEvaluator:
         # Local import avoids adding any extra model-loading side effect.
         from model.grounded_sam import GroundedSAMModel
 
-        bl = qr_calibrator.pixel_to_mm((0.0, float(H - 1)), homography)
-        br = qr_calibrator.pixel_to_mm((float(W - 1), float(H - 1)), homography)
+        if qr_detections:
+            ref_y_px = float(max(det.box_xyxy[3] for det in qr_detections))
+        else:
+            ref_y_px = float(H - 1)
+        bl = qr_calibrator.pixel_to_mm((0.0, ref_y_px), homography)
+        br = qr_calibrator.pixel_to_mm((float(W - 1), ref_y_px), homography)
         table_bottom_y_mm = (bl[1] + br[1]) / 2.0
 
         dists_list = []

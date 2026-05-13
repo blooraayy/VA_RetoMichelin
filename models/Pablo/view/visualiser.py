@@ -314,7 +314,10 @@ class Visualiser:
         P6-P10 correspond to the opposite border.
         """
         H, W = canvas.shape[:2]
-        bottom_y = H - 1
+        if pipeline_res.qr_detections:
+            bottom_y = int(max(det.box_xyxy[3] for det in pipeline_res.qr_detections))
+        else:
+            bottom_y = H - 1
 
         cv2.line(
             canvas,
