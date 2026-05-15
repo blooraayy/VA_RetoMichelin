@@ -21,6 +21,7 @@ from config.config import (
     PROMPT_QR, PROMPT_STRIP, PROMPT_CUT_CANDIDATES,
     GDINO_BOX_THRESHOLD,     GDINO_TEXT_THRESHOLD,
     GDINO_BOX_THRESHOLD_CUT, GDINO_TEXT_THRESHOLD_CUT,
+    GDINO_BOX_THRESHOLD_CUT_FALLBACK, GDINO_TEXT_THRESHOLD_CUT_FALLBACK,
     NUM_SAMPLE_POINTS, DEVICE,
     QR_MAX_AREA_FRAC, QR_MIN_AREA_FRAC,
     QR_ASPECT_RATIO_MIN, QR_ASPECT_RATIO_MAX,
@@ -28,8 +29,9 @@ from config.config import (
     CUT_MIN_AREA_FRAC_OF_STRIP, CUT_MAX_AREA_FRAC_OF_STRIP,
     CUT_MIN_ASPECT_RATIO,
     NMS_IOU_THRESHOLD,
+    STRIP_MAX_DETECTIONS,
 )
-from utils.utils import bgr_to_rgb, sample_points_along_contour
+from utils.utils import bgr_to_rgb
 
 
 # ── Data classes ─────────────────────────────────────────────────────────────
@@ -130,6 +132,7 @@ class GroundedSAMModel:
             aspect_max=QR_ASPECT_RATIO_MAX,
         )
         qr_detections = self._segment_boxes(qr_boxes, qr_scores, "qr_code", H, W)
+        qr_detections = qr_detections[:3]   # at most 3 calibration markers
         print(f"[Stage 0] QR  raw={len(qr_boxes_raw)}  kept={len(qr_detections)}")
 
         # ── Stage 1 : rubber strips ──────────────────────────────────────
@@ -145,29 +148,58 @@ class GroundedSAMModel:
             aspect_max=None,
         )
         strip_detections = self._segment_boxes(strip_boxes, strip_scores, "strip", H, W)
+        strip_detections = strip_detections[:STRIP_MAX_DETECTIONS]
         print(f"[Stage 1] STRIP raw={len(strip_boxes_raw)}  kept={len(strip_detections)}")
-        if len(strip_detections) == 0:
-            print("[Stage 1] No strip detected. Using full image as fallback ROI.")
-            full_box = np.array([0, 0, W - 1, H - 1], dtype=np.float32)
-            strip_detections = [
-                DetectionResult(
-                    label="strip_fallback_full_image",
-                    score=1.0,
-                    box_xyxy=full_box,
-                    mask=np.ones((H, W), dtype=bool),
-                )
-            ]
 
         # ── Stage 2 : cut edge inside each strip ─────────────────────────
         edge_detections = []
         edge_sample_points = []
 
+        # First pass — normal DINO threshold on all strips.
+        strip_had_cut = [False] * len(strip_detections)
         for strip_idx, strip_det in enumerate(strip_detections):
             cuts = self._detect_cut_in_strip(image_rgb, strip_det, H, W, strip_idx)
+            if cuts:
+                strip_had_cut[strip_idx] = True
             for cut in cuts:
                 edge_detections.append(cut)
-                pts = self._extract_edge_centerline(cut.mask)
-                edge_sample_points.append(pts)
+                edge_sample_points.append(self._extract_cut_gap_borders(cut.mask, n_points=NUM_SAMPLE_POINTS))
+
+        # Second pass — lower DINO threshold only on strips that yielded nothing,
+        # and only when at least one other strip already found a cut.
+        # This recovers second cuts without generating FP in no-cut images.
+        if any(strip_had_cut):
+            for strip_idx, strip_det in enumerate(strip_detections):
+                if strip_had_cut[strip_idx]:
+                    continue
+                cuts = self._detect_cut_in_strip(
+                    image_rgb, strip_det, H, W, strip_idx,
+                    box_thr=GDINO_BOX_THRESHOLD_CUT_FALLBACK,
+                    text_thr=GDINO_TEXT_THRESHOLD_CUT_FALLBACK,
+                )
+                for cut in cuts:
+                    edge_detections.append(cut)
+                    edge_sample_points.append(self._extract_cut_gap_borders(cut.mask, n_points=NUM_SAMPLE_POINTS))
+
+        # Third pass — classical gradient fallback for strips still missing a cut,
+        # only when DINO already found at least one anchor cut (ensures no-cut
+        # images stay at 0 detections).
+        if any(strip_had_cut) and len(edge_detections) < min(len(strip_detections), 2):
+            classical_dets, classical_pts = self._conditioned_classical_fallback(
+                image_bgr=image_bgr,
+                strip_detections=strip_detections,
+                H=H,
+                W=W,
+                max_new=2 - len(edge_detections),
+                existing_edges=edge_detections,
+            )
+            edge_detections.extend(classical_dets)
+            edge_sample_points.extend(classical_pts)
+
+        if len(edge_detections) > 1:
+            edge_detections, edge_sample_points = self._deduplicate_edges(
+                edge_detections, edge_sample_points
+            )
 
         print(f"[Stage 2] CUT detected={len(edge_detections)}")
 
@@ -189,6 +221,8 @@ class GroundedSAMModel:
         H:          int,
         W:          int,
         strip_idx:  int,
+        box_thr:    float = GDINO_BOX_THRESHOLD_CUT,
+        text_thr:   float = GDINO_TEXT_THRESHOLD_CUT,
     ) -> list[DetectionResult]:
         """Try several prompts on the strip's ROI; keep best valid cut."""
         x1, y1, x2, y2 = strip_det.box_xyxy.astype(int)
@@ -201,7 +235,6 @@ class GroundedSAMModel:
         roi_rgb = image_rgb[y1:y2, x1:x2]
         roi_h, roi_w = roi_rgb.shape[:2]
         roi_area = float(roi_h * roi_w)
-        is_fallback_roi = strip_det.label.startswith("strip_fallback")
 
         # The strip's longer side dictates which orientation a cut should have.
         strip_is_horizontal = roi_w >= roi_h
@@ -209,8 +242,8 @@ class GroundedSAMModel:
         for prompt in PROMPT_CUT_CANDIDATES:
             boxes, scores = self._detect_hf(
                 roi_rgb, prompt,
-                box_thr=GDINO_BOX_THRESHOLD_CUT,
-                text_thr=GDINO_TEXT_THRESHOLD_CUT,
+                box_thr=box_thr,
+                text_thr=text_thr,
             )
             if len(boxes) == 0:
                 continue
@@ -221,14 +254,6 @@ class GroundedSAMModel:
                 bx1, by1, bx2, by2 = box
                 bw = max(bx2 - bx1, 1.0)
                 bh = max(by2 - by1, 1.0)
-
-                margin_x = 0.05 * roi_w
-                margin_y = 0.05 * roi_h
-
-                # Avoid detections too close to the outer border of the strip ROI
-                if bx1 < margin_x or bx2 > roi_w - margin_x or by1 < margin_y or by2 > roi_h - margin_y:
-                    continue
-
                 area_frac = (bw * bh) / roi_area
                 aspect = max(bw, bh) / min(bw, bh)
 
@@ -239,15 +264,11 @@ class GroundedSAMModel:
                 # Cut must be perpendicular to the strip's long axis:
                 #  - horizontal strip → cut is vertical (bh > bw)
                 #  - vertical   strip → cut is horizontal (bw > bh)
-                if not is_fallback_roi:
-                    cut_is_vertical = bh > bw
-
-                    if strip_is_horizontal and not cut_is_vertical:
-                        continue
-                
-                    if (not strip_is_horizontal) and cut_is_vertical:
-                        continue
-
+                cut_is_vertical = bh > bw
+                if strip_is_horizontal and not cut_is_vertical:
+                    continue
+                if (not strip_is_horizontal) and cut_is_vertical:
+                    continue
                 keep_idx.append(i)
 
             if not keep_idx:
@@ -256,19 +277,15 @@ class GroundedSAMModel:
             boxes  = boxes[keep_idx]
             scores = scores[keep_idx]
 
-            # NMS on the survivors
+            # NMS on the survivors; keep only the top-scoring detection per strip.
+            # One rubber strip can have at most one cut, so a single detection is correct.
             from torchvision.ops import nms
             t_b = torch.from_numpy(boxes).float()
             t_s = torch.from_numpy(scores).float()
             keep = nms(t_b, t_s, iou_threshold=NMS_IOU_THRESHOLD).cpu().numpy()
+            keep = keep[:1]
             boxes  = boxes[keep]
             scores = scores[keep]
-
-            # Keep only the best candidate for this strip
-            if len(boxes) > 1:
-                best_idx = int(np.argmax(scores))
-                boxes = boxes[[best_idx]]
-                scores = scores[[best_idx]]
 
             # Map ROI boxes back to full-image coords
             full_boxes = boxes.copy()
@@ -278,9 +295,6 @@ class GroundedSAMModel:
             print(f"  [Stage 2 / strip {strip_idx}] prompt='{prompt}' "
                   f"→ {len(full_boxes)} cut candidate(s) kept")
 
-            print(f"    selected boxes full image: {full_boxes.tolist()}")
-            print(f"    selected scores: {scores.tolist()}")
-            
             return self._segment_boxes(full_boxes, scores, "cut_edge", H, W)
 
         print(f"  [Stage 2 / strip {strip_idx}] no cut detected with any prompt")
@@ -403,7 +417,404 @@ class GroundedSAMModel:
             ))
         return results
 
+
+    # ── Cut-gap post-processing / conditioned fallback ───────────────────────
+
+    @staticmethod
+    def _clip_box(box: np.ndarray | list[float], W: int, H: int) -> np.ndarray:
+        x1, y1, x2, y2 = [float(v) for v in box]
+        x1 = max(0.0, min(float(W - 1), x1))
+        x2 = max(0.0, min(float(W - 1), x2))
+        y1 = max(0.0, min(float(H - 1), y1))
+        y2 = max(0.0, min(float(H - 1), y2))
+        if x2 < x1:
+            x1, x2 = x2, x1
+        if y2 < y1:
+            y1, y2 = y2, y1
+        return np.array([x1, y1, x2, y2], dtype=np.float32)
+
+    @staticmethod
+    def _box_intersection_area(a: np.ndarray, b: np.ndarray) -> float:
+        x1 = max(float(a[0]), float(b[0]))
+        y1 = max(float(a[1]), float(b[1]))
+        x2 = min(float(a[2]), float(b[2]))
+        y2 = min(float(a[3]), float(b[3]))
+        return max(0.0, x2 - x1) * max(0.0, y2 - y1)
+
+    @staticmethod
+    def _is_valid_cutgap_box(
+        box: np.ndarray,
+        W: int,
+        H: int,
+        strip_box: Optional[np.ndarray] = None,
+    ) -> bool:
+        """Final geometry filter for cut-gap boxes.
+
+        It removes false positives near the image border and shapes that are not
+        plausible long, thin gaps. If a strip box is provided, the cut must lie
+        mostly inside that strip.
+        """
+        x1, y1, x2, y2 = [float(v) for v in box]
+        bw = max(1.0, x2 - x1)
+        bh = max(1.0, y2 - y1)
+        long_side = max(bw, bh)
+        short_side = min(bw, bh)
+        aspect = long_side / short_side
+
+        if aspect < 3.0:
+            return False
+        if long_side < 0.05 * max(W, H):
+            return False
+        if long_side > 0.70 * max(W, H):
+            return False
+        if short_side > 0.13 * min(W, H):
+            return False
+
+        # Avoid detections stuck to the image frame, common in no-cut images.
+        margin_x = 0.025 * W
+        margin_y = 0.025 * H
+        touches_img_border = (
+            x1 <= margin_x or x2 >= W - margin_x or
+            y1 <= margin_y or y2 >= H - margin_y
+        )
+        if touches_img_border:
+            return False
+
+        if strip_box is not None:
+            inter = GroundedSAMModel._box_intersection_area(box, strip_box)
+            area = bw * bh
+            if area <= 0 or inter / area < 0.75:
+                return False
+
+        return True
+
+    @staticmethod
+    def _make_rect_mask(box: np.ndarray, H: int, W: int) -> np.ndarray:
+        mask = np.zeros((H, W), dtype=np.uint8)
+        x1, y1, x2, y2 = GroundedSAMModel._clip_box(box, W, H).astype(int)
+        cv2.rectangle(mask, (x1, y1), (x2, y2), 1, -1)
+        return mask.astype(bool)
+
+    @staticmethod
+    def _associated_strip_box(
+        edge_box: np.ndarray,
+        strip_detections: list[DetectionResult],
+    ) -> Optional[np.ndarray]:
+        if not strip_detections:
+            return None
+        best = None
+        best_inter = 0.0
+        for strip in strip_detections:
+            sbox = strip.box_xyxy.astype(np.float32)
+            inter = GroundedSAMModel._box_intersection_area(edge_box, sbox)
+            if inter > best_inter:
+                best_inter = inter
+                best = sbox
+        return best
+
+    @staticmethod
+    def _edge_strength_profile(
+        gray: np.ndarray,
+        strip_box: np.ndarray,
+        orientation: str,
+    ) -> tuple[np.ndarray | None, np.ndarray | None]:
+        H, W = gray.shape[:2]
+        sx1, sy1, sx2, sy2 = GroundedSAMModel._clip_box(strip_box, W, H).astype(int)
+        roi = gray[sy1:sy2, sx1:sx2]
+        if roi.size == 0:
+            return None, None
+
+        roi = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8)).apply(roi)
+        roi = cv2.GaussianBlur(roi, (5, 5), 0)
+        grad_x = cv2.Sobel(roi, cv2.CV_32F, 1, 0, ksize=3)
+        grad_y = cv2.Sobel(roi, cv2.CV_32F, 0, 1, ksize=3)
+
+        if orientation == "vertical":
+            profile = np.mean(np.abs(grad_x), axis=0)
+            coords = np.arange(sx1, sx2, dtype=np.float32)
+        else:
+            profile = np.mean(np.abs(grad_y), axis=1)
+            coords = np.arange(sy1, sy2, dtype=np.float32)
+
+        if len(profile) >= 9:
+            profile = cv2.GaussianBlur(profile.reshape(1, -1), (1, 9), 0).ravel()
+        return coords, profile
+
+    @staticmethod
+    def _complete_second_border(
+        image_bgr: np.ndarray,
+        edge_box: np.ndarray,
+        strip_box: Optional[np.ndarray],
+        H: int,
+        W: int,
+    ) -> np.ndarray:
+        """If a detection covers only one side, expand it towards a parallel edge.
+
+        The method searches a nearby strong parallel gradient inside the same
+        strip and merges both borders into a single gap box.
+        """
+        if strip_box is None:
+            return edge_box
+
+        gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
+        x1, y1, x2, y2 = [float(v) for v in edge_box]
+        bw, bh = max(1.0, x2 - x1), max(1.0, y2 - y1)
+        orientation = "vertical" if bh >= bw else "horizontal"
+        coords, profile = GroundedSAMModel._edge_strength_profile(gray, strip_box, orientation)
+        if coords is None or profile is None or len(coords) < 10:
+            return edge_box
+
+        base = 0.5 * (x1 + x2) if orientation == "vertical" else 0.5 * (y1 + y2)
+        # Search nearby; gaps in the dataset are generally thin but visible.
+        search_min, search_max = 6.0, 55.0
+        cand_mask = (
+            ((coords >= base + search_min) & (coords <= base + search_max)) |
+            ((coords <= base - search_min) & (coords >= base - search_max))
+        )
+        idxs = np.where(cand_mask)[0]
+        if len(idxs) == 0:
+            return edge_box
+
+        local = profile[idxs]
+        if local.max() < max(5.0, float(profile.mean() + 0.7 * profile.std())):
+            return edge_box
+        second = float(coords[idxs[int(np.argmax(local))]])
+
+        if orientation == "vertical":
+            half = max(2.0, bw * 0.35)
+            second_box = np.array([second - half, y1, second + half, y2], dtype=np.float32)
+        else:
+            half = max(2.0, bh * 0.35)
+            second_box = np.array([x1, second - half, x2, second + half], dtype=np.float32)
+
+        merged = np.array([
+            min(edge_box[0], second_box[0]),
+            min(edge_box[1], second_box[1]),
+            max(edge_box[2], second_box[2]),
+            max(edge_box[3], second_box[3]),
+        ], dtype=np.float32)
+        return GroundedSAMModel._clip_box(merged, W, H)
+
+    def _conditioned_classical_fallback(
+        self,
+        image_bgr: np.ndarray,
+        strip_detections: list[DetectionResult],
+        H: int,
+        W: int,
+        max_new: int = 2,
+        existing_edges: Optional[list[DetectionResult]] = None,
+    ) -> tuple[list[DetectionResult], list[np.ndarray]]:
+        """Classical fallback restricted to strip boxes only.
+
+        It is used only to recover missing cuts, never as a free full-image
+        detector. This targets M35/M36/M37-like false negatives while reducing
+        false positives in no-cut images.
+        """
+        gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
+        new_dets: list[DetectionResult] = []
+        new_pts: list[np.ndarray] = []
+        existing_edges = existing_edges or []
+
+        for strip in strip_detections:
+            if len(new_dets) >= max_new:
+                break
+            sbox = strip.box_xyxy.astype(np.float32)
+
+            # Skip strips already containing a detected cut.
+            already = False
+            for edge in existing_edges + new_dets:
+                inter = self._box_intersection_area(edge.box_xyxy, sbox)
+                area = max(1.0, (edge.box_xyxy[2] - edge.box_xyxy[0]) * (edge.box_xyxy[3] - edge.box_xyxy[1]))
+                if inter / area > 0.55:
+                    already = True
+                    break
+            if already:
+                continue
+
+            sx1, sy1, sx2, sy2 = self._clip_box(sbox, W, H).astype(int)
+            roi = gray[sy1:sy2, sx1:sx2]
+            if roi.size == 0:
+                continue
+            sw, sh = max(1, sx2 - sx1), max(1, sy2 - sy1)
+
+            strip_is_horizontal = sw >= sh
+            cut_orientation = "vertical" if strip_is_horizontal else "horizontal"
+            coords, profile = self._edge_strength_profile(gray, sbox, cut_orientation)
+            if coords is None or profile is None or len(coords) < 20:
+                continue
+
+            valid = np.zeros_like(profile, dtype=bool)
+            valid[int(0.08 * len(profile)): int(0.92 * len(profile))] = True
+            local = profile.copy()
+            local[~valid] = 0
+            peak = float(local.max())
+            if peak < max(7.0, float(profile.mean() + 1.3 * profile.std())):
+                continue
+            idx = int(np.argmax(local))
+            coord = float(coords[idx])
+
+            if cut_orientation == "vertical":
+                box = np.array([
+                    coord - 8,
+                    sy1 + 0.06 * sh,
+                    coord + 8,
+                    sy2 - 0.06 * sh,
+                ], dtype=np.float32)
+            else:
+                box = np.array([
+                    sx1 + 0.06 * sw,
+                    coord - 8,
+                    sx2 - 0.06 * sw,
+                    coord + 8,
+                ], dtype=np.float32)
+
+            box = self._clip_box(box, W, H)
+            if not self._is_valid_cutgap_box(box, W, H, strip_box=sbox):
+                continue
+            box = self._complete_second_border(image_bgr, box, sbox, H, W)
+            mask = self._make_rect_mask(box, H, W)
+            det = DetectionResult("cut_edge_classical", 0.10, box, mask)
+            new_dets.append(det)
+            new_pts.append(self._extract_cut_gap_borders(mask))
+            print(f"[Stage 2] Conditioned classical fallback recovered cut: {box.tolist()}")
+
+        return new_dets, new_pts
+
+    def _postprocess_edges(
+        self,
+        image_bgr: np.ndarray,
+        edge_detections: list[DetectionResult],
+        edge_sample_points: list[np.ndarray],
+        strip_detections: list[DetectionResult],
+        H: int,
+        W: int,
+    ) -> tuple[list[DetectionResult], list[np.ndarray]]:
+        """Final filter + double-border completion."""
+        filtered_edges: list[DetectionResult] = []
+        filtered_points: list[np.ndarray] = []
+
+        for det, _pts in zip(edge_detections, edge_sample_points):
+            box = self._clip_box(det.box_xyxy, W, H)
+            strip_box = self._associated_strip_box(box, strip_detections)
+
+            if not self._is_valid_cutgap_box(box, W, H, strip_box=strip_box):
+                print(f"[Stage 2] Removed false positive cut gap: {box.tolist()}")
+                continue
+
+            completed_box = self._complete_second_border(image_bgr, box, strip_box, H, W)
+            mask = self._make_rect_mask(completed_box, H, W)
+
+            new_det = DetectionResult(
+                label=det.label,
+                score=det.score,
+                box_xyxy=completed_box,
+                mask=mask,
+            )
+            filtered_edges.append(new_det)
+            filtered_points.append(self._extract_cut_gap_borders(mask))
+
+        return filtered_edges, filtered_points
+
+    @staticmethod
+    def _deduplicate_edges(
+        edge_detections: list[DetectionResult],
+        edge_sample_points: list[np.ndarray],
+        mask_iou_threshold: float = 0.30,
+    ) -> tuple[list[DetectionResult], list[np.ndarray]]:
+        """Remove duplicate cut-edge detections whose masks overlap."""
+        if len(edge_detections) <= 1:
+            return edge_detections, edge_sample_points
+        n = len(edge_detections)
+        to_remove: set[int] = set()
+        for i in range(n):
+            for j in range(i + 1, n):
+                if i in to_remove or j in to_remove:
+                    continue
+                mi = edge_detections[i].mask
+                mj = edge_detections[j].mask
+                if mi is None or mj is None:
+                    continue
+                inter = float((mi & mj).sum())
+                union = float((mi | mj).sum())
+                if union > 0 and inter / union >= mask_iou_threshold:
+                    loser = j if edge_detections[i].score >= edge_detections[j].score else i
+                    to_remove.add(loser)
+        if not to_remove:
+            return edge_detections, edge_sample_points
+        keep = [k for k in range(n) if k not in to_remove]
+        print(
+            f"[Stage 2] Edge deduplication: removed {len(to_remove)} duplicate(s); "
+            f"{len(keep)} edge(s) remain."
+        )
+        return [edge_detections[k] for k in keep], [edge_sample_points[k] for k in keep]
+
     # ── Edge sampling ────────────────────────────────────────────────────────
+
+    @staticmethod
+    def _extract_cut_gap_borders(
+        mask: np.ndarray,
+        n_points: int = NUM_SAMPLE_POINTS,
+    ) -> np.ndarray:
+        """Extract 5 points from each side of the detected cut gap.
+
+        The mask is treated as the separation between rubber bands:
+        P1-P5 belong to one border, P6-P10 to the opposite border.
+        """
+        if mask is None or mask.sum() == 0:
+            return np.empty((0, 2), dtype=np.float32)
+
+        mask_u8 = mask.astype(np.uint8)
+        num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(mask_u8, connectivity=8)
+        if num_labels <= 1:
+            return GroundedSAMModel._extract_edge_centerline(mask, n_points)
+
+        largest_label = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
+        clean = (labels == largest_label).astype(np.uint8)
+        kernel = np.ones((3, 3), np.uint8)
+        clean = cv2.morphologyEx(clean, cv2.MORPH_CLOSE, kernel, iterations=1)
+        clean = cv2.morphologyEx(clean, cv2.MORPH_OPEN, kernel, iterations=1)
+
+        ys, xs = np.where(clean > 0)
+        if len(xs) == 0:
+            return GroundedSAMModel._extract_edge_centerline(mask, n_points)
+
+        x_min, x_max = int(xs.min()), int(xs.max())
+        y_min, y_max = int(ys.min()), int(ys.max())
+        bw = x_max - x_min + 1
+        bh = y_max - y_min + 1
+        horizontal_gap = bw >= bh
+        n_side = max(1, n_points // 2)
+        border_1, border_2 = [], []
+
+        if horizontal_gap:
+            xs_sample = np.linspace(x_min, x_max, n_side)
+            for x in xs_sample:
+                xi = int(round(x))
+                col = clean[:, xi]
+                ys_col = np.where(col > 0)[0]
+                if len(ys_col) == 0:
+                    ya, yb = float(y_min), float(y_max)
+                else:
+                    ya = float(np.percentile(ys_col, 5))
+                    yb = float(np.percentile(ys_col, 95))
+                border_1.append([float(x), ya])
+                border_2.append([float(x), yb])
+        else:
+            ys_sample = np.linspace(y_min, y_max, n_side)
+            for y in ys_sample:
+                yi = int(round(y))
+                row = clean[yi, :]
+                xs_row = np.where(row > 0)[0]
+                if len(xs_row) == 0:
+                    xa, xb = float(x_min), float(x_max)
+                else:
+                    xa = float(np.percentile(xs_row, 5))
+                    xb = float(np.percentile(xs_row, 95))
+                border_1.append([xa, float(y)])
+                border_2.append([xb, float(y)])
+
+        pts = np.array(border_1 + border_2, dtype=np.float32)
+        return pts if len(pts) else GroundedSAMModel._extract_edge_centerline(mask, n_points)
 
     @staticmethod
     def _extract_edge_centerline(

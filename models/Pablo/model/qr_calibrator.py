@@ -115,6 +115,34 @@ class QRCalibrator:
                 message=f"Homography failed: {exc}",
             )
 
+        # Sanity check: transformed image corners must have a reasonable Y range.
+        # If the QR triangle is degenerate (wrong corners assigned), the Y range
+        # in mm space will be wildly larger than the physical leg length.
+        H_img, W_img = image_shape
+        test_px = np.float32([
+            [0.0,             float(H_img - 1)],
+            [float(W_img - 1), float(H_img - 1)],
+            [0.0,             0.0],
+            [float(W_img - 1), 0.0],
+        ])
+        test_mm = cv2.perspectiveTransform(
+            test_px.reshape(-1, 1, 2), Hm
+        ).reshape(-1, 2)
+        y_range_mm = float(test_mm[:, 1].max() - test_mm[:, 1].min())
+        if y_range_mm > 2.5 * self.qr_leg_mm:
+            return QRResult(
+                centres_px=centres,
+                homography=None,
+                px_per_mm=0.0,
+                success=False,
+                message=(
+                    f"Calibration sanity check failed: transformed Y range "
+                    f"({y_range_mm:.0f} mm) > 2.5 × QR leg "
+                    f"({self.qr_leg_mm:.0f} mm). "
+                    f"Likely wrong QR_LEG_MM or misidentified marker corners."
+                ),
+            )
+
         return QRResult(
             centres_px=centres,
             homography=Hm,
@@ -223,4 +251,12 @@ class QRCalibrator:
 
         leg_px    = float(np.linalg.norm(pts[idx_tr] - pts[idx_tl]))
         px_per_mm = leg_px / L
+
+        # Reject physically implausible scales before the caller uses them.
+        if not (0.2 <= px_per_mm <= 15.0):
+            raise ValueError(
+                f"px_per_mm={px_per_mm:.4f} outside [0.2, 15.0]; "
+                f"check QR_LEG_MM ({L:.0f} mm) or marker positions."
+            )
+
         return H, px_per_mm
