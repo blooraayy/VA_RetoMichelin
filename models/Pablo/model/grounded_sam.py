@@ -151,6 +151,14 @@ class GroundedSAMModel:
         strip_detections = strip_detections[:STRIP_MAX_DETECTIONS]
         print(f"[Stage 1] STRIP raw={len(strip_boxes_raw)}  kept={len(strip_detections)}")
 
+        # Decide whether Stage 2 should be run on a 90°-CW rotated ROI.
+        # Strips placed side-by-side (centres separated horizontally, e.g. M35,
+        # M44) systematically fail; rotating the ROI puts them in the same
+        # configuration as the well-performing M31/M32/M33.
+        rotate_stage2 = self._should_rotate_for_stage2(strip_detections)
+        if rotate_stage2:
+            print("[Stage 2] Strips arranged side-by-side → rotating ROIs 90° CW for cut detection")
+
         # ── Stage 2 : cut edge inside each strip ─────────────────────────
         edge_detections = []
         edge_sample_points = []
@@ -158,7 +166,10 @@ class GroundedSAMModel:
         # First pass — normal DINO threshold on all strips.
         strip_had_cut = [False] * len(strip_detections)
         for strip_idx, strip_det in enumerate(strip_detections):
-            cuts = self._detect_cut_in_strip(image_rgb, strip_det, H, W, strip_idx)
+            cuts = self._detect_cut_in_strip(
+                image_rgb, strip_det, H, W, strip_idx,
+                rotate_roi=rotate_stage2,
+            )
             if cuts:
                 strip_had_cut[strip_idx] = True
             for cut in cuts:
@@ -176,6 +187,7 @@ class GroundedSAMModel:
                     image_rgb, strip_det, H, W, strip_idx,
                     box_thr=GDINO_BOX_THRESHOLD_CUT_FALLBACK,
                     text_thr=GDINO_TEXT_THRESHOLD_CUT_FALLBACK,
+                    rotate_roi=rotate_stage2,
                 )
                 for cut in cuts:
                     edge_detections.append(cut)
@@ -223,8 +235,16 @@ class GroundedSAMModel:
         strip_idx:  int,
         box_thr:    float = GDINO_BOX_THRESHOLD_CUT,
         text_thr:   float = GDINO_TEXT_THRESHOLD_CUT,
+        rotate_roi: bool  = False,
     ) -> list[DetectionResult]:
-        """Try several prompts on the strip's ROI; keep best valid cut."""
+        """Try several prompts on the strip's ROI; keep best valid cut.
+
+        If ``rotate_roi`` is True, the ROI is rotated 90° CW before being fed
+        to DINO; the resulting boxes are rotated back to ROI coordinates
+        before being mapped to the full image. SAM is still called with
+        boxes in original full-image coords (it operates on the un-rotated
+        image already loaded in the predictor).
+        """
         x1, y1, x2, y2 = strip_det.box_xyxy.astype(int)
         x1 = max(0, x1); y1 = max(0, y1)
         x2 = min(W, x2); y2 = min(H, y2)
@@ -236,12 +256,21 @@ class GroundedSAMModel:
         roi_h, roi_w = roi_rgb.shape[:2]
         roi_area = float(roi_h * roi_w)
 
-        # The strip's longer side dictates which orientation a cut should have.
-        strip_is_horizontal = roi_w >= roi_h
+        if rotate_roi:
+            # 90° CW rotation: (roi_h, roi_w) → (roi_w, roi_h)
+            dino_input = cv2.rotate(roi_rgb, cv2.ROTATE_90_CLOCKWISE)
+        else:
+            dino_input = roi_rgb
+
+        din_h, din_w = dino_input.shape[:2]
+
+        # The strip's longer side (in DINO's view) dictates which orientation
+        # a cut should have.
+        strip_is_horizontal = din_w >= din_h
 
         for prompt in PROMPT_CUT_CANDIDATES:
             boxes, scores = self._detect_hf(
-                roi_rgb, prompt,
+                dino_input, prompt,
                 box_thr=box_thr,
                 text_thr=text_thr,
             )
@@ -287,17 +316,27 @@ class GroundedSAMModel:
             boxes  = boxes[keep]
             scores = scores[keep]
 
+            # If we rotated the ROI, map boxes back to original ROI coords.
+            if rotate_roi:
+                roi_boxes = np.stack([
+                    self._box_back_from_cw(b, roi_h_orig=roi_h) for b in boxes
+                ])
+            else:
+                roi_boxes = boxes
+
             # Map ROI boxes back to full-image coords
-            full_boxes = boxes.copy()
+            full_boxes = roi_boxes.copy()
             full_boxes[:, [0, 2]] += x1
             full_boxes[:, [1, 3]] += y1
 
             print(f"  [Stage 2 / strip {strip_idx}] prompt='{prompt}' "
-                  f"→ {len(full_boxes)} cut candidate(s) kept")
+                  f"→ {len(full_boxes)} cut candidate(s) kept"
+                  f"{' (rotated ROI)' if rotate_roi else ''}")
 
             return self._segment_boxes(full_boxes, scores, "cut_edge", H, W)
 
-        print(f"  [Stage 2 / strip {strip_idx}] no cut detected with any prompt")
+        print(f"  [Stage 2 / strip {strip_idx}] no cut detected with any prompt"
+              f"{' (rotated ROI)' if rotate_roi else ''}")
         return []
 
     # ── Detection / segmentation helpers ─────────────────────────────────────
@@ -417,6 +456,67 @@ class GroundedSAMModel:
             ))
         return results
 
+
+    # ── Stage-2 rotation helpers ─────────────────────────────────────────────
+
+    @staticmethod
+    def _should_rotate_for_stage2(
+        strip_detections: list[DetectionResult],
+        spread_ratio_threshold: float = 1.2,
+        single_strip_aspect_threshold: float = 1.2,
+    ) -> bool:
+        """Decide if Stage 2 should rotate ROIs 90° CW.
+
+        With ≥2 strips: compare the spread of strip centres along X vs Y.
+        If centres are spread out more horizontally than vertically the
+        strips lie side-by-side (e.g. M35, M44) and a 90° CW rotation puts
+        them in the well-performing M31/M32/M33 configuration.
+
+        With 1 strip: fall back to the aspect ratio of its SAM mask
+        (or bounding box if mask missing) — a tall mask means a vertical
+        strip that should be rotated.
+        """
+        if len(strip_detections) >= 2:
+            cxs = []
+            cys = []
+            for s in strip_detections:
+                box = s.box_xyxy
+                cxs.append(0.5 * (float(box[0]) + float(box[2])))
+                cys.append(0.5 * (float(box[1]) + float(box[3])))
+            spread_x = max(cxs) - min(cxs)
+            spread_y = max(cys) - min(cys)
+            return spread_x > spread_y * spread_ratio_threshold
+
+        if len(strip_detections) == 1:
+            s = strip_detections[0]
+            extent_x = extent_y = 0.0
+            if s.mask is not None and s.mask.any():
+                ys, xs = np.where(s.mask)
+                extent_x = float(xs.max() - xs.min())
+                extent_y = float(ys.max() - ys.min())
+            else:
+                box = s.box_xyxy
+                extent_x = float(box[2] - box[0])
+                extent_y = float(box[3] - box[1])
+            return extent_y > extent_x * single_strip_aspect_threshold
+
+        return False
+
+    @staticmethod
+    def _box_back_from_cw(box: np.ndarray, roi_h_orig: int) -> np.ndarray:
+        """Convert a bbox from a 90°-CW-rotated ROI back to the original ROI.
+
+        Forward map (per pixel): (x, y) → (roi_h_orig - 1 - y, x).
+        Inverse: (rx, ry) → (ry, roi_h_orig - 1 - rx).
+        """
+        rx1, ry1, rx2, ry2 = [float(v) for v in box]
+        # Two opposite corners of the rotated bbox map back to two opposite
+        # corners of the original-ROI bbox; take the axis-aligned envelope.
+        xs = (ry1, ry2)
+        ys = ((roi_h_orig - 1) - rx1, (roi_h_orig - 1) - rx2)
+        x1, x2 = min(xs), max(xs)
+        y1, y2 = min(ys), max(ys)
+        return np.array([x1, y1, x2, y2], dtype=np.float32)
 
     # ── Cut-gap post-processing / conditioned fallback ───────────────────────
 
