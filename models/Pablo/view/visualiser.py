@@ -66,13 +66,14 @@ class Visualiser:
         detection_canvas = image_bgr.copy()
 
         per_edge_iou = (eval_metrics.per_edge_iou or []) if eval_metrics else []
+        per_qr_iou   = (eval_metrics.per_qr_iou   or []) if eval_metrics else []
 
-        self._draw_qr_detections(detection_canvas, pipeline_res)
+        self._draw_qr_detections(detection_canvas, pipeline_res, per_qr_iou)
         self._draw_edge_detections(detection_canvas, pipeline_res, per_edge_iou)
 
         measurement_canvas = image_bgr.copy()
 
-        self._draw_qr_detections(measurement_canvas, pipeline_res)
+        self._draw_qr_detections(measurement_canvas, pipeline_res, per_qr_iou)
         self._draw_edge_detections(measurement_canvas, pipeline_res, per_edge_iou)
         self._draw_measurement_visuals(
             measurement_canvas,
@@ -192,8 +193,9 @@ class Visualiser:
     def _draw_qr_detections(
         canvas: np.ndarray,
         pipeline_res: PipelineResult,
+        per_qr_iou: list[float] | None = None,
     ) -> None:
-        for det in pipeline_res.qr_detections:
+        for i, det in enumerate(pipeline_res.qr_detections):
             x1, y1, x2, y2 = det.box_xyxy.astype(int)
 
             cv2.rectangle(
@@ -216,7 +218,11 @@ class Visualiser:
                 2,
             )
 
-            label = f"QR (conf:{det.score:.2f})"
+            iou_val = per_qr_iou[i] if per_qr_iou and i < len(per_qr_iou) else None
+            if iou_val is not None:
+                label = f"QR  conf:{det.score:.2f}  IoU:{iou_val:.2f}"
+            else:
+                label = f"QR (conf:{det.score:.2f})"
 
             (lw, lh), _ = cv2.getTextSize(
                 label,
@@ -505,6 +511,8 @@ class Visualiser:
             "image_path":        pipeline_res.image_path,
             "calibration_valid": calibration_valid,
             "n_qr_detected":     len(pipeline_res.qr_detections),
+            "qr_boxes":          [[float(v) for v in det.box_xyxy]
+                                  for det in pipeline_res.qr_detections],
             "n_cut_gaps_detected": len(pipeline_res.edge_detections),
             "edges": [],
         }
@@ -661,6 +669,7 @@ class Visualiser:
                     if eval_metrics.f1 is None
                     else float(eval_metrics.f1)
                 ),
+                "per_qr_iou": [float(v) for v in (eval_metrics.per_qr_iou or [])],
             }
 
         with open(path, "w", encoding="utf-8") as f:

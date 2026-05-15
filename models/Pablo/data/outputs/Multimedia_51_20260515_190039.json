@@ -1,0 +1,41 @@
+{
+  "image_path": "data/images\\Multimedia_51.jpg",
+  "calibration_valid": false,
+  "n_qr_detected": 3,
+  "qr_boxes": [
+    [
+      39.269535064697266,
+      1822.1937255859375,
+      103.09144592285156,
+      1884.801025390625
+    ],
+    [
+      1699.9053955078125,
+      218.22784423828125,
+      1757.5731201171875,
+      278.1944274902344
+    ],
+    [
+      3.2136857509613037,
+      1355.5648193359375,
+      54.363426208496094,
+      1410.5167236328125
+    ]
+  ],
+  "n_cut_gaps_detected": 0,
+  "edges": [],
+  "inter_edge_distances_mm": [],
+  "evaluation": {
+    "rmse_mm": null,
+    "mae_mm": null,
+    "iou": NaN,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "per_qr_iou": [
+      0.676474249024446,
+      0.6523744969397491,
+      0.0
+    ]
+  }
+}

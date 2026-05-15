@@ -37,6 +37,7 @@ class EvaluationMetrics:
     per_edge_iou:     list[float]     = field(default_factory=list)
     per_edge_rmse_mm: list[float]     = field(default_factory=list)
     per_edge_mae_mm:  list[float]     = field(default_factory=list)
+    per_qr_iou:       list[float]     = field(default_factory=list)
 
 
 # ── Geometric measurement ─────────────────────────────────────────────────────
@@ -104,6 +105,17 @@ class MetricEvaluator:
             return float("nan")
         n = min(len(pred), len(gt))
         return float(np.mean(np.abs(pred[:n] - gt[:n])))
+
+    @staticmethod
+    def bbox_iou(a: np.ndarray, b: np.ndarray) -> float:
+        """IoU between two [x1,y1,x2,y2] bounding boxes."""
+        x1 = max(float(a[0]), float(b[0])); y1 = max(float(a[1]), float(b[1]))
+        x2 = min(float(a[2]), float(b[2])); y2 = min(float(a[3]), float(b[3]))
+        inter = max(0.0, x2 - x1) * max(0.0, y2 - y1)
+        area_a = max(0.0, float(a[2]-a[0])) * max(0.0, float(a[3]-a[1]))
+        area_b = max(0.0, float(b[2]-b[0])) * max(0.0, float(b[3]-b[1]))
+        union = area_a + area_b - inter
+        return inter / union if union > 0 else 0.0
 
     @staticmethod
     def iou(pred_mask: np.ndarray, gt_mask: np.ndarray) -> float:
@@ -235,6 +247,18 @@ class MetricEvaluator:
             em.per_edge_mae_mm  = mae_vals
             em.rmse_mm = float(np.nanmean(rmse_vals)) if rmse_vals else float("nan")
             em.mae_mm  = float(np.nanmean(mae_vals))  if mae_vals  else float("nan")
+
+        # ── QR bbox IoU ──────────────────────────────────────────────────────
+        qr_pred_boxes = [det.box_xyxy for det in pipeline_result.qr_detections]
+        gt_qr_boxes   = gt.qr_boxes
+        per_qr_iou = []
+        for pred_box in qr_pred_boxes:
+            best = max(
+                (self.bbox_iou(pred_box, gt_box) for gt_box in gt_qr_boxes),
+                default=0.0,
+            )
+            per_qr_iou.append(best)
+        em.per_qr_iou = per_qr_iou
 
         return em
 
