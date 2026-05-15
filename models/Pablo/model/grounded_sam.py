@@ -27,7 +27,7 @@ from config.config import (
     QR_ASPECT_RATIO_MIN, QR_ASPECT_RATIO_MAX,
     STRIP_MAX_AREA_FRAC, STRIP_MIN_AREA_FRAC,
     CUT_MIN_AREA_FRAC_OF_STRIP, CUT_MAX_AREA_FRAC_OF_STRIP,
-    CUT_MIN_ASPECT_RATIO,
+    CUT_MIN_ASPECT_RATIO, CUT_GAP_BRIGHTNESS_MIN,
     NMS_IOU_THRESHOLD,
     STRIP_MAX_DETECTIONS,
 )
@@ -333,7 +333,24 @@ class GroundedSAMModel:
                   f"→ {len(full_boxes)} cut candidate(s) kept"
                   f"{' (rotated ROI)' if rotate_roi else ''}")
 
-            return self._segment_boxes(full_boxes, scores, "cut_edge", H, W)
+            results = self._segment_boxes(full_boxes, scores, "cut_edge", H, W)
+
+            # Brightness sanity check: a real cut gap shows the white table at
+            # its core. Detections whose central slice is dark are rubber, not
+            # gaps — discard them. Catches FP introduced by rotated ROIs in
+            # cut-less images (M48, M49, M51).
+            kept = []
+            for det in results:
+                p90 = self._gap_centre_brightness(image_rgb, det.box_xyxy)
+                if p90 < CUT_GAP_BRIGHTNESS_MIN:
+                    print(f"  [Stage 2 / strip {strip_idx}] dropped FP: "
+                          f"gap centre p90={p90:.1f} < {CUT_GAP_BRIGHTNESS_MIN}")
+                    continue
+                kept.append(det)
+
+            if not kept:
+                continue
+            return kept
 
         print(f"  [Stage 2 / strip {strip_idx}] no cut detected with any prompt"
               f"{' (rotated ROI)' if rotate_roi else ''}")
@@ -501,6 +518,41 @@ class GroundedSAMModel:
             return extent_y > extent_x * single_strip_aspect_threshold
 
         return False
+
+    @staticmethod
+    def _gap_centre_brightness(
+        image_rgb: np.ndarray,
+        box: np.ndarray,
+        core_frac: float = 0.4,
+    ) -> float:
+        """Return the 90th-percentile grayscale intensity of the bbox core.
+
+        A real cut gap shows the white table at its centre; a false positive
+        inside continuous rubber is uniformly dark. We sample a thin slice
+        perpendicular to the gap's long axis to avoid mixing in the rubber
+        edges that flank the gap.
+        """
+        H, W = image_rgb.shape[:2]
+        x1, y1, x2, y2 = [int(round(float(v))) for v in box]
+        x1 = max(0, x1); y1 = max(0, y1)
+        x2 = min(W, x2); y2 = min(H, y2)
+        if x2 <= x1 or y2 <= y1:
+            return 0.0
+
+        bw, bh = x2 - x1, y2 - y1
+        if bw >= bh:  # horizontal gap → thin horizontal central band
+            cy = (y1 + y2) // 2
+            half = max(1, int(round(bh * core_frac / 2)))
+            sl = image_rgb[max(y1, cy - half): min(y2, cy + half), x1:x2]
+        else:         # vertical gap → thin vertical central band
+            cx = (x1 + x2) // 2
+            half = max(1, int(round(bw * core_frac / 2)))
+            sl = image_rgb[y1:y2, max(x1, cx - half): min(x2, cx + half)]
+
+        if sl.size == 0:
+            return 0.0
+        gray = cv2.cvtColor(sl, cv2.COLOR_RGB2GRAY) if sl.ndim == 3 else sl
+        return float(np.percentile(gray, 90))
 
     @staticmethod
     def _box_back_from_cw(box: np.ndarray, roi_h_orig: int) -> np.ndarray:
