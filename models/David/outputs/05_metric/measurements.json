@@ -4,10 +4,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 2,
     "n_valid_gaps": 2,
-    "image_mean_gap_width_mm": 6.989680290222168,
-    "image_trimmed_mean_gap_width_mm": 6.915673017501831,
-    "image_recommended_gap_width_mm": 6.915673017501831,
-    "image_std_gap_width_mm": 0.4414703845977783,
+    "image_mean_dist_to_bottom_mm": 391.2499694824219,
+    "image_trimmed_mean_dist_to_bottom_mm": 391.25,
+    "image_recommended_dist_to_bottom_mm": 391.25,
+    "image_std_dist_to_bottom_mm": 205.75,
     "measurements": [
       {
         "gap_id": 0,
@@ -31,18 +31,18 @@
         "score": 725.6032041651721,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 6.750788688659668,
-        "median_distance_mm": 6.396821022033691,
-        "trimmed_mean_distance_mm": 6.474202632904053,
-        "trimmed_std_distance_mm": 3.4198341369628906,
-        "std_distance_mm": 4.1063618659973145,
-        "min_distance_mm": 1.8571319580078125,
-        "max_distance_mm": 13.857131958007812,
-        "range_distance_mm": 12.0,
-        "cv_distance": 0.6082788330932944,
-        "robust_cv_distance": 0.5282247607731886,
+        "mean_distance_mm": 596.9999389648438,
+        "median_distance_mm": 597.0,
+        "trimmed_mean_distance_mm": 597.0,
+        "trimmed_std_distance_mm": 61.61018371582031,
+        "std_distance_mm": 77.23245239257812,
+        "min_distance_mm": 476.0,
+        "max_distance_mm": 718.0,
+        "range_distance_mm": 242.0,
+        "cv_distance": 0.12936760517345078,
+        "robust_cv_distance": 0.1031996377149419,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 6.474202632904053,
+        "recommended_distance_mm": 597.0,
         "samples": [
           {
             "image_name": "Multimedia_31.jpg",
@@ -55,7 +55,7 @@
             "point_b_x_px": 184.42857360839844,
             "point_b_y_px": 82.0,
             "distance_px": 13.857131958007812,
-            "distance_mm": 13.857131958007812,
+            "distance_mm": 718.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -69,7 +69,7 @@
             "point_b_x_px": 185.0,
             "point_b_y_px": 108.88888549804688,
             "distance_px": 12.158725799061358,
-            "distance_mm": 12.158725799061358,
+            "distance_mm": 691.1111145019531,
             "used_in_trimmed_mean": true
           },
           {
@@ -83,7 +83,7 @@
             "point_b_x_px": 184.6031876821071,
             "point_b_y_px": 135.77777099609375,
             "distance_px": 10.349212888628244,
-            "distance_mm": 10.349212888628244,
+            "distance_mm": 664.2222290039062,
             "used_in_trimmed_mean": true
           },
           {
@@ -97,7 +97,7 @@
             "point_b_x_px": 184.00001525878906,
             "point_b_y_px": 162.6666717529297,
             "distance_px": 8.1904849098064,
-            "distance_mm": 8.1904849098064,
+            "distance_mm": 637.3333282470703,
             "used_in_trimmed_mean": true
           },
           {
@@ -111,7 +111,7 @@
             "point_b_x_px": 184.00001525878906,
             "point_b_y_px": 189.55555725097656,
             "distance_px": 7.0,
-            "distance_mm": 7.0,
+            "distance_mm": 610.4444427490234,
             "used_in_trimmed_mean": true
           },
           {
@@ -125,7 +125,7 @@
             "point_b_x_px": 183.0,
             "point_b_y_px": 216.44444274902344,
             "distance_px": 5.7936420743353665,
-            "distance_mm": 5.7936420743353665,
+            "distance_mm": 583.5555572509766,
             "used_in_trimmed_mean": true
           },
           {
@@ -139,7 +139,7 @@
             "point_b_x_px": 183.61906578438357,
             "point_b_y_px": 243.33334350585938,
             "distance_px": 3.61903526680544,
-            "distance_mm": 3.61903526680544,
+            "distance_mm": 556.6666564941406,
             "used_in_trimmed_mean": true
           },
           {
@@ -153,7 +153,7 @@
             "point_b_x_px": 185.0,
             "point_b_y_px": 270.22222900390625,
             "distance_px": 2.6825331430882215,
-            "distance_mm": 2.6825331430882215,
+            "distance_mm": 529.7777709960938,
             "used_in_trimmed_mean": true
           },
           {
@@ -167,7 +167,7 @@
             "point_b_x_px": 186.0,
             "point_b_y_px": 297.1111145019531,
             "distance_px": 1.9999847412109375,
-            "distance_mm": 1.9999847412109375,
+            "distance_mm": 502.8888854980469,
             "used_in_trimmed_mean": true
           },
           {
@@ -181,7 +181,7 @@
             "point_b_x_px": 186.42857360839844,
             "point_b_y_px": 324.0,
             "distance_px": 1.8571319580078125,
-            "distance_mm": 1.8571319580078125,
+            "distance_mm": 476.0,
             "used_in_trimmed_mean": false
           }
         ]
@@ -208,18 +208,18 @@
         "score": 516.748386379341,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 7.228571891784668,
-        "median_distance_mm": 7.285713195800781,
-        "trimmed_mean_distance_mm": 7.357143402099609,
-        "trimmed_std_distance_mm": 2.8293204307556152,
-        "std_distance_mm": 3.651216506958008,
-        "min_distance_mm": 0.857147216796875,
-        "max_distance_mm": 12.571426391601562,
-        "range_distance_mm": 11.714279174804688,
-        "cv_distance": 0.505108970571026,
-        "robust_cv_distance": 0.3845677970539725,
+        "mean_distance_mm": 185.5,
+        "median_distance_mm": 185.5,
+        "trimmed_mean_distance_mm": 185.5,
+        "trimmed_std_distance_mm": 38.9518928527832,
+        "std_distance_mm": 48.82878112792969,
+        "min_distance_mm": 109.0,
+        "max_distance_mm": 262.0,
+        "range_distance_mm": 153.0,
+        "cv_distance": 0.26322793060878535,
+        "robust_cv_distance": 0.2099832498802329,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 7.357143402099609,
+        "recommended_distance_mm": 185.5,
         "samples": [
           {
             "image_name": "Multimedia_31.jpg",
@@ -232,7 +232,7 @@
             "point_b_x_px": 184.42857360839844,
             "point_b_y_px": 538.0,
             "distance_px": 0.857147216796875,
-            "distance_mm": 0.857147216796875,
+            "distance_mm": 262.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -246,7 +246,7 @@
             "point_b_x_px": 187.4285888671875,
             "point_b_y_px": 555.0,
             "distance_px": 2.71429443359375,
-            "distance_mm": 2.71429443359375,
+            "distance_mm": 245.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -260,7 +260,7 @@
             "point_b_x_px": 190.28573608398438,
             "point_b_y_px": 572.0,
             "distance_px": 4.285736083984375,
-            "distance_mm": 4.285736083984375,
+            "distance_mm": 228.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -274,7 +274,7 @@
             "point_b_x_px": 192.2857208251953,
             "point_b_y_px": 589.0,
             "distance_px": 6.2857208251953125,
-            "distance_mm": 6.2857208251953125,
+            "distance_mm": 211.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -288,7 +288,7 @@
             "point_b_x_px": 193.0,
             "point_b_y_px": 606.0,
             "distance_px": 6.857147216796875,
-            "distance_mm": 6.857147216796875,
+            "distance_mm": 194.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -302,7 +302,7 @@
             "point_b_x_px": 194.7143096923828,
             "point_b_y_px": 623.0,
             "distance_px": 7.7142791748046875,
-            "distance_mm": 7.7142791748046875,
+            "distance_mm": 177.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -316,7 +316,7 @@
             "point_b_x_px": 196.57142639160156,
             "point_b_y_px": 640.0,
             "distance_px": 8.714263916015625,
-            "distance_mm": 8.714263916015625,
+            "distance_mm": 160.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -330,7 +330,7 @@
             "point_b_x_px": 199.1428680419922,
             "point_b_y_px": 657.0,
             "distance_px": 10.428573608398438,
-            "distance_mm": 10.428573608398438,
+            "distance_mm": 143.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -344,7 +344,7 @@
             "point_b_x_px": 200.85714721679688,
             "point_b_y_px": 674.0,
             "distance_px": 11.857131958007812,
-            "distance_mm": 11.857131958007812,
+            "distance_mm": 126.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -358,7 +358,7 @@
             "point_b_x_px": 203.1428680419922,
             "point_b_y_px": 691.0,
             "distance_px": 12.571426391601562,
-            "distance_mm": 12.571426391601562,
+            "distance_mm": 109.0,
             "used_in_trimmed_mean": false
           }
         ]
@@ -370,10 +370,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 2,
     "n_valid_gaps": 2,
-    "image_mean_gap_width_mm": 6.1293652057647705,
-    "image_trimmed_mean_gap_width_mm": 6.108134984970093,
-    "image_recommended_gap_width_mm": 6.108134984970093,
-    "image_std_gap_width_mm": 0.13790011405944824,
+    "image_mean_dist_to_bottom_mm": 432.75,
+    "image_trimmed_mean_dist_to_bottom_mm": 432.75,
+    "image_recommended_dist_to_bottom_mm": 432.75,
+    "image_std_dist_to_bottom_mm": 207.75,
     "measurements": [
       {
         "gap_id": 0,
@@ -397,18 +397,18 @@
         "score": 537.4491528074426,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 6.119044780731201,
-        "median_distance_mm": 5.547621726989746,
-        "trimmed_mean_distance_mm": 5.9702348709106445,
-        "trimmed_std_distance_mm": 2.7900779247283936,
-        "std_distance_mm": 3.6300721168518066,
-        "min_distance_mm": 0.857147216796875,
-        "max_distance_mm": 12.571426391601562,
-        "range_distance_mm": 11.714279174804688,
-        "cv_distance": 0.593241632792566,
-        "robust_cv_distance": 0.4673313504503418,
+        "mean_distance_mm": 640.5,
+        "median_distance_mm": 640.5,
+        "trimmed_mean_distance_mm": 640.5,
+        "trimmed_std_distance_mm": 42.006954193115234,
+        "std_distance_mm": 52.65849685668945,
+        "min_distance_mm": 558.0,
+        "max_distance_mm": 723.0,
+        "range_distance_mm": 165.0,
+        "cv_distance": 0.0822146711267595,
+        "robust_cv_distance": 0.06558462793616743,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 5.9702348709106445,
+        "recommended_distance_mm": 640.5,
         "samples": [
           {
             "image_name": "Multimedia_32.jpg",
@@ -421,7 +421,7 @@
             "point_b_x_px": 170.42857360839844,
             "point_b_y_px": 77.0,
             "distance_px": 12.571426391601562,
-            "distance_mm": 12.571426391601562,
+            "distance_mm": 723.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -435,7 +435,7 @@
             "point_b_x_px": 171.0,
             "point_b_y_px": 95.33333587646484,
             "distance_px": 10.809514000313357,
-            "distance_mm": 10.809514000313357,
+            "distance_mm": 704.6666641235352,
             "used_in_trimmed_mean": true
           },
           {
@@ -449,7 +449,7 @@
             "point_b_x_px": 171.0,
             "point_b_y_px": 113.66667175292969,
             "distance_px": 9.0,
-            "distance_mm": 9.0,
+            "distance_mm": 686.3333282470703,
             "used_in_trimmed_mean": true
           },
           {
@@ -463,7 +463,7 @@
             "point_b_x_px": 171.0,
             "point_b_y_px": 132.0,
             "distance_px": 7.142852783203125,
-            "distance_mm": 7.142852783203125,
+            "distance_mm": 668.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -477,7 +477,7 @@
             "point_b_x_px": 171.0,
             "point_b_y_px": 150.33334350585938,
             "distance_px": 6.095243907999247,
-            "distance_mm": 6.095243907999247,
+            "distance_mm": 649.6666564941406,
             "used_in_trimmed_mean": true
           },
           {
@@ -491,7 +491,7 @@
             "point_b_x_px": 171.0,
             "point_b_y_px": 168.6666717529297,
             "distance_px": 5.0,
-            "distance_mm": 5.0,
+            "distance_mm": 631.3333282470703,
             "used_in_trimmed_mean": true
           },
           {
@@ -505,7 +505,7 @@
             "point_b_x_px": 172.0,
             "point_b_y_px": 187.0,
             "distance_px": 4.28570556640625,
-            "distance_mm": 4.28570556640625,
+            "distance_mm": 613.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -519,7 +519,7 @@
             "point_b_x_px": 172.0,
             "point_b_y_px": 205.33334350585938,
             "distance_px": 3.9999847412109375,
-            "distance_mm": 3.9999847412109375,
+            "distance_mm": 594.6666564941406,
             "used_in_trimmed_mean": true
           },
           {
@@ -533,7 +533,7 @@
             "point_b_x_px": 172.09525626059622,
             "point_b_y_px": 223.6666717529297,
             "distance_px": 1.4285786948166788,
-            "distance_mm": 1.4285786948166788,
+            "distance_mm": 576.3333282470703,
             "used_in_trimmed_mean": true
           },
           {
@@ -547,7 +547,7 @@
             "point_b_x_px": 173.4285888671875,
             "point_b_y_px": 242.0,
             "distance_px": 0.857147216796875,
-            "distance_mm": 0.857147216796875,
+            "distance_mm": 558.0,
             "used_in_trimmed_mean": false
           }
         ]
@@ -574,18 +574,18 @@
         "score": 435.41196545236477,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 6.13968563079834,
-        "median_distance_mm": 5.984127998352051,
-        "trimmed_mean_distance_mm": 6.246035099029541,
-        "trimmed_std_distance_mm": 2.3007211685180664,
-        "std_distance_mm": 3.0934927463531494,
-        "min_distance_mm": 0.5714263916015625,
-        "max_distance_mm": 10.857147216796875,
-        "range_distance_mm": 10.285720825195312,
-        "cv_distance": 0.5038519775076666,
-        "robust_cv_distance": 0.3683490617712882,
+        "mean_distance_mm": 225.0,
+        "median_distance_mm": 225.0,
+        "trimmed_mean_distance_mm": 225.0,
+        "trimmed_std_distance_mm": 31.059688568115234,
+        "std_distance_mm": 38.93537521362305,
+        "min_distance_mm": 164.0,
+        "max_distance_mm": 286.0,
+        "range_distance_mm": 122.0,
+        "cv_distance": 0.17304611206054688,
+        "robust_cv_distance": 0.1380430603027344,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 6.246035099029541,
+        "recommended_distance_mm": 225.0,
         "samples": [
           {
             "image_name": "Multimedia_32.jpg",
@@ -598,7 +598,7 @@
             "point_b_x_px": 184.2857208251953,
             "point_b_y_px": 514.0,
             "distance_px": 0.5714263916015625,
-            "distance_mm": 0.5714263916015625,
+            "distance_mm": 286.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -612,7 +612,7 @@
             "point_b_x_px": 187.5079495869577,
             "point_b_y_px": 527.5555419921875,
             "distance_px": 2.71429443359375,
-            "distance_mm": 2.71429443359375,
+            "distance_mm": 272.4444580078125,
             "used_in_trimmed_mean": true
           },
           {
@@ -626,7 +626,7 @@
             "point_b_x_px": 189.58729504793882,
             "point_b_y_px": 541.111083984375,
             "distance_px": 3.857147216796875,
-            "distance_mm": 3.857147216796875,
+            "distance_mm": 258.888916015625,
             "used_in_trimmed_mean": true
           },
           {
@@ -640,7 +640,7 @@
             "point_b_x_px": 191.00001525878906,
             "point_b_y_px": 554.6666870117188,
             "distance_px": 5.0000152587890625,
-            "distance_mm": 5.0000152587890625,
+            "distance_mm": 245.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -654,7 +654,7 @@
             "point_b_x_px": 192.00001525878906,
             "point_b_y_px": 568.2222290039062,
             "distance_px": 5.111115228384733,
-            "distance_mm": 5.111115228384733,
+            "distance_mm": 231.77777099609375,
             "used_in_trimmed_mean": true
           },
           {
@@ -668,7 +668,7 @@
             "point_b_x_px": 193.96827770397067,
             "point_b_y_px": 581.7777709960938,
             "distance_px": 6.857140434905887,
-            "distance_mm": 6.857140434905887,
+            "distance_mm": 218.22222900390625,
             "used_in_trimmed_mean": true
           },
           {
@@ -682,7 +682,7 @@
             "point_b_x_px": 196.6190410796553,
             "point_b_y_px": 595.3333129882812,
             "distance_px": 7.99999491404742,
-            "distance_mm": 7.99999491404742,
+            "distance_mm": 204.66668701171875,
             "used_in_trimmed_mean": true
           },
           {
@@ -696,7 +696,7 @@
             "point_b_x_px": 198.8412785604596,
             "point_b_y_px": 608.888916015625,
             "distance_px": 8.857147216796875,
-            "distance_mm": 8.857147216796875,
+            "distance_mm": 191.111083984375,
             "used_in_trimmed_mean": true
           },
           {
@@ -710,7 +710,7 @@
             "point_b_x_px": 200.49208093062043,
             "point_b_y_px": 622.4444580078125,
             "distance_px": 9.571426391601562,
-            "distance_mm": 9.571426391601562,
+            "distance_mm": 177.5555419921875,
             "used_in_trimmed_mean": true
           },
           {
@@ -724,7 +724,7 @@
             "point_b_x_px": 202.4285888671875,
             "point_b_y_px": 636.0,
             "distance_px": 10.857147216796875,
-            "distance_mm": 10.857147216796875,
+            "distance_mm": 164.0,
             "used_in_trimmed_mean": false
           }
         ]
@@ -736,10 +736,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 2,
     "n_valid_gaps": 2,
-    "image_mean_gap_width_mm": 7.02777624130249,
-    "image_trimmed_mean_gap_width_mm": 7.079361915588379,
-    "image_recommended_gap_width_mm": 7.079361915588379,
-    "image_std_gap_width_mm": 0.8908729553222656,
+    "image_mean_dist_to_bottom_mm": 376.5,
+    "image_trimmed_mean_dist_to_bottom_mm": 376.5,
+    "image_recommended_dist_to_bottom_mm": 376.5,
+    "image_std_dist_to_bottom_mm": 209.0,
     "measurements": [
       {
         "gap_id": 0,
@@ -763,18 +763,18 @@
         "score": 732.0177316573357,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 6.393650054931641,
-        "median_distance_mm": 5.5,
-        "trimmed_mean_distance_mm": 6.188488960266113,
-        "trimmed_std_distance_mm": 3.219979763031006,
-        "std_distance_mm": 4.067633628845215,
-        "min_distance_mm": 0.857147216796875,
-        "max_distance_mm": 13.571441650390625,
-        "range_distance_mm": 12.71429443359375,
-        "cv_distance": 0.6361989777197314,
-        "robust_cv_distance": 0.5203176063987909,
+        "mean_distance_mm": 585.5,
+        "median_distance_mm": 585.5,
+        "trimmed_mean_distance_mm": 585.5,
+        "trimmed_std_distance_mm": 62.88311004638672,
+        "std_distance_mm": 78.82815551757812,
+        "min_distance_mm": 462.0,
+        "max_distance_mm": 709.0,
+        "range_distance_mm": 247.0,
+        "cv_distance": 0.13463391207101302,
+        "robust_cv_distance": 0.10740070033541711,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 6.188488960266113,
+        "recommended_distance_mm": 585.5,
         "samples": [
           {
             "image_name": "Multimedia_33.jpg",
@@ -787,7 +787,7 @@
             "point_b_x_px": 198.14288330078125,
             "point_b_y_px": 91.0,
             "distance_px": 13.571441650390625,
-            "distance_mm": 13.571441650390625,
+            "distance_mm": 709.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -801,7 +801,7 @@
             "point_b_x_px": 197.79365055146627,
             "point_b_y_px": 118.44444274902344,
             "distance_px": 11.793650551466271,
-            "distance_mm": 11.793650551466271,
+            "distance_mm": 681.5555572509766,
             "used_in_trimmed_mean": true
           },
           {
@@ -815,7 +815,7 @@
             "point_b_x_px": 197.0,
             "point_b_y_px": 145.88888549804688,
             "distance_px": 9.999969482421875,
-            "distance_mm": 9.999969482421875,
+            "distance_mm": 654.1111145019531,
             "used_in_trimmed_mean": true
           },
           {
@@ -829,7 +829,7 @@
             "point_b_x_px": 195.00001525878906,
             "point_b_y_px": 173.33334350585938,
             "distance_px": 7.809512910433114,
-            "distance_mm": 7.809512910433114,
+            "distance_mm": 626.6666564941406,
             "used_in_trimmed_mean": true
           },
           {
@@ -843,7 +843,7 @@
             "point_b_x_px": 194.00003051757812,
             "point_b_y_px": 200.77777099609375,
             "distance_px": 6.0000152587890625,
-            "distance_mm": 6.0000152587890625,
+            "distance_mm": 599.2222290039062,
             "used_in_trimmed_mean": true
           },
           {
@@ -857,7 +857,7 @@
             "point_b_x_px": 193.0,
             "point_b_y_px": 228.22222900390625,
             "distance_px": 4.9999847412109375,
-            "distance_mm": 4.9999847412109375,
+            "distance_mm": 571.7777709960938,
             "used_in_trimmed_mean": true
           },
           {
@@ -871,7 +871,7 @@
             "point_b_x_px": 193.0,
             "point_b_y_px": 255.6666717529297,
             "distance_px": 3.9047488258220255,
-            "distance_mm": 3.9047488258220255,
+            "distance_mm": 544.3333282470703,
             "used_in_trimmed_mean": true
           },
           {
@@ -885,7 +885,7 @@
             "point_b_x_px": 194.00003051757812,
             "point_b_y_px": 283.1111145019531,
             "distance_px": 3.0000152587890625,
-            "distance_mm": 3.0000152587890625,
+            "distance_mm": 516.8888854980469,
             "used_in_trimmed_mean": true
           },
           {
@@ -899,7 +899,7 @@
             "point_b_x_px": 194.00003051757812,
             "point_b_y_px": 310.5555419921875,
             "distance_px": 2.0000152587890625,
-            "distance_mm": 2.0000152587890625,
+            "distance_mm": 489.4444580078125,
             "used_in_trimmed_mean": true
           },
           {
@@ -913,7 +913,7 @@
             "point_b_x_px": 193.42857360839844,
             "point_b_y_px": 338.0,
             "distance_px": 0.857147216796875,
-            "distance_mm": 0.857147216796875,
+            "distance_mm": 462.0,
             "used_in_trimmed_mean": false
           }
         ]
@@ -940,18 +940,18 @@
         "score": 535.1528421401978,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 7.66190242767334,
-        "median_distance_mm": 8.16666030883789,
-        "trimmed_mean_distance_mm": 7.9702348709106445,
-        "trimmed_std_distance_mm": 2.567124366760254,
-        "std_distance_mm": 3.443912982940674,
-        "min_distance_mm": 0.857147216796875,
-        "max_distance_mm": 12.0,
-        "range_distance_mm": 11.142852783203125,
-        "cv_distance": 0.44948536156006275,
-        "robust_cv_distance": 0.3220889231419783,
+        "mean_distance_mm": 167.5,
+        "median_distance_mm": 167.5,
+        "trimmed_mean_distance_mm": 167.5,
+        "trimmed_std_distance_mm": 40.47941589355469,
+        "std_distance_mm": 50.74363327026367,
+        "min_distance_mm": 88.0,
+        "max_distance_mm": 247.0,
+        "range_distance_mm": 159.0,
+        "cv_distance": 0.3029470643000816,
+        "robust_cv_distance": 0.2416681545883862,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 7.9702348709106445,
+        "recommended_distance_mm": 167.5,
         "samples": [
           {
             "image_name": "Multimedia_33.jpg",
@@ -964,7 +964,7 @@
             "point_b_x_px": 184.42857360839844,
             "point_b_y_px": 553.0,
             "distance_px": 0.857147216796875,
-            "distance_mm": 0.857147216796875,
+            "distance_mm": 247.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -978,7 +978,7 @@
             "point_b_x_px": 186.80953252874315,
             "point_b_y_px": 570.6666870117188,
             "distance_px": 3.428558349609375,
-            "distance_mm": 3.428558349609375,
+            "distance_mm": 229.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -992,7 +992,7 @@
             "point_b_x_px": 189.19048273004591,
             "point_b_y_px": 588.3333129882812,
             "distance_px": 5.190467471256852,
-            "distance_mm": 5.190467471256852,
+            "distance_mm": 211.66668701171875,
             "used_in_trimmed_mean": true
           },
           {
@@ -1006,7 +1006,7 @@
             "point_b_x_px": 191.00001525878906,
             "point_b_y_px": 606.0,
             "distance_px": 7.0,
-            "distance_mm": 7.0,
+            "distance_mm": 194.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1020,7 +1020,7 @@
             "point_b_x_px": 192.00001525878906,
             "point_b_y_px": 623.6666870117188,
             "distance_px": 8.0,
-            "distance_mm": 8.0,
+            "distance_mm": 176.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -1034,7 +1034,7 @@
             "point_b_x_px": 192.33333551324904,
             "point_b_y_px": 641.3333129882812,
             "distance_px": 8.333320254459977,
-            "distance_mm": 8.333320254459977,
+            "distance_mm": 158.66668701171875,
             "used_in_trimmed_mean": true
           },
           {
@@ -1048,7 +1048,7 @@
             "point_b_x_px": 193.71429443359375,
             "point_b_y_px": 659.0,
             "distance_px": 9.714279174804688,
-            "distance_mm": 9.714279174804688,
+            "distance_mm": 141.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1062,7 +1062,7 @@
             "point_b_x_px": 195.23810613714159,
             "point_b_y_px": 676.6666870117188,
             "distance_px": 10.238106137141585,
-            "distance_mm": 10.238106137141585,
+            "distance_mm": 123.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -1076,8 +1076,8 @@
             "point_b_x_px": 197.0,
             "point_b_y_px": 694.3333129882812,
             "distance_px": 12.0,
-            "distance_mm": 12.0,
-            "used_in_trimmed_mean": false
+            "distance_mm": 105.66668701171875,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_33.jpg",
@@ -1090,8 +1090,8 @@
             "point_b_x_px": 198.4285888671875,
             "point_b_y_px": 712.0,
             "distance_px": 11.857147216796875,
-            "distance_mm": 11.857147216796875,
-            "used_in_trimmed_mean": true
+            "distance_mm": 88.0,
+            "used_in_trimmed_mean": false
           }
         ]
       }
@@ -1102,10 +1102,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 2,
     "n_valid_gaps": 2,
-    "image_mean_gap_width_mm": 6.6809515953063965,
-    "image_trimmed_mean_gap_width_mm": 6.761904716491699,
-    "image_recommended_gap_width_mm": 6.761904716491699,
-    "image_std_gap_width_mm": 0.6726226806640625,
+    "image_mean_dist_to_bottom_mm": 408.25,
+    "image_trimmed_mean_dist_to_bottom_mm": 408.25,
+    "image_recommended_dist_to_bottom_mm": 408.25,
+    "image_std_dist_to_bottom_mm": 214.25,
     "measurements": [
       {
         "gap_id": 0,
@@ -1129,18 +1129,18 @@
         "score": 580.5408636134604,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 6.142851829528809,
-        "median_distance_mm": 5.761911392211914,
-        "trimmed_mean_distance_mm": 6.089282035827637,
-        "trimmed_std_distance_mm": 2.670325756072998,
-        "std_distance_mm": 3.430158853530884,
-        "min_distance_mm": 0.8571319580078125,
-        "max_distance_mm": 11.857131958007812,
-        "range_distance_mm": 11.0,
-        "cv_distance": 0.5583984358929257,
-        "robust_cv_distance": 0.4385288348218306,
+        "mean_distance_mm": 622.5,
+        "median_distance_mm": 622.5,
+        "trimmed_mean_distance_mm": 622.5,
+        "trimmed_std_distance_mm": 46.58953094482422,
+        "std_distance_mm": 58.40305709838867,
+        "min_distance_mm": 531.0,
+        "max_distance_mm": 714.0,
+        "range_distance_mm": 183.0,
+        "cv_distance": 0.09382017204560429,
+        "robust_cv_distance": 0.0748426199916855,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 6.089282035827637,
+        "recommended_distance_mm": 622.5,
         "samples": [
           {
             "image_name": "Multimedia_34.jpg",
@@ -1153,7 +1153,7 @@
             "point_b_x_px": 185.42857360839844,
             "point_b_y_px": 86.0,
             "distance_px": 11.857131958007812,
-            "distance_mm": 11.857131958007812,
+            "distance_mm": 714.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -1167,7 +1167,7 @@
             "point_b_x_px": 185.0,
             "point_b_y_px": 106.33333587646484,
             "distance_px": 10.380950564402156,
-            "distance_mm": 10.380950564402156,
+            "distance_mm": 693.6666641235352,
             "used_in_trimmed_mean": true
           },
           {
@@ -1181,7 +1181,7 @@
             "point_b_x_px": 184.00001525878906,
             "point_b_y_px": 126.66667175292969,
             "distance_px": 9.0,
-            "distance_mm": 9.0,
+            "distance_mm": 673.3333282470703,
             "used_in_trimmed_mean": true
           },
           {
@@ -1195,7 +1195,7 @@
             "point_b_x_px": 182.85714721679688,
             "point_b_y_px": 147.0,
             "distance_px": 7.8571319580078125,
-            "distance_mm": 7.8571319580078125,
+            "distance_mm": 653.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1209,7 +1209,7 @@
             "point_b_x_px": 181.52382260281593,
             "point_b_y_px": 167.33334350585938,
             "distance_px": 6.523807344026864,
-            "distance_mm": 6.523807344026864,
+            "distance_mm": 632.6666564941406,
             "used_in_trimmed_mean": true
           },
           {
@@ -1223,7 +1223,7 @@
             "point_b_x_px": 180.00003051757812,
             "point_b_y_px": 187.6666717529297,
             "distance_px": 5.0000152587890625,
-            "distance_mm": 5.0000152587890625,
+            "distance_mm": 612.3333282470703,
             "used_in_trimmed_mean": true
           },
           {
@@ -1237,7 +1237,7 @@
             "point_b_x_px": 179.0,
             "point_b_y_px": 208.0,
             "distance_px": 3.9999847412109375,
-            "distance_mm": 3.9999847412109375,
+            "distance_mm": 592.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1251,7 +1251,7 @@
             "point_b_x_px": 178.0,
             "point_b_y_px": 228.33334350585938,
             "distance_px": 3.9523656936362386,
-            "distance_mm": 3.9523656936362386,
+            "distance_mm": 571.6666564941406,
             "used_in_trimmed_mean": true
           },
           {
@@ -1265,7 +1265,7 @@
             "point_b_x_px": 178.0,
             "point_b_y_px": 248.6666717529297,
             "distance_px": 2.0,
-            "distance_mm": 2.0,
+            "distance_mm": 551.3333282470703,
             "used_in_trimmed_mean": true
           },
           {
@@ -1279,7 +1279,7 @@
             "point_b_x_px": 177.42857360839844,
             "point_b_y_px": 269.0,
             "distance_px": 0.8571319580078125,
-            "distance_mm": 0.8571319580078125,
+            "distance_mm": 531.0,
             "used_in_trimmed_mean": false
           }
         ]
@@ -1306,18 +1306,18 @@
         "score": 509.75913320061386,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 7.219051361083984,
-        "median_distance_mm": 7.380947113037109,
-        "trimmed_mean_distance_mm": 7.434527397155762,
-        "trimmed_std_distance_mm": 2.4885759353637695,
-        "std_distance_mm": 3.3451647758483887,
-        "min_distance_mm": 0.857147216796875,
-        "max_distance_mm": 11.857147216796875,
-        "range_distance_mm": 11.0,
-        "cv_distance": 0.46338010474358116,
-        "robust_cv_distance": 0.3347322300965395,
+        "mean_distance_mm": 194.0,
+        "median_distance_mm": 194.0,
+        "trimmed_mean_distance_mm": 194.0,
+        "trimmed_std_distance_mm": 38.18812561035156,
+        "std_distance_mm": 47.87135314941406,
+        "min_distance_mm": 119.0,
+        "max_distance_mm": 269.0,
+        "range_distance_mm": 150.0,
+        "cv_distance": 0.24675955231656732,
+        "robust_cv_distance": 0.19684600830078125,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 7.434527397155762,
+        "recommended_distance_mm": 194.0,
         "samples": [
           {
             "image_name": "Multimedia_34.jpg",
@@ -1330,7 +1330,7 @@
             "point_b_x_px": 165.4285888671875,
             "point_b_y_px": 531.0,
             "distance_px": 0.857147216796875,
-            "distance_mm": 0.857147216796875,
+            "distance_mm": 269.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -1344,7 +1344,7 @@
             "point_b_x_px": 167.66667465958744,
             "point_b_y_px": 547.6666870117188,
             "distance_px": 3.4285736083984375,
-            "distance_mm": 3.4285736083984375,
+            "distance_mm": 252.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -1358,7 +1358,7 @@
             "point_b_x_px": 169.76190912164748,
             "point_b_y_px": 564.3333129882812,
             "distance_px": 4.761909121647477,
-            "distance_mm": 4.761909121647477,
+            "distance_mm": 235.66668701171875,
             "used_in_trimmed_mean": true
           },
           {
@@ -1372,7 +1372,7 @@
             "point_b_x_px": 171.0,
             "point_b_y_px": 581.0,
             "distance_px": 6.0,
-            "distance_mm": 6.0,
+            "distance_mm": 219.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1386,7 +1386,7 @@
             "point_b_x_px": 171.0,
             "point_b_y_px": 597.6666870117188,
             "distance_px": 7.0,
-            "distance_mm": 7.0,
+            "distance_mm": 202.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -1400,7 +1400,7 @@
             "point_b_x_px": 171.76189386285841,
             "point_b_y_px": 614.3333129882812,
             "distance_px": 7.761893862858415,
-            "distance_mm": 7.761893862858415,
+            "distance_mm": 185.66668701171875,
             "used_in_trimmed_mean": true
           },
           {
@@ -1414,7 +1414,7 @@
             "point_b_x_px": 172.71429443359375,
             "point_b_y_px": 631.0,
             "distance_px": 9.285720825195312,
-            "distance_mm": 9.285720825195312,
+            "distance_mm": 169.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1428,7 +1428,7 @@
             "point_b_x_px": 174.23810613714159,
             "point_b_y_px": 647.6666870117188,
             "distance_px": 10.238106137141585,
-            "distance_mm": 10.238106137141585,
+            "distance_mm": 152.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -1442,7 +1442,7 @@
             "point_b_x_px": 175.00001525878906,
             "point_b_y_px": 664.3333129882812,
             "distance_px": 11.000015258789062,
-            "distance_mm": 11.000015258789062,
+            "distance_mm": 135.66668701171875,
             "used_in_trimmed_mean": true
           },
           {
@@ -1456,7 +1456,7 @@
             "point_b_x_px": 176.42857360839844,
             "point_b_y_px": 681.0,
             "distance_px": 11.857147216796875,
-            "distance_mm": 11.857147216796875,
+            "distance_mm": 119.0,
             "used_in_trimmed_mean": false
           }
         ]
@@ -1468,10 +1468,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 2,
     "n_valid_gaps": 2,
-    "image_mean_gap_width_mm": 11.2158842086792,
-    "image_trimmed_mean_gap_width_mm": 10.86707592010498,
-    "image_recommended_gap_width_mm": 10.86707592010498,
-    "image_std_gap_width_mm": 0.26389122009277344,
+    "image_mean_dist_to_bottom_mm": 204.82221221923828,
+    "image_trimmed_mean_dist_to_bottom_mm": 204.69740295410156,
+    "image_recommended_dist_to_bottom_mm": 204.69740295410156,
+    "image_std_dist_to_bottom_mm": 0.6259918212890625,
     "measurements": [
       {
         "gap_id": 0,
@@ -1495,18 +1495,18 @@
         "score": 780.0014786720276,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 10.688901901245117,
-        "median_distance_mm": 11.0,
-        "trimmed_mean_distance_mm": 10.603184700012207,
-        "trimmed_std_distance_mm": 1.4879536628723145,
-        "std_distance_mm": 1.8431254625320435,
-        "min_distance_mm": 8.206422805786133,
-        "max_distance_mm": 13.85711669921875,
-        "range_distance_mm": 5.650693893432617,
-        "cv_distance": 0.1724335651651311,
-        "robust_cv_distance": 0.14033082559342774,
+        "mean_distance_mm": 205.64443969726562,
+        "median_distance_mm": 205.0,
+        "trimmed_mean_distance_mm": 205.32339477539062,
+        "trimmed_std_distance_mm": 1.5286598205566406,
+        "std_distance_mm": 2.175253391265869,
+        "min_distance_mm": 203.42852783203125,
+        "max_distance_mm": 210.4285888671875,
+        "range_distance_mm": 7.00006103515625,
+        "cv_distance": 0.010577739881847108,
+        "robust_cv_distance": 0.007445132213155189,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 10.603184700012207,
+        "recommended_distance_mm": 205.32339477539062,
         "samples": [
           {
             "image_name": "Multimedia_35.jpg",
@@ -1519,7 +1519,7 @@
             "point_b_x_px": 130.0,
             "point_b_y_px": 610.4285888671875,
             "distance_px": 13.85711669921875,
-            "distance_mm": 13.85711669921875,
+            "distance_mm": 203.42852783203125,
             "used_in_trimmed_mean": false
           },
           {
@@ -1533,7 +1533,7 @@
             "point_b_x_px": 157.22222900390625,
             "point_b_y_px": 609.0000610351562,
             "distance_px": 13.00006103515625,
-            "distance_mm": 13.00006103515625,
+            "distance_mm": 204.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1547,7 +1547,7 @@
             "point_b_x_px": 184.44444274902344,
             "point_b_y_px": 608.0,
             "distance_px": 12.0,
-            "distance_mm": 12.0,
+            "distance_mm": 204.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1561,7 +1561,7 @@
             "point_b_x_px": 211.66665649414062,
             "point_b_y_px": 607.0,
             "distance_px": 11.0,
-            "distance_mm": 11.0,
+            "distance_mm": 204.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1575,7 +1575,7 @@
             "point_b_x_px": 238.88888549804688,
             "point_b_y_px": 606.0,
             "distance_px": 11.0,
-            "distance_mm": 11.0,
+            "distance_mm": 205.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1589,7 +1589,7 @@
             "point_b_x_px": 266.1111145019531,
             "point_b_y_px": 606.0,
             "distance_px": 11.0,
-            "distance_mm": 11.0,
+            "distance_mm": 205.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1603,7 +1603,7 @@
             "point_b_x_px": 293.33331298828125,
             "point_b_y_px": 603.3810250423849,
             "distance_px": 8.42862955853343,
-            "distance_mm": 8.42862955853343,
+            "distance_mm": 205.04760451614857,
             "used_in_trimmed_mean": true
           },
           {
@@ -1617,8 +1617,8 @@
             "point_b_x_px": 320.5555419921875,
             "point_b_y_px": 601.2064228355885,
             "distance_px": 8.206422835588455,
-            "distance_mm": 8.206422835588455,
-            "used_in_trimmed_mean": false
+            "distance_mm": 207.0,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_35.jpg",
@@ -1631,7 +1631,7 @@
             "point_b_x_px": 347.77777099609375,
             "point_b_y_px": 600.0,
             "distance_px": 8.539610847830772,
-            "distance_mm": 8.539610847830772,
+            "distance_mm": 208.53961084783077,
             "used_in_trimmed_mean": true
           },
           {
@@ -1645,8 +1645,8 @@
             "point_b_x_px": 375.0,
             "point_b_y_px": 599.4285888671875,
             "distance_px": 9.857177734375,
-            "distance_mm": 9.857177734375,
-            "used_in_trimmed_mean": true
+            "distance_mm": 210.4285888671875,
+            "used_in_trimmed_mean": false
           }
         ]
       },
@@ -1672,18 +1672,18 @@
         "score": 760.163026218254,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 11.742866516113281,
-        "median_distance_mm": 11.976187705993652,
-        "trimmed_mean_distance_mm": 11.130967140197754,
-        "trimmed_std_distance_mm": 1.438012957572937,
-        "std_distance_mm": 3.14676570892334,
-        "min_distance_mm": 8.3809232711792,
-        "max_distance_mm": 20.0,
-        "range_distance_mm": 11.6190767288208,
-        "cv_distance": 0.26797253503694546,
-        "robust_cv_distance": 0.12919029761392226,
+        "mean_distance_mm": 203.99998474121094,
+        "median_distance_mm": 204.9761962890625,
+        "trimmed_mean_distance_mm": 204.0714111328125,
+        "trimmed_std_distance_mm": 3.5998032093048096,
+        "std_distance_mm": 4.721158981323242,
+        "min_distance_mm": 196.0,
+        "max_distance_mm": 211.4285888671875,
+        "range_distance_mm": 15.4285888671875,
+        "cv_distance": 0.023142937914002206,
+        "robust_cv_distance": 0.017639919228872328,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 11.130967140197754,
+        "recommended_distance_mm": 204.0714111328125,
         "samples": [
           {
             "image_name": "Multimedia_35.jpg",
@@ -1696,8 +1696,8 @@
             "point_b_x_px": 476.0,
             "point_b_y_px": 616.0,
             "distance_px": 20.0,
-            "distance_mm": 20.0,
-            "used_in_trimmed_mean": false
+            "distance_mm": 204.0,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_35.jpg",
@@ -1710,8 +1710,8 @@
             "point_b_x_px": 502.3333435058594,
             "point_b_y_px": 613.0,
             "distance_px": 9.0,
-            "distance_mm": 9.0,
-            "used_in_trimmed_mean": true
+            "distance_mm": 196.0,
+            "used_in_trimmed_mean": false
           },
           {
             "image_name": "Multimedia_35.jpg",
@@ -1724,8 +1724,8 @@
             "point_b_x_px": 528.6666870117188,
             "point_b_y_px": 611.0,
             "distance_px": 8.380923315882683,
-            "distance_mm": 8.380923315882683,
-            "used_in_trimmed_mean": false
+            "distance_mm": 197.38092331588268,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_35.jpg",
@@ -1738,7 +1738,7 @@
             "point_b_x_px": 555.0,
             "point_b_y_px": 609.0000610351562,
             "distance_px": 9.00006103515625,
-            "distance_mm": 9.00006103515625,
+            "distance_mm": 200.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1752,7 +1752,7 @@
             "point_b_x_px": 581.3333129882812,
             "point_b_y_px": 607.0,
             "distance_px": 10.047604516148567,
-            "distance_mm": 10.047604516148567,
+            "distance_mm": 203.04760451614857,
             "used_in_trimmed_mean": true
           },
           {
@@ -1766,7 +1766,7 @@
             "point_b_x_px": 607.6666870117188,
             "point_b_y_px": 606.0,
             "distance_px": 11.952375140041113,
-            "distance_mm": 11.952375140041113,
+            "distance_mm": 205.9523751400411,
             "used_in_trimmed_mean": true
           },
           {
@@ -1780,7 +1780,7 @@
             "point_b_x_px": 634.0,
             "point_b_y_px": 606.0,
             "distance_px": 12.0,
-            "distance_mm": 12.0,
+            "distance_mm": 206.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1794,7 +1794,7 @@
             "point_b_x_px": 660.3333740234375,
             "point_b_y_px": 605.0000610351562,
             "distance_px": 12.190516881644726,
-            "distance_mm": 12.190516881644726,
+            "distance_mm": 207.19045584648848,
             "used_in_trimmed_mean": true
           },
           {
@@ -1808,7 +1808,7 @@
             "point_b_x_px": 686.6666870117188,
             "point_b_y_px": 603.0000610351562,
             "distance_px": 12.0,
-            "distance_mm": 12.0,
+            "distance_mm": 208.99993896484375,
             "used_in_trimmed_mean": true
           },
           {
@@ -1822,8 +1822,8 @@
             "point_b_x_px": 713.0,
             "point_b_y_px": 601.4285888671875,
             "distance_px": 12.857177734375,
-            "distance_mm": 12.857177734375,
-            "used_in_trimmed_mean": true
+            "distance_mm": 211.4285888671875,
+            "used_in_trimmed_mean": false
           }
         ]
       }
@@ -1834,10 +1834,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 2,
     "n_valid_gaps": 2,
-    "image_mean_gap_width_mm": 11.2158842086792,
-    "image_trimmed_mean_gap_width_mm": 10.86707592010498,
-    "image_recommended_gap_width_mm": 10.86707592010498,
-    "image_std_gap_width_mm": 0.26389122009277344,
+    "image_mean_dist_to_bottom_mm": 204.82221221923828,
+    "image_trimmed_mean_dist_to_bottom_mm": 204.69740295410156,
+    "image_recommended_dist_to_bottom_mm": 204.69740295410156,
+    "image_std_dist_to_bottom_mm": 0.6259918212890625,
     "measurements": [
       {
         "gap_id": 0,
@@ -1861,18 +1861,18 @@
         "score": 780.0014786720276,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 10.688901901245117,
-        "median_distance_mm": 11.0,
-        "trimmed_mean_distance_mm": 10.603184700012207,
-        "trimmed_std_distance_mm": 1.4879536628723145,
-        "std_distance_mm": 1.8431254625320435,
-        "min_distance_mm": 8.206422805786133,
-        "max_distance_mm": 13.85711669921875,
-        "range_distance_mm": 5.650693893432617,
-        "cv_distance": 0.1724335651651311,
-        "robust_cv_distance": 0.14033082559342774,
+        "mean_distance_mm": 205.64443969726562,
+        "median_distance_mm": 205.0,
+        "trimmed_mean_distance_mm": 205.32339477539062,
+        "trimmed_std_distance_mm": 1.5286598205566406,
+        "std_distance_mm": 2.175253391265869,
+        "min_distance_mm": 203.42852783203125,
+        "max_distance_mm": 210.4285888671875,
+        "range_distance_mm": 7.00006103515625,
+        "cv_distance": 0.010577739881847108,
+        "robust_cv_distance": 0.007445132213155189,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 10.603184700012207,
+        "recommended_distance_mm": 205.32339477539062,
         "samples": [
           {
             "image_name": "Multimedia_36.jpg",
@@ -1885,7 +1885,7 @@
             "point_b_x_px": 130.0,
             "point_b_y_px": 610.4285888671875,
             "distance_px": 13.85711669921875,
-            "distance_mm": 13.85711669921875,
+            "distance_mm": 203.42852783203125,
             "used_in_trimmed_mean": false
           },
           {
@@ -1899,7 +1899,7 @@
             "point_b_x_px": 157.22222900390625,
             "point_b_y_px": 609.0000610351562,
             "distance_px": 13.00006103515625,
-            "distance_mm": 13.00006103515625,
+            "distance_mm": 204.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1913,7 +1913,7 @@
             "point_b_x_px": 184.44444274902344,
             "point_b_y_px": 608.0,
             "distance_px": 12.0,
-            "distance_mm": 12.0,
+            "distance_mm": 204.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1927,7 +1927,7 @@
             "point_b_x_px": 211.66665649414062,
             "point_b_y_px": 607.0,
             "distance_px": 11.0,
-            "distance_mm": 11.0,
+            "distance_mm": 204.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1941,7 +1941,7 @@
             "point_b_x_px": 238.88888549804688,
             "point_b_y_px": 606.0,
             "distance_px": 11.0,
-            "distance_mm": 11.0,
+            "distance_mm": 205.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1955,7 +1955,7 @@
             "point_b_x_px": 266.1111145019531,
             "point_b_y_px": 606.0,
             "distance_px": 11.0,
-            "distance_mm": 11.0,
+            "distance_mm": 205.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -1969,7 +1969,7 @@
             "point_b_x_px": 293.33331298828125,
             "point_b_y_px": 603.3810250423849,
             "distance_px": 8.42862955853343,
-            "distance_mm": 8.42862955853343,
+            "distance_mm": 205.04760451614857,
             "used_in_trimmed_mean": true
           },
           {
@@ -1983,8 +1983,8 @@
             "point_b_x_px": 320.5555419921875,
             "point_b_y_px": 601.2064228355885,
             "distance_px": 8.206422835588455,
-            "distance_mm": 8.206422835588455,
-            "used_in_trimmed_mean": false
+            "distance_mm": 207.0,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_36.jpg",
@@ -1997,7 +1997,7 @@
             "point_b_x_px": 347.77777099609375,
             "point_b_y_px": 600.0,
             "distance_px": 8.539610847830772,
-            "distance_mm": 8.539610847830772,
+            "distance_mm": 208.53961084783077,
             "used_in_trimmed_mean": true
           },
           {
@@ -2011,8 +2011,8 @@
             "point_b_x_px": 375.0,
             "point_b_y_px": 599.4285888671875,
             "distance_px": 9.857177734375,
-            "distance_mm": 9.857177734375,
-            "used_in_trimmed_mean": true
+            "distance_mm": 210.4285888671875,
+            "used_in_trimmed_mean": false
           }
         ]
       },
@@ -2038,18 +2038,18 @@
         "score": 760.163026218254,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 11.742866516113281,
-        "median_distance_mm": 11.976187705993652,
-        "trimmed_mean_distance_mm": 11.130967140197754,
-        "trimmed_std_distance_mm": 1.438012957572937,
-        "std_distance_mm": 3.14676570892334,
-        "min_distance_mm": 8.3809232711792,
-        "max_distance_mm": 20.0,
-        "range_distance_mm": 11.6190767288208,
-        "cv_distance": 0.26797253503694546,
-        "robust_cv_distance": 0.12919029761392226,
+        "mean_distance_mm": 203.99998474121094,
+        "median_distance_mm": 204.9761962890625,
+        "trimmed_mean_distance_mm": 204.0714111328125,
+        "trimmed_std_distance_mm": 3.5998032093048096,
+        "std_distance_mm": 4.721158981323242,
+        "min_distance_mm": 196.0,
+        "max_distance_mm": 211.4285888671875,
+        "range_distance_mm": 15.4285888671875,
+        "cv_distance": 0.023142937914002206,
+        "robust_cv_distance": 0.017639919228872328,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 11.130967140197754,
+        "recommended_distance_mm": 204.0714111328125,
         "samples": [
           {
             "image_name": "Multimedia_36.jpg",
@@ -2062,8 +2062,8 @@
             "point_b_x_px": 476.0,
             "point_b_y_px": 616.0,
             "distance_px": 20.0,
-            "distance_mm": 20.0,
-            "used_in_trimmed_mean": false
+            "distance_mm": 204.0,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_36.jpg",
@@ -2076,8 +2076,8 @@
             "point_b_x_px": 502.3333435058594,
             "point_b_y_px": 613.0,
             "distance_px": 9.0,
-            "distance_mm": 9.0,
-            "used_in_trimmed_mean": true
+            "distance_mm": 196.0,
+            "used_in_trimmed_mean": false
           },
           {
             "image_name": "Multimedia_36.jpg",
@@ -2090,8 +2090,8 @@
             "point_b_x_px": 528.6666870117188,
             "point_b_y_px": 611.0,
             "distance_px": 8.380923315882683,
-            "distance_mm": 8.380923315882683,
-            "used_in_trimmed_mean": false
+            "distance_mm": 197.38092331588268,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_36.jpg",
@@ -2104,7 +2104,7 @@
             "point_b_x_px": 555.0,
             "point_b_y_px": 609.0000610351562,
             "distance_px": 9.00006103515625,
-            "distance_mm": 9.00006103515625,
+            "distance_mm": 200.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -2118,7 +2118,7 @@
             "point_b_x_px": 581.3333129882812,
             "point_b_y_px": 607.0,
             "distance_px": 10.047604516148567,
-            "distance_mm": 10.047604516148567,
+            "distance_mm": 203.04760451614857,
             "used_in_trimmed_mean": true
           },
           {
@@ -2132,7 +2132,7 @@
             "point_b_x_px": 607.6666870117188,
             "point_b_y_px": 606.0,
             "distance_px": 11.952375140041113,
-            "distance_mm": 11.952375140041113,
+            "distance_mm": 205.9523751400411,
             "used_in_trimmed_mean": true
           },
           {
@@ -2146,7 +2146,7 @@
             "point_b_x_px": 634.0,
             "point_b_y_px": 606.0,
             "distance_px": 12.0,
-            "distance_mm": 12.0,
+            "distance_mm": 206.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -2160,7 +2160,7 @@
             "point_b_x_px": 660.3333740234375,
             "point_b_y_px": 605.0000610351562,
             "distance_px": 12.190516881644726,
-            "distance_mm": 12.190516881644726,
+            "distance_mm": 207.19045584648848,
             "used_in_trimmed_mean": true
           },
           {
@@ -2174,7 +2174,7 @@
             "point_b_x_px": 686.6666870117188,
             "point_b_y_px": 603.0000610351562,
             "distance_px": 12.0,
-            "distance_mm": 12.0,
+            "distance_mm": 208.99993896484375,
             "used_in_trimmed_mean": true
           },
           {
@@ -2188,8 +2188,8 @@
             "point_b_x_px": 713.0,
             "point_b_y_px": 601.4285888671875,
             "distance_px": 12.857177734375,
-            "distance_mm": 12.857177734375,
-            "used_in_trimmed_mean": true
+            "distance_mm": 211.4285888671875,
+            "used_in_trimmed_mean": false
           }
         ]
       }
@@ -2200,10 +2200,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 2,
     "n_valid_gaps": 2,
-    "image_mean_gap_width_mm": 8.757941722869873,
-    "image_trimmed_mean_gap_width_mm": 8.607137680053711,
-    "image_recommended_gap_width_mm": 8.607137680053711,
-    "image_std_gap_width_mm": 0.6051750183105469,
+    "image_mean_dist_to_bottom_mm": 203.22457885742188,
+    "image_trimmed_mean_dist_to_bottom_mm": 203.0218048095703,
+    "image_recommended_dist_to_bottom_mm": 203.0218048095703,
+    "image_std_dist_to_bottom_mm": 4.8849334716796875,
     "measurements": [
       {
         "gap_id": 0,
@@ -2227,18 +2227,18 @@
         "score": 718.7128286736206,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 8.187299728393555,
-        "median_distance_mm": 7.999969482421875,
-        "trimmed_mean_distance_mm": 8.001962661743164,
-        "trimmed_std_distance_mm": 1.3079493045806885,
-        "std_distance_mm": 1.7948012351989746,
-        "min_distance_mm": 6.00006103515625,
-        "max_distance_mm": 11.85723876953125,
-        "range_distance_mm": 5.857177734375,
-        "cv_distance": 0.2192177268134699,
-        "robust_cv_distance": 0.16345356256583207,
+        "mean_distance_mm": 198.48092651367188,
+        "median_distance_mm": 197.49993896484375,
+        "trimmed_mean_distance_mm": 198.13687133789062,
+        "trimmed_std_distance_mm": 3.22198748588562,
+        "std_distance_mm": 4.12839412689209,
+        "min_distance_mm": 193.4285888671875,
+        "max_distance_mm": 206.28564453125,
+        "range_distance_mm": 12.8570556640625,
+        "cv_distance": 0.020799953927097953,
+        "robust_cv_distance": 0.016261423046248863,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 8.001962661743164,
+        "recommended_distance_mm": 198.13687133789062,
         "samples": [
           {
             "image_name": "Multimedia_37.jpg",
@@ -2251,7 +2251,7 @@
             "point_b_x_px": 123.0,
             "point_b_y_px": 618.4286499023438,
             "distance_px": 11.85723876953125,
-            "distance_mm": 11.85723876953125,
+            "distance_mm": 193.4285888671875,
             "used_in_trimmed_mean": false
           },
           {
@@ -2265,7 +2265,7 @@
             "point_b_x_px": 148.77777099609375,
             "point_b_y_px": 616.317505851388,
             "distance_px": 10.317505851387978,
-            "distance_mm": 10.317505851387978,
+            "distance_mm": 194.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -2279,7 +2279,7 @@
             "point_b_x_px": 174.55555725097656,
             "point_b_y_px": 614.0,
             "distance_px": 8.99993896484375,
-            "distance_mm": 8.99993896484375,
+            "distance_mm": 194.99993896484375,
             "used_in_trimmed_mean": true
           },
           {
@@ -2293,7 +2293,7 @@
             "point_b_x_px": 200.33334350585938,
             "point_b_y_px": 612.6667262483388,
             "distance_px": 8.666726248338819,
-            "distance_mm": 8.666726248338819,
+            "distance_mm": 196.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -2307,7 +2307,7 @@
             "point_b_x_px": 226.11111450195312,
             "point_b_y_px": 611.0,
             "distance_px": 7.99993896484375,
-            "distance_mm": 7.99993896484375,
+            "distance_mm": 196.99993896484375,
             "used_in_trimmed_mean": true
           },
           {
@@ -2321,7 +2321,7 @@
             "point_b_x_px": 251.88888549804688,
             "point_b_y_px": 610.0000610351562,
             "distance_px": 8.0,
-            "distance_mm": 8.0,
+            "distance_mm": 197.99993896484375,
             "used_in_trimmed_mean": true
           },
           {
@@ -2335,7 +2335,7 @@
             "point_b_x_px": 277.66668701171875,
             "point_b_y_px": 607.0,
             "distance_px": 6.095217749476433,
-            "distance_mm": 6.095217749476433,
+            "distance_mm": 199.09521774947643,
             "used_in_trimmed_mean": true
           },
           {
@@ -2349,7 +2349,7 @@
             "point_b_x_px": 303.4444580078125,
             "point_b_y_px": 604.2221999391913,
             "distance_px": 6.222138904035091,
-            "distance_mm": 6.222138904035091,
+            "distance_mm": 201.99993896484375,
             "used_in_trimmed_mean": true
           },
           {
@@ -2363,8 +2363,8 @@
             "point_b_x_px": 329.22222900390625,
             "point_b_y_px": 602.0000610351562,
             "distance_px": 6.00006103515625,
-            "distance_mm": 6.00006103515625,
-            "used_in_trimmed_mean": false
+            "distance_mm": 204.0,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_37.jpg",
@@ -2377,8 +2377,8 @@
             "point_b_x_px": 355.0,
             "point_b_y_px": 601.4285888671875,
             "distance_px": 7.7142333984375,
-            "distance_mm": 7.7142333984375,
-            "used_in_trimmed_mean": true
+            "distance_mm": 206.28564453125,
+            "used_in_trimmed_mean": false
           }
         ]
       },
@@ -2404,18 +2404,18 @@
         "score": 705.8117874092526,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 9.328583717346191,
-        "median_distance_mm": 9.277799606323242,
-        "trimmed_mean_distance_mm": 9.212312698364258,
-        "trimmed_std_distance_mm": 1.756005883216858,
-        "std_distance_mm": 2.227076292037964,
-        "min_distance_mm": 6.301575183868408,
-        "max_distance_mm": 13.2857666015625,
-        "range_distance_mm": 6.984191417694092,
-        "cv_distance": 0.2387368071636415,
-        "robust_cv_distance": 0.19061509750191774,
+        "mean_distance_mm": 207.96823120117188,
+        "median_distance_mm": 208.3968048095703,
+        "trimmed_mean_distance_mm": 207.90673828125,
+        "trimmed_std_distance_mm": 5.77071475982666,
+        "std_distance_mm": 7.197795867919922,
+        "min_distance_mm": 196.99993896484375,
+        "max_distance_mm": 219.4285888671875,
+        "range_distance_mm": 22.42864990234375,
+        "cv_distance": 0.03461007398268127,
+        "robust_cv_distance": 0.027756266139004164,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 9.212312698364258,
+        "recommended_distance_mm": 207.90673828125,
         "samples": [
           {
             "image_name": "Multimedia_37.jpg",
@@ -2428,8 +2428,8 @@
             "point_b_x_px": 452.0,
             "point_b_y_px": 611.4286499023438,
             "distance_px": 13.2857666015625,
-            "distance_mm": 13.2857666015625,
-            "used_in_trimmed_mean": false
+            "distance_mm": 201.85711669921875,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_37.jpg",
@@ -2442,7 +2442,7 @@
             "point_b_x_px": 476.8888854980469,
             "point_b_y_px": 609.3016362264752,
             "distance_px": 6.301575191318989,
-            "distance_mm": 6.301575191318989,
+            "distance_mm": 196.99993896484375,
             "used_in_trimmed_mean": false
           },
           {
@@ -2456,7 +2456,7 @@
             "point_b_x_px": 501.77777099609375,
             "point_b_y_px": 607.0,
             "distance_px": 6.539658319205046,
-            "distance_mm": 6.539658319205046,
+            "distance_mm": 199.53965831920505,
             "used_in_trimmed_mean": true
           },
           {
@@ -2470,7 +2470,7 @@
             "point_b_x_px": 526.6666870117188,
             "point_b_y_px": 604.0476045161486,
             "distance_px": 7.0,
-            "distance_mm": 7.0,
+            "distance_mm": 202.95239548385143,
             "used_in_trimmed_mean": true
           },
           {
@@ -2484,7 +2484,7 @@
             "point_b_x_px": 551.5555419921875,
             "point_b_y_px": 601.4921216219664,
             "distance_px": 8.285732693970203,
-            "distance_mm": 8.285732693970203,
+            "distance_mm": 206.79361107200384,
             "used_in_trimmed_mean": true
           },
           {
@@ -2498,7 +2498,7 @@
             "point_b_x_px": 576.4444580078125,
             "point_b_y_px": 599.3650832399726,
             "distance_px": 9.365083239972591,
-            "distance_mm": 9.365083239972591,
+            "distance_mm": 210.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -2512,7 +2512,7 @@
             "point_b_x_px": 601.3333740234375,
             "point_b_y_px": 598.0000610351562,
             "distance_px": 9.190516881644726,
-            "distance_mm": 9.190516881644726,
+            "distance_mm": 211.19045584648848,
             "used_in_trimmed_mean": true
           },
           {
@@ -2526,7 +2526,7 @@
             "point_b_x_px": 626.2222290039062,
             "point_b_y_px": 596.5397193543613,
             "distance_px": 10.460328117012978,
-            "distance_mm": 10.460328117012978,
+            "distance_mm": 213.92060876265168,
             "used_in_trimmed_mean": true
           },
           {
@@ -2540,7 +2540,7 @@
             "point_b_x_px": 651.111083984375,
             "point_b_y_px": 594.0,
             "distance_px": 11.0,
-            "distance_mm": 11.0,
+            "distance_mm": 217.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -2554,8 +2554,8 @@
             "point_b_x_px": 676.0,
             "point_b_y_px": 592.4285888671875,
             "distance_px": 11.857177734375,
-            "distance_mm": 11.857177734375,
-            "used_in_trimmed_mean": true
+            "distance_mm": 219.4285888671875,
+            "used_in_trimmed_mean": false
           }
         ]
       }
@@ -2566,10 +2566,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 2,
     "n_valid_gaps": 2,
-    "image_mean_gap_width_mm": 8.033331394195557,
-    "image_trimmed_mean_gap_width_mm": 7.836309194564819,
-    "image_recommended_gap_width_mm": 7.836309194564819,
-    "image_std_gap_width_mm": 1.2648756504058838,
+    "image_mean_dist_to_bottom_mm": 414.24998474121094,
+    "image_trimmed_mean_dist_to_bottom_mm": 414.25,
+    "image_recommended_dist_to_bottom_mm": 414.25,
+    "image_std_dist_to_bottom_mm": 163.25,
     "measurements": [
       {
         "gap_id": 0,
@@ -2593,18 +2593,18 @@
         "score": 725.5782270711044,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 9.266660690307617,
-        "median_distance_mm": 8.857147216796875,
-        "trimmed_mean_distance_mm": 9.101184844970703,
-        "trimmed_std_distance_mm": 1.4012269973754883,
-        "std_distance_mm": 1.8427115678787231,
-        "min_distance_mm": 6.9999847412109375,
-        "max_distance_mm": 12.857131958007812,
-        "range_distance_mm": 5.857147216796875,
-        "cv_distance": 0.19885389456485564,
-        "robust_cv_distance": 0.15396094258538257,
+        "mean_distance_mm": 577.5,
+        "median_distance_mm": 577.5,
+        "trimmed_mean_distance_mm": 577.5,
+        "trimmed_std_distance_mm": 58.80971145629883,
+        "std_distance_mm": 73.72187805175781,
+        "min_distance_mm": 462.0,
+        "max_distance_mm": 693.0,
+        "range_distance_mm": 231.0,
+        "cv_distance": 0.12765693169135553,
+        "robust_cv_distance": 0.10183499819272525,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 9.101184844970703,
+        "recommended_distance_mm": 577.5,
         "samples": [
           {
             "image_name": "Multimedia_39.jpg",
@@ -2617,7 +2617,7 @@
             "point_b_x_px": 230.42857360839844,
             "point_b_y_px": 107.0,
             "distance_px": 12.857131958007812,
-            "distance_mm": 12.857131958007812,
+            "distance_mm": 693.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -2631,7 +2631,7 @@
             "point_b_x_px": 230.00001525878906,
             "point_b_y_px": 132.6666717529297,
             "distance_px": 12.000015258789062,
-            "distance_mm": 12.000015258789062,
+            "distance_mm": 667.3333282470703,
             "used_in_trimmed_mean": true
           },
           {
@@ -2645,7 +2645,7 @@
             "point_b_x_px": 228.52380952378735,
             "point_b_y_px": 158.3333282470703,
             "distance_px": 10.52380952378735,
-            "distance_mm": 10.52380952378735,
+            "distance_mm": 641.6666717529297,
             "used_in_trimmed_mean": true
           },
           {
@@ -2659,7 +2659,7 @@
             "point_b_x_px": 227.00001525878906,
             "point_b_y_px": 184.0,
             "distance_px": 9.000015258789062,
-            "distance_mm": 9.000015258789062,
+            "distance_mm": 616.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -2673,7 +2673,7 @@
             "point_b_x_px": 226.00003051757812,
             "point_b_y_px": 209.66665649414062,
             "distance_px": 9.000015258789062,
-            "distance_mm": 9.000015258789062,
+            "distance_mm": 590.3333435058594,
             "used_in_trimmed_mean": true
           },
           {
@@ -2687,7 +2687,7 @@
             "point_b_x_px": 224.0,
             "point_b_y_px": 235.3333282470703,
             "distance_px": 7.952350434847176,
-            "distance_mm": 7.952350434847176,
+            "distance_mm": 564.6666717529297,
             "used_in_trimmed_mean": true
           },
           {
@@ -2701,7 +2701,7 @@
             "point_b_x_px": 224.28570556640625,
             "point_b_y_px": 261.0,
             "distance_px": 8.285690307617188,
-            "distance_mm": 8.285690307617188,
+            "distance_mm": 539.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -2715,8 +2715,8 @@
             "point_b_x_px": 224.0,
             "point_b_y_px": 286.6666564941406,
             "distance_px": 6.9999847412109375,
-            "distance_mm": 6.9999847412109375,
-            "used_in_trimmed_mean": false
+            "distance_mm": 513.3333435058594,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_39.jpg",
@@ -2729,7 +2729,7 @@
             "point_b_x_px": 224.33332025445998,
             "point_b_y_px": 312.33331298828125,
             "distance_px": 7.333304995670915,
-            "distance_mm": 7.333304995670915,
+            "distance_mm": 487.66668701171875,
             "used_in_trimmed_mean": true
           },
           {
@@ -2743,8 +2743,8 @@
             "point_b_x_px": 225.28570556640625,
             "point_b_y_px": 338.0,
             "distance_px": 8.714279174804688,
-            "distance_mm": 8.714279174804688,
-            "used_in_trimmed_mean": true
+            "distance_mm": 462.0,
+            "used_in_trimmed_mean": false
           }
         ]
       },
@@ -2770,18 +2770,18 @@
         "score": 688.0291139236184,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 6.800002098083496,
-        "median_distance_mm": 7.0,
-        "trimmed_mean_distance_mm": 6.5714335441589355,
-        "trimmed_std_distance_mm": 1.8667343854904175,
-        "std_distance_mm": 2.7279434204101562,
-        "min_distance_mm": 2.999969482421875,
-        "max_distance_mm": 12.4285888671875,
-        "range_distance_mm": 9.428619384765625,
-        "cv_distance": 0.40116802628325604,
-        "robust_cv_distance": 0.28406806109295246,
+        "mean_distance_mm": 250.99996948242188,
+        "median_distance_mm": 251.0,
+        "trimmed_mean_distance_mm": 251.0,
+        "trimmed_std_distance_mm": 58.04596710205078,
+        "std_distance_mm": 72.76446533203125,
+        "min_distance_mm": 137.0,
+        "max_distance_mm": 365.0,
+        "range_distance_mm": 228.0,
+        "cv_distance": 0.2898983035020931,
+        "robust_cv_distance": 0.23125883307589953,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 6.5714335441589355,
+        "recommended_distance_mm": 251.0,
         "samples": [
           {
             "image_name": "Multimedia_39.jpg",
@@ -2794,7 +2794,7 @@
             "point_b_x_px": 234.00001525878906,
             "point_b_y_px": 435.0,
             "distance_px": 12.4285888671875,
-            "distance_mm": 12.4285888671875,
+            "distance_mm": 365.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -2808,8 +2808,8 @@
             "point_b_x_px": 225.0,
             "point_b_y_px": 460.3333435058594,
             "distance_px": 2.999969482421875,
-            "distance_mm": 2.999969482421875,
-            "used_in_trimmed_mean": false
+            "distance_mm": 339.6666564941406,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_39.jpg",
@@ -2822,7 +2822,7 @@
             "point_b_x_px": 226.00003051757812,
             "point_b_y_px": 485.6666564941406,
             "distance_px": 3.1904870895668864,
-            "distance_mm": 3.1904870895668864,
+            "distance_mm": 314.3333435058594,
             "used_in_trimmed_mean": true
           },
           {
@@ -2836,7 +2836,7 @@
             "point_b_x_px": 228.0,
             "point_b_y_px": 511.0,
             "distance_px": 4.9999847412109375,
-            "distance_mm": 4.9999847412109375,
+            "distance_mm": 289.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -2850,7 +2850,7 @@
             "point_b_x_px": 230.19048273004591,
             "point_b_y_px": 536.3333129882812,
             "distance_px": 5.190482730045915,
-            "distance_mm": 5.190482730045915,
+            "distance_mm": 263.66668701171875,
             "used_in_trimmed_mean": true
           },
           {
@@ -2864,7 +2864,7 @@
             "point_b_x_px": 232.0,
             "point_b_y_px": 561.6666870117188,
             "distance_px": 7.0,
-            "distance_mm": 7.0,
+            "distance_mm": 238.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -2878,7 +2878,7 @@
             "point_b_x_px": 232.0,
             "point_b_y_px": 587.0,
             "distance_px": 7.0,
-            "distance_mm": 7.0,
+            "distance_mm": 213.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -2892,7 +2892,7 @@
             "point_b_x_px": 232.33336457796395,
             "point_b_y_px": 612.3333740234375,
             "distance_px": 7.333364577963948,
-            "distance_mm": 7.333364577963948,
+            "distance_mm": 187.6666259765625,
             "used_in_trimmed_mean": true
           },
           {
@@ -2906,7 +2906,7 @@
             "point_b_x_px": 234.00001525878906,
             "point_b_y_px": 637.6666870117188,
             "distance_px": 9.000015258789062,
-            "distance_mm": 9.000015258789062,
+            "distance_mm": 162.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -2920,8 +2920,8 @@
             "point_b_x_px": 235.42857360839844,
             "point_b_y_px": 663.0,
             "distance_px": 8.857131958007812,
-            "distance_mm": 8.857131958007812,
-            "used_in_trimmed_mean": true
+            "distance_mm": 137.0,
+            "used_in_trimmed_mean": false
           }
         ]
       }
@@ -2932,10 +2932,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 2,
     "n_valid_gaps": 2,
-    "image_mean_gap_width_mm": 9.34047269821167,
-    "image_trimmed_mean_gap_width_mm": 9.21428108215332,
-    "image_recommended_gap_width_mm": 9.21428108215332,
-    "image_std_gap_width_mm": 1.142862319946289,
+    "image_mean_dist_to_bottom_mm": 405.24998474121094,
+    "image_trimmed_mean_dist_to_bottom_mm": 405.25,
+    "image_recommended_dist_to_bottom_mm": 405.25,
+    "image_std_dist_to_bottom_mm": 166.75,
     "measurements": [
       {
         "gap_id": 0,
@@ -2959,18 +2959,18 @@
         "score": 748.8678804701948,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 10.128572463989258,
-        "median_distance_mm": 10.428565979003906,
-        "trimmed_mean_distance_mm": 10.35714340209961,
-        "trimmed_std_distance_mm": 0.9688951969146729,
-        "std_distance_mm": 2.238302707672119,
-        "min_distance_mm": 4.7142791748046875,
-        "max_distance_mm": 13.71429443359375,
-        "range_distance_mm": 9.000015258789062,
-        "cv_distance": 0.22098896124109252,
-        "robust_cv_distance": 0.09354849684887606,
+        "mean_distance_mm": 572.0,
+        "median_distance_mm": 572.0,
+        "trimmed_mean_distance_mm": 572.0,
+        "trimmed_std_distance_mm": 59.573482513427734,
+        "std_distance_mm": 74.67931365966797,
+        "min_distance_mm": 455.0,
+        "max_distance_mm": 689.0,
+        "range_distance_mm": 234.0,
+        "cv_distance": 0.13055824066375518,
+        "robust_cv_distance": 0.10414944495354499,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 10.35714340209961,
+        "recommended_distance_mm": 572.0,
         "samples": [
           {
             "image_name": "Multimedia_40.jpg",
@@ -2983,7 +2983,7 @@
             "point_b_x_px": 235.2857208251953,
             "point_b_y_px": 111.0,
             "distance_px": 13.71429443359375,
-            "distance_mm": 13.71429443359375,
+            "distance_mm": 689.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -2997,7 +2997,7 @@
             "point_b_x_px": 234.00001525878906,
             "point_b_y_px": 137.0,
             "distance_px": 11.999984741210938,
-            "distance_mm": 11.999984741210938,
+            "distance_mm": 663.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3011,7 +3011,7 @@
             "point_b_x_px": 233.00003051757812,
             "point_b_y_px": 163.0,
             "distance_px": 11.0,
-            "distance_mm": 11.0,
+            "distance_mm": 637.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3025,7 +3025,7 @@
             "point_b_x_px": 232.0,
             "point_b_y_px": 189.0,
             "distance_px": 11.0,
-            "distance_mm": 11.0,
+            "distance_mm": 611.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3039,7 +3039,7 @@
             "point_b_x_px": 231.0,
             "point_b_y_px": 215.0,
             "distance_px": 10.999984741210938,
-            "distance_mm": 10.999984741210938,
+            "distance_mm": 585.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3053,7 +3053,7 @@
             "point_b_x_px": 229.00003051757812,
             "point_b_y_px": 241.0,
             "distance_px": 9.571441650390625,
-            "distance_mm": 9.571441650390625,
+            "distance_mm": 559.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3067,7 +3067,7 @@
             "point_b_x_px": 229.28573608398438,
             "point_b_y_px": 267.0,
             "distance_px": 9.857147216796875,
-            "distance_mm": 9.857147216796875,
+            "distance_mm": 533.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3081,7 +3081,7 @@
             "point_b_x_px": 229.00003051757812,
             "point_b_y_px": 293.0,
             "distance_px": 9.000015258789062,
-            "distance_mm": 9.000015258789062,
+            "distance_mm": 507.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3095,7 +3095,7 @@
             "point_b_x_px": 229.4285888671875,
             "point_b_y_px": 319.0,
             "distance_px": 9.428573608398438,
-            "distance_mm": 9.428573608398438,
+            "distance_mm": 481.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3109,7 +3109,7 @@
             "point_b_x_px": 230.1428680419922,
             "point_b_y_px": 345.0,
             "distance_px": 4.7142791748046875,
-            "distance_mm": 4.7142791748046875,
+            "distance_mm": 455.0,
             "used_in_trimmed_mean": false
           }
         ]
@@ -3136,18 +3136,18 @@
         "score": 727.1601847836952,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 8.552372932434082,
-        "median_distance_mm": 8.499977111816406,
-        "trimmed_mean_distance_mm": 8.071418762207031,
-        "trimmed_std_distance_mm": 1.4802172183990479,
-        "std_distance_mm": 2.7537834644317627,
-        "min_distance_mm": 5.523807525634766,
-        "max_distance_mm": 15.428573608398438,
-        "range_distance_mm": 9.904766082763672,
-        "cv_distance": 0.3219905733984417,
-        "robust_cv_distance": 0.1833899667466021,
+        "mean_distance_mm": 238.49996948242188,
+        "median_distance_mm": 238.5,
+        "trimmed_mean_distance_mm": 238.5,
+        "trimmed_std_distance_mm": 60.337257385253906,
+        "std_distance_mm": 75.63674926757812,
+        "min_distance_mm": 120.0,
+        "max_distance_mm": 357.0,
+        "range_distance_mm": 237.0,
+        "cv_distance": 0.31713525763428985,
+        "robust_cv_distance": 0.2529864041310436,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 8.071418762207031,
+        "recommended_distance_mm": 238.5,
         "samples": [
           {
             "image_name": "Multimedia_40.jpg",
@@ -3160,7 +3160,7 @@
             "point_b_x_px": 239.85716247558594,
             "point_b_y_px": 443.0,
             "distance_px": 15.428573608398438,
-            "distance_mm": 15.428573608398438,
+            "distance_mm": 357.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -3174,7 +3174,7 @@
             "point_b_x_px": 230.00001525878906,
             "point_b_y_px": 469.3333435058594,
             "distance_px": 5.952396211214364,
-            "distance_mm": 5.952396211214364,
+            "distance_mm": 330.6666564941406,
             "used_in_trimmed_mean": true
           },
           {
@@ -3188,8 +3188,8 @@
             "point_b_x_px": 230.52380734402686,
             "point_b_y_px": 495.6666564941406,
             "distance_px": 5.523807344026864,
-            "distance_mm": 5.523807344026864,
-            "used_in_trimmed_mean": false
+            "distance_mm": 304.3333435058594,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_40.jpg",
@@ -3202,7 +3202,7 @@
             "point_b_x_px": 232.0,
             "point_b_y_px": 522.0,
             "distance_px": 5.999969482421875,
-            "distance_mm": 5.999969482421875,
+            "distance_mm": 278.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3216,7 +3216,7 @@
             "point_b_x_px": 234.0476299468428,
             "point_b_y_px": 548.3333129882812,
             "distance_px": 7.047614688053727,
-            "distance_mm": 7.047614688053727,
+            "distance_mm": 251.66668701171875,
             "used_in_trimmed_mean": true
           },
           {
@@ -3230,7 +3230,7 @@
             "point_b_x_px": 235.0,
             "point_b_y_px": 574.6666870117188,
             "distance_px": 7.9999847412109375,
-            "distance_mm": 7.9999847412109375,
+            "distance_mm": 225.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -3244,7 +3244,7 @@
             "point_b_x_px": 235.0,
             "point_b_y_px": 601.0,
             "distance_px": 8.999969482421875,
-            "distance_mm": 8.999969482421875,
+            "distance_mm": 199.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3258,7 +3258,7 @@
             "point_b_x_px": 235.0,
             "point_b_y_px": 627.3333740234375,
             "distance_px": 8.999969482421875,
-            "distance_mm": 8.999969482421875,
+            "distance_mm": 172.6666259765625,
             "used_in_trimmed_mean": true
           },
           {
@@ -3272,7 +3272,7 @@
             "point_b_x_px": 236.00003051757812,
             "point_b_y_px": 653.6666870117188,
             "distance_px": 10.0,
-            "distance_mm": 10.0,
+            "distance_mm": 146.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -3286,8 +3286,8 @@
             "point_b_x_px": 237.1428680419922,
             "point_b_y_px": 680.0,
             "distance_px": 9.571441650390625,
-            "distance_mm": 9.571441650390625,
-            "used_in_trimmed_mean": true
+            "distance_mm": 120.0,
+            "used_in_trimmed_mean": false
           }
         ]
       }
@@ -3298,10 +3298,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 4,
     "n_valid_gaps": 4,
-    "image_mean_gap_width_mm": 9.84325885772705,
-    "image_trimmed_mean_gap_width_mm": 9.839286923408508,
-    "image_recommended_gap_width_mm": 9.839286923408508,
-    "image_std_gap_width_mm": 2.3379661681233608,
+    "image_mean_dist_to_bottom_mm": 323.5714302062988,
+    "image_trimmed_mean_dist_to_bottom_mm": 323.5982131958008,
+    "image_recommended_dist_to_bottom_mm": 323.5982131958008,
+    "image_std_dist_to_bottom_mm": 148.90341017670264,
     "measurements": [
       {
         "gap_id": 0,
@@ -3325,18 +3325,18 @@
         "score": 743.713459626524,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 11.150799751281738,
-        "median_distance_mm": 10.98411750793457,
-        "trimmed_mean_distance_mm": 11.099210739135742,
-        "trimmed_std_distance_mm": 1.0499286651611328,
-        "std_distance_mm": 1.4155378341674805,
-        "min_distance_mm": 9.000015258789062,
-        "max_distance_mm": 13.71429443359375,
-        "range_distance_mm": 4.7142791748046875,
-        "cv_distance": 0.12694496051772164,
-        "robust_cv_distance": 0.09459489416297787,
+        "mean_distance_mm": 581.0,
+        "median_distance_mm": 581.0,
+        "trimmed_mean_distance_mm": 581.0,
+        "trimmed_std_distance_mm": 58.555145263671875,
+        "std_distance_mm": 73.40274810791016,
+        "min_distance_mm": 466.0,
+        "max_distance_mm": 696.0,
+        "range_distance_mm": 230.0,
+        "cv_distance": 0.12633863701877823,
+        "robust_cv_distance": 0.10078338255365211,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 11.099210739135742,
+        "recommended_distance_mm": 581.0,
         "samples": [
           {
             "image_name": "Multimedia_41.jpg",
@@ -3349,7 +3349,7 @@
             "point_b_x_px": 228.2857208251953,
             "point_b_y_px": 104.0,
             "distance_px": 13.71429443359375,
-            "distance_mm": 13.71429443359375,
+            "distance_mm": 696.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -3363,7 +3363,7 @@
             "point_b_x_px": 227.0635051424615,
             "point_b_y_px": 129.55555725097656,
             "distance_px": 13.063505142461509,
-            "distance_mm": 13.063505142461509,
+            "distance_mm": 670.4444427490234,
             "used_in_trimmed_mean": true
           },
           {
@@ -3377,7 +3377,7 @@
             "point_b_x_px": 226.00003051757812,
             "point_b_y_px": 155.11111450195312,
             "distance_px": 12.000030517578125,
-            "distance_mm": 12.000030517578125,
+            "distance_mm": 644.8888854980469,
             "used_in_trimmed_mean": true
           },
           {
@@ -3391,7 +3391,7 @@
             "point_b_x_px": 224.0,
             "point_b_y_px": 180.66665649414062,
             "distance_px": 10.999984741210938,
-            "distance_mm": 10.999984741210938,
+            "distance_mm": 619.3333435058594,
             "used_in_trimmed_mean": true
           },
           {
@@ -3405,7 +3405,7 @@
             "point_b_x_px": 222.9682658361271,
             "point_b_y_px": 206.22222900390625,
             "distance_px": 10.96825057733804,
-            "distance_mm": 10.96825057733804,
+            "distance_mm": 593.7777709960938,
             "used_in_trimmed_mean": true
           },
           {
@@ -3419,7 +3419,7 @@
             "point_b_x_px": 221.0,
             "point_b_y_px": 231.77777099609375,
             "distance_px": 10.539676968939602,
-            "distance_mm": 10.539676968939602,
+            "distance_mm": 568.2222290039062,
             "used_in_trimmed_mean": true
           },
           {
@@ -3433,7 +3433,7 @@
             "point_b_x_px": 221.0,
             "point_b_y_px": 257.33331298828125,
             "distance_px": 10.238101051189005,
-            "distance_mm": 10.238101051189005,
+            "distance_mm": 542.6666870117188,
             "used_in_trimmed_mean": true
           },
           {
@@ -3447,8 +3447,8 @@
             "point_b_x_px": 220.00001525878906,
             "point_b_y_px": 282.8888854980469,
             "distance_px": 9.000015258789062,
-            "distance_mm": 9.000015258789062,
-            "used_in_trimmed_mean": false
+            "distance_mm": 517.1111145019531,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_41.jpg",
@@ -3461,7 +3461,7 @@
             "point_b_x_px": 220.34921288862824,
             "point_b_y_px": 308.4444580078125,
             "distance_px": 9.412704952061176,
-            "distance_mm": 9.412704952061176,
+            "distance_mm": 491.5555419921875,
             "used_in_trimmed_mean": true
           },
           {
@@ -3475,8 +3475,8 @@
             "point_b_x_px": 221.14285278320312,
             "point_b_y_px": 334.0,
             "distance_px": 11.571426391601562,
-            "distance_mm": 11.571426391601562,
-            "used_in_trimmed_mean": true
+            "distance_mm": 466.0,
+            "used_in_trimmed_mean": false
           }
         ]
       },
@@ -3502,18 +3502,18 @@
         "score": 717.3849200179435,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 8.588878631591797,
-        "median_distance_mm": 8.999977111816406,
-        "trimmed_mean_distance_mm": 8.289666175842285,
-        "trimmed_std_distance_mm": 1.7402411699295044,
-        "std_distance_mm": 2.7132036685943604,
-        "min_distance_mm": 5.0000152587890625,
-        "max_distance_mm": 14.571441650390625,
-        "range_distance_mm": 9.571426391601562,
-        "cv_distance": 0.31589731150869876,
-        "robust_cv_distance": 0.20992898061455223,
+        "mean_distance_mm": 252.5,
+        "median_distance_mm": 252.5,
+        "trimmed_mean_distance_mm": 252.5,
+        "trimmed_std_distance_mm": 59.31889724731445,
+        "std_distance_mm": 74.36016845703125,
+        "min_distance_mm": 136.0,
+        "max_distance_mm": 369.0,
+        "range_distance_mm": 233.0,
+        "cv_distance": 0.2944957166615099,
+        "robust_cv_distance": 0.23492632573193842,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 8.289666175842285,
+        "recommended_distance_mm": 252.5,
         "samples": [
           {
             "image_name": "Multimedia_41.jpg",
@@ -3526,7 +3526,7 @@
             "point_b_x_px": 228.85716247558594,
             "point_b_y_px": 431.0,
             "distance_px": 14.571441650390625,
-            "distance_mm": 14.571441650390625,
+            "distance_mm": 369.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -3540,8 +3540,8 @@
             "point_b_x_px": 219.00001525878906,
             "point_b_y_px": 456.8888854980469,
             "distance_px": 5.0000152587890625,
-            "distance_mm": 5.0000152587890625,
-            "used_in_trimmed_mean": false
+            "distance_mm": 343.1111145019531,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_41.jpg",
@@ -3554,7 +3554,7 @@
             "point_b_x_px": 220.00001525878906,
             "point_b_y_px": 482.77777099609375,
             "distance_px": 5.4603196401149035,
-            "distance_mm": 5.4603196401149035,
+            "distance_mm": 317.22222900390625,
             "used_in_trimmed_mean": true
           },
           {
@@ -3568,7 +3568,7 @@
             "point_b_x_px": 221.0,
             "point_b_y_px": 508.66668701171875,
             "distance_px": 5.999969482421875,
-            "distance_mm": 5.999969482421875,
+            "distance_mm": 291.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -3582,7 +3582,7 @@
             "point_b_x_px": 223.00001525878906,
             "point_b_y_px": 534.5555419921875,
             "distance_px": 7.0,
-            "distance_mm": 7.0,
+            "distance_mm": 265.4444580078125,
             "used_in_trimmed_mean": true
           },
           {
@@ -3596,7 +3596,7 @@
             "point_b_x_px": 225.0,
             "point_b_y_px": 560.4444580078125,
             "distance_px": 8.999984741210938,
-            "distance_mm": 8.999984741210938,
+            "distance_mm": 239.5555419921875,
             "used_in_trimmed_mean": true
           },
           {
@@ -3610,7 +3610,7 @@
             "point_b_x_px": 224.0,
             "point_b_y_px": 586.3333740234375,
             "distance_px": 8.999969482421875,
-            "distance_mm": 8.999969482421875,
+            "distance_mm": 213.6666259765625,
             "used_in_trimmed_mean": true
           },
           {
@@ -3624,7 +3624,7 @@
             "point_b_x_px": 224.0,
             "point_b_y_px": 612.2222290039062,
             "distance_px": 10.0,
-            "distance_mm": 10.0,
+            "distance_mm": 187.77777099609375,
             "used_in_trimmed_mean": true
           },
           {
@@ -3638,7 +3638,7 @@
             "point_b_x_px": 225.0,
             "point_b_y_px": 638.111083984375,
             "distance_px": 9.999969482421875,
-            "distance_mm": 9.999969482421875,
+            "distance_mm": 161.888916015625,
             "used_in_trimmed_mean": true
           },
           {
@@ -3652,8 +3652,8 @@
             "point_b_x_px": 225.42855834960938,
             "point_b_y_px": 664.0,
             "distance_px": 9.85711669921875,
-            "distance_mm": 9.85711669921875,
-            "used_in_trimmed_mean": true
+            "distance_mm": 136.0,
+            "used_in_trimmed_mean": false
           }
         ]
       },
@@ -3679,18 +3679,18 @@
         "score": 385.1443967640957,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 7.477797508239746,
-        "median_distance_mm": 3.500030517578125,
-        "trimmed_mean_distance_mm": 6.998030185699463,
-        "trimmed_std_distance_mm": 5.628530502319336,
-        "std_distance_mm": 6.391420364379883,
-        "min_distance_mm": 0.857177734375,
-        "max_distance_mm": 17.93655776977539,
-        "range_distance_mm": 17.07938003540039,
-        "cv_distance": 0.854719636007422,
-        "robust_cv_distance": 0.8043021183048464,
+        "mean_distance_mm": 233.7857208251953,
+        "median_distance_mm": 234.0,
+        "trimmed_mean_distance_mm": 233.89285278320312,
+        "trimmed_std_distance_mm": 0.34068936109542847,
+        "std_distance_mm": 0.5578622817993164,
+        "min_distance_mm": 232.4285888671875,
+        "max_distance_mm": 234.28564453125,
+        "range_distance_mm": 1.8570556640625,
+        "cv_distance": 0.002386211954392362,
+        "robust_cv_distance": 0.00145660441112844,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 6.998030185699463,
+        "recommended_distance_mm": 233.89285278320312,
         "samples": [
           {
             "image_name": "Multimedia_41.jpg",
@@ -3703,7 +3703,7 @@
             "point_b_x_px": 119.0,
             "point_b_y_px": 568.4285888671875,
             "distance_px": 0.857177734375,
-            "distance_mm": 0.857177734375,
+            "distance_mm": 232.4285888671875,
             "used_in_trimmed_mean": false
           },
           {
@@ -3717,7 +3717,7 @@
             "point_b_x_px": 130.77777099609375,
             "point_b_y_px": 577.6191105917096,
             "distance_px": 10.619110591709614,
-            "distance_mm": 10.619110591709614,
+            "distance_mm": 233.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3731,8 +3731,8 @@
             "point_b_x_px": 142.55555725097656,
             "point_b_y_px": 583.9365575881675,
             "distance_px": 17.93655758816749,
-            "distance_mm": 17.93655758816749,
-            "used_in_trimmed_mean": false
+            "distance_mm": 234.0,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_41.jpg",
@@ -3745,7 +3745,7 @@
             "point_b_x_px": 154.3333282470703,
             "point_b_y_px": 583.095278785564,
             "distance_px": 17.095278785564005,
-            "distance_mm": 17.095278785564005,
+            "distance_mm": 234.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3759,8 +3759,8 @@
             "point_b_x_px": 166.11111450195312,
             "point_b_y_px": 579.6984407939017,
             "distance_px": 13.984085325151682,
-            "distance_mm": 13.984085325151682,
-            "used_in_trimmed_mean": true
+            "distance_mm": 234.28564453125,
+            "used_in_trimmed_mean": false
           },
           {
             "image_name": "Multimedia_41.jpg",
@@ -3773,7 +3773,7 @@
             "point_b_x_px": 177.88888549804688,
             "point_b_y_px": 570.0000610351562,
             "distance_px": 4.00006103515625,
-            "distance_mm": 4.00006103515625,
+            "distance_mm": 234.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3787,7 +3787,7 @@
             "point_b_x_px": 189.66665649414062,
             "point_b_y_px": 569.0,
             "distance_px": 3.0,
-            "distance_mm": 3.0,
+            "distance_mm": 234.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3801,7 +3801,7 @@
             "point_b_x_px": 201.44444274902344,
             "point_b_y_px": 569.0,
             "distance_px": 3.0,
-            "distance_mm": 3.0,
+            "distance_mm": 234.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3815,7 +3815,7 @@
             "point_b_x_px": 213.22222900390625,
             "point_b_y_px": 569.0,
             "distance_px": 3.0,
-            "distance_mm": 3.0,
+            "distance_mm": 234.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -3829,7 +3829,7 @@
             "point_b_x_px": 225.0,
             "point_b_y_px": 567.1428833007812,
             "distance_px": 1.28570556640625,
-            "distance_mm": 1.28570556640625,
+            "distance_mm": 234.142822265625,
             "used_in_trimmed_mean": true
           }
         ]
@@ -3856,18 +3856,18 @@
         "score": 331.4944441124245,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 12.155559539794922,
-        "median_distance_mm": 15.761905670166016,
-        "trimmed_mean_distance_mm": 12.970240592956543,
-        "trimmed_std_distance_mm": 4.055290699005127,
-        "std_distance_mm": 5.275976657867432,
-        "min_distance_mm": 1.1428680419921875,
-        "max_distance_mm": 16.650802612304688,
-        "range_distance_mm": 15.5079345703125,
-        "cv_distance": 0.4340381568281507,
-        "robust_cv_distance": 0.3126611777122579,
+        "mean_distance_mm": 227.0,
+        "median_distance_mm": 227.0,
+        "trimmed_mean_distance_mm": 227.0,
+        "trimmed_std_distance_mm": 20.36699104309082,
+        "std_distance_mm": 25.531381607055664,
+        "min_distance_mm": 187.0,
+        "max_distance_mm": 267.0,
+        "range_distance_mm": 80.0,
+        "cv_distance": 0.11247304672711746,
+        "robust_cv_distance": 0.08972242750260273,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 12.970240592956543,
+        "recommended_distance_mm": 227.0,
         "samples": [
           {
             "image_name": "Multimedia_41.jpg",
@@ -3880,7 +3880,7 @@
             "point_b_x_px": 161.7143096923828,
             "point_b_y_px": 533.0,
             "distance_px": 1.1428680419921875,
-            "distance_mm": 1.1428680419921875,
+            "distance_mm": 267.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -3894,7 +3894,7 @@
             "point_b_x_px": 162.0,
             "point_b_y_px": 541.888916015625,
             "distance_px": 8.74603271484375,
-            "distance_mm": 8.74603271484375,
+            "distance_mm": 258.111083984375,
             "used_in_trimmed_mean": true
           },
           {
@@ -3908,7 +3908,7 @@
             "point_b_x_px": 162.0,
             "point_b_y_px": 550.7777709960938,
             "distance_px": 8.999984741210938,
-            "distance_mm": 8.999984741210938,
+            "distance_mm": 249.22222900390625,
             "used_in_trimmed_mean": true
           },
           {
@@ -3922,7 +3922,7 @@
             "point_b_x_px": 162.0,
             "point_b_y_px": 559.6666870117188,
             "distance_px": 15.523796444758773,
-            "distance_mm": 15.523796444758773,
+            "distance_mm": 240.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -3936,7 +3936,7 @@
             "point_b_x_px": 162.5079495869577,
             "point_b_y_px": 568.5555419921875,
             "distance_px": 16.50793432816863,
-            "distance_mm": 16.50793432816863,
+            "distance_mm": 231.4444580078125,
             "used_in_trimmed_mean": true
           },
           {
@@ -3950,8 +3950,8 @@
             "point_b_x_px": 163.00001525878906,
             "point_b_y_px": 577.4444580078125,
             "distance_px": 16.650802370160818,
-            "distance_mm": 16.650802370160818,
-            "used_in_trimmed_mean": false
+            "distance_mm": 222.5555419921875,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_41.jpg",
@@ -3964,7 +3964,7 @@
             "point_b_x_px": 163.00001525878906,
             "point_b_y_px": 586.3333129882812,
             "distance_px": 16.000015258789062,
-            "distance_mm": 16.000015258789062,
+            "distance_mm": 213.66668701171875,
             "used_in_trimmed_mean": true
           },
           {
@@ -3978,7 +3978,7 @@
             "point_b_x_px": 163.00001525878906,
             "point_b_y_px": 595.2222290039062,
             "distance_px": 16.000015258789062,
-            "distance_mm": 16.000015258789062,
+            "distance_mm": 204.77777099609375,
             "used_in_trimmed_mean": true
           },
           {
@@ -3992,7 +3992,7 @@
             "point_b_x_px": 163.30158948153257,
             "point_b_y_px": 604.111083984375,
             "distance_px": 16.12699769064784,
-            "distance_mm": 16.12699769064784,
+            "distance_mm": 195.888916015625,
             "used_in_trimmed_mean": true
           },
           {
@@ -4006,8 +4006,8 @@
             "point_b_x_px": 163.42857360839844,
             "point_b_y_px": 613.0,
             "distance_px": 5.857147216796875,
-            "distance_mm": 5.857147216796875,
-            "used_in_trimmed_mean": true
+            "distance_mm": 187.0,
+            "used_in_trimmed_mean": false
           }
         ]
       }
@@ -4018,10 +4018,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 2,
     "n_valid_gaps": 2,
-    "image_mean_gap_width_mm": 3.2611204385757446,
-    "image_trimmed_mean_gap_width_mm": 3.3402918577194214,
-    "image_recommended_gap_width_mm": 3.3402918577194214,
-    "image_std_gap_width_mm": 0.37599241733551025,
+    "image_mean_dist_to_bottom_mm": 371.5,
+    "image_trimmed_mean_dist_to_bottom_mm": 371.5,
+    "image_recommended_dist_to_bottom_mm": 371.5,
+    "image_std_dist_to_bottom_mm": 265.5,
     "measurements": [
       {
         "gap_id": 0,
@@ -4045,18 +4045,18 @@
         "score": 310.77011827012177,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 3.6587436199188232,
-        "median_distance_mm": 3.9365100860595703,
-        "trimmed_mean_distance_mm": 3.7162842750549316,
-        "trimmed_std_distance_mm": 0.9425213932991028,
-        "std_distance_mm": 1.4305157661437988,
-        "min_distance_mm": 0.857147216796875,
-        "max_distance_mm": 6.0000152587890625,
-        "range_distance_mm": 5.1428680419921875,
-        "cv_distance": 0.3909855170927603,
-        "robust_cv_distance": 0.2536192937729908,
+        "mean_distance_mm": 637.0,
+        "median_distance_mm": 637.0,
+        "trimmed_mean_distance_mm": 637.0,
+        "trimmed_std_distance_mm": 17.821134567260742,
+        "std_distance_mm": 22.339969635009766,
+        "min_distance_mm": 602.0,
+        "max_distance_mm": 672.0,
+        "range_distance_mm": 70.0,
+        "cv_distance": 0.035070595973327734,
+        "robust_cv_distance": 0.027976663370895983,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 3.7162842750549316,
+        "recommended_distance_mm": 637.0,
         "samples": [
           {
             "image_name": "Multimedia_42.jpg",
@@ -4069,8 +4069,8 @@
             "point_b_x_px": 246.42860412597656,
             "point_b_y_px": 128.0,
             "distance_px": 4.8571624755859375,
-            "distance_mm": 4.8571624755859375,
-            "used_in_trimmed_mean": true
+            "distance_mm": 672.0,
+            "used_in_trimmed_mean": false
           },
           {
             "image_name": "Multimedia_42.jpg",
@@ -4083,8 +4083,8 @@
             "point_b_x_px": 247.00003051757812,
             "point_b_y_px": 135.77777099609375,
             "distance_px": 6.0000152587890625,
-            "distance_mm": 6.0000152587890625,
-            "used_in_trimmed_mean": false
+            "distance_mm": 664.2222290039062,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_42.jpg",
@@ -4097,7 +4097,7 @@
             "point_b_x_px": 247.00003051757812,
             "point_b_y_px": 143.55555725097656,
             "distance_px": 5.000030517578125,
-            "distance_mm": 5.000030517578125,
+            "distance_mm": 656.4444427490234,
             "used_in_trimmed_mean": true
           },
           {
@@ -4111,7 +4111,7 @@
             "point_b_x_px": 247.00003051757812,
             "point_b_y_px": 151.3333282470703,
             "distance_px": 4.0,
-            "distance_mm": 4.0,
+            "distance_mm": 648.6666717529297,
             "used_in_trimmed_mean": true
           },
           {
@@ -4125,7 +4125,7 @@
             "point_b_x_px": 247.00003051757812,
             "point_b_y_px": 159.11111450195312,
             "distance_px": 4.0,
-            "distance_mm": 4.0,
+            "distance_mm": 640.8888854980469,
             "used_in_trimmed_mean": true
           },
           {
@@ -4139,7 +4139,7 @@
             "point_b_x_px": 247.00003051757812,
             "point_b_y_px": 166.88888549804688,
             "distance_px": 3.873020232655108,
-            "distance_mm": 3.873020232655108,
+            "distance_mm": 633.1111145019531,
             "used_in_trimmed_mean": true
           },
           {
@@ -4153,7 +4153,7 @@
             "point_b_x_px": 247.00003051757812,
             "point_b_y_px": 174.66665649414062,
             "distance_px": 3.0000152587890625,
-            "distance_mm": 3.0000152587890625,
+            "distance_mm": 625.3333435058594,
             "used_in_trimmed_mean": true
           },
           {
@@ -4167,7 +4167,7 @@
             "point_b_x_px": 247.00003051757812,
             "point_b_y_px": 182.44444274902344,
             "distance_px": 3.0000152587890625,
-            "distance_mm": 3.0000152587890625,
+            "distance_mm": 617.5555572509766,
             "used_in_trimmed_mean": true
           },
           {
@@ -4181,7 +4181,7 @@
             "point_b_x_px": 247.00003051757812,
             "point_b_y_px": 190.22222900390625,
             "distance_px": 2.000030517578125,
-            "distance_mm": 2.000030517578125,
+            "distance_mm": 609.7777709960938,
             "used_in_trimmed_mean": true
           },
           {
@@ -4195,7 +4195,7 @@
             "point_b_x_px": 246.42855834960938,
             "point_b_y_px": 198.0,
             "distance_px": 0.857147216796875,
-            "distance_mm": 0.857147216796875,
+            "distance_mm": 602.0,
             "used_in_trimmed_mean": false
           }
         ]
@@ -4222,18 +4222,18 @@
         "score": 305.0439533572266,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 2.863497257232666,
-        "median_distance_mm": 3.0,
-        "trimmed_mean_distance_mm": 2.964299440383911,
-        "trimmed_std_distance_mm": 0.5918340086936951,
-        "std_distance_mm": 0.9137234687805176,
-        "min_distance_mm": 0.85711669921875,
-        "max_distance_mm": 4.063461780548096,
-        "range_distance_mm": 3.2063450813293457,
-        "cv_distance": 0.3190935372725155,
-        "robust_cv_distance": 0.1996539218106271,
+        "mean_distance_mm": 106.0,
+        "median_distance_mm": 106.0,
+        "trimmed_mean_distance_mm": 106.0,
+        "trimmed_std_distance_mm": 17.311962127685547,
+        "std_distance_mm": 21.70168685913086,
+        "min_distance_mm": 72.0,
+        "max_distance_mm": 140.0,
+        "range_distance_mm": 68.0,
+        "cv_distance": 0.20473289489746094,
+        "robust_cv_distance": 0.16332039743099572,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 2.964299440383911,
+        "recommended_distance_mm": 106.0,
         "samples": [
           {
             "image_name": "Multimedia_42.jpg",
@@ -4246,7 +4246,7 @@
             "point_b_x_px": 273.4285583496094,
             "point_b_y_px": 660.0,
             "distance_px": 0.85711669921875,
-            "distance_mm": 0.85711669921875,
+            "distance_mm": 140.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -4260,7 +4260,7 @@
             "point_b_x_px": 274.0,
             "point_b_y_px": 667.5555419921875,
             "distance_px": 2.0,
-            "distance_mm": 2.0,
+            "distance_mm": 132.4444580078125,
             "used_in_trimmed_mean": true
           },
           {
@@ -4274,7 +4274,7 @@
             "point_b_x_px": 274.30160474032164,
             "point_b_y_px": 675.111083984375,
             "distance_px": 2.301604740321636,
-            "distance_mm": 2.301604740321636,
+            "distance_mm": 124.888916015625,
             "used_in_trimmed_mean": true
           },
           {
@@ -4288,7 +4288,7 @@
             "point_b_x_px": 275.0952686127275,
             "point_b_y_px": 682.6666870117188,
             "distance_px": 2.71430460549891,
-            "distance_mm": 2.71430460549891,
+            "distance_mm": 117.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -4302,7 +4302,7 @@
             "point_b_x_px": 276.0,
             "point_b_y_px": 690.2222290039062,
             "distance_px": 3.0,
-            "distance_mm": 3.0,
+            "distance_mm": 109.77777099609375,
             "used_in_trimmed_mean": true
           },
           {
@@ -4316,7 +4316,7 @@
             "point_b_x_px": 276.6825484018773,
             "point_b_y_px": 697.7777709960938,
             "distance_px": 3.14288330078125,
-            "distance_mm": 3.14288330078125,
+            "distance_mm": 102.22222900390625,
             "used_in_trimmed_mean": true
           },
           {
@@ -4330,7 +4330,7 @@
             "point_b_x_px": 277.0,
             "point_b_y_px": 705.3333129882812,
             "distance_px": 3.0,
-            "distance_mm": 3.0,
+            "distance_mm": 94.66668701171875,
             "used_in_trimmed_mean": true
           },
           {
@@ -4344,7 +4344,7 @@
             "point_b_x_px": 277.6984562948346,
             "point_b_y_px": 712.888916015625,
             "distance_px": 3.698456294834614,
-            "distance_mm": 3.698456294834614,
+            "distance_mm": 87.111083984375,
             "used_in_trimmed_mean": true
           },
           {
@@ -4358,8 +4358,8 @@
             "point_b_x_px": 278.8412785604596,
             "point_b_y_px": 720.4444580078125,
             "distance_px": 4.063461545854807,
-            "distance_mm": 4.063461545854807,
-            "used_in_trimmed_mean": false
+            "distance_mm": 79.5555419921875,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_42.jpg",
@@ -4372,8 +4372,8 @@
             "point_b_x_px": 279.4285888671875,
             "point_b_y_px": 728.0,
             "distance_px": 3.857147216796875,
-            "distance_mm": 3.857147216796875,
-            "used_in_trimmed_mean": true
+            "distance_mm": 72.0,
+            "used_in_trimmed_mean": false
           }
         ]
       }
@@ -4384,10 +4384,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 2,
     "n_valid_gaps": 2,
-    "image_mean_gap_width_mm": 2.906342387199402,
-    "image_trimmed_mean_gap_width_mm": 2.9384835958480835,
-    "image_recommended_gap_width_mm": 2.9384835958480835,
-    "image_std_gap_width_mm": 0.20038950443267822,
+    "image_mean_dist_to_bottom_mm": 411.75,
+    "image_trimmed_mean_dist_to_bottom_mm": 411.75,
+    "image_recommended_dist_to_bottom_mm": 411.75,
+    "image_std_dist_to_bottom_mm": 245.25,
     "measurements": [
       {
         "gap_id": 0,
@@ -4411,18 +4411,18 @@
         "score": 305.9261663743428,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 2.7333312034606934,
-        "median_distance_mm": 2.761909008026123,
-        "trimmed_mean_distance_mm": 2.7380940914154053,
-        "trimmed_std_distance_mm": 0.6344282031059265,
-        "std_distance_mm": 1.0059213638305664,
-        "min_distance_mm": 0.857147216796875,
-        "max_distance_mm": 4.5714111328125,
-        "range_distance_mm": 3.714263916015625,
-        "cv_distance": 0.3680202979269256,
-        "robust_cv_distance": 0.2317043103431011,
+        "mean_distance_mm": 166.5,
+        "median_distance_mm": 166.5,
+        "trimmed_mean_distance_mm": 166.5,
+        "trimmed_std_distance_mm": 17.566537857055664,
+        "std_distance_mm": 22.02082061767578,
+        "min_distance_mm": 132.0,
+        "max_distance_mm": 201.0,
+        "range_distance_mm": 69.0,
+        "cv_distance": 0.13225718088694163,
+        "robust_cv_distance": 0.1055047318742082,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 2.7380940914154053,
+        "recommended_distance_mm": 166.5,
         "samples": [
           {
             "image_name": "Multimedia_43.jpg",
@@ -4435,7 +4435,7 @@
             "point_b_x_px": 247.4285888671875,
             "point_b_y_px": 599.0,
             "distance_px": 0.857147216796875,
-            "distance_mm": 0.857147216796875,
+            "distance_mm": 201.0,
             "used_in_trimmed_mean": false
           },
           {
@@ -4449,7 +4449,7 @@
             "point_b_x_px": 248.00001525878906,
             "point_b_y_px": 606.6666870117188,
             "distance_px": 2.0000152587890625,
-            "distance_mm": 2.0000152587890625,
+            "distance_mm": 193.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -4463,7 +4463,7 @@
             "point_b_x_px": 248.33333551324904,
             "point_b_y_px": 614.3333129882812,
             "distance_px": 1.85711669921875,
-            "distance_mm": 1.85711669921875,
+            "distance_mm": 185.66668701171875,
             "used_in_trimmed_mean": true
           },
           {
@@ -4477,7 +4477,7 @@
             "point_b_x_px": 249.28573608398438,
             "point_b_y_px": 622.0,
             "distance_px": 2.28570556640625,
-            "distance_mm": 2.28570556640625,
+            "distance_mm": 178.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -4491,7 +4491,7 @@
             "point_b_x_px": 250.00003051757812,
             "point_b_y_px": 629.6666870117188,
             "distance_px": 2.761909121647477,
-            "distance_mm": 2.761909121647477,
+            "distance_mm": 170.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -4505,7 +4505,7 @@
             "point_b_x_px": 250.76192438043654,
             "point_b_y_px": 637.3333129882812,
             "distance_px": 2.761909121647477,
-            "distance_mm": 2.761909121647477,
+            "distance_mm": 162.66668701171875,
             "used_in_trimmed_mean": true
           },
           {
@@ -4519,7 +4519,7 @@
             "point_b_x_px": 251.00001525878906,
             "point_b_y_px": 645.0,
             "distance_px": 3.0,
-            "distance_mm": 3.0,
+            "distance_mm": 155.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -4533,7 +4533,7 @@
             "point_b_x_px": 251.66667465958744,
             "point_b_y_px": 652.6666870117188,
             "distance_px": 3.4285685224458575,
-            "distance_mm": 3.4285685224458575,
+            "distance_mm": 147.33331298828125,
             "used_in_trimmed_mean": true
           },
           {
@@ -4547,7 +4547,7 @@
             "point_b_x_px": 252.80952889565378,
             "point_b_y_px": 660.3333129882812,
             "distance_px": 3.8095288956537843,
-            "distance_mm": 3.8095288956537843,
+            "distance_mm": 139.66668701171875,
             "used_in_trimmed_mean": true
           },
           {
@@ -4561,7 +4561,7 @@
             "point_b_x_px": 254.14288330078125,
             "point_b_y_px": 668.0,
             "distance_px": 4.5714111328125,
-            "distance_mm": 4.5714111328125,
+            "distance_mm": 132.0,
             "used_in_trimmed_mean": false
           }
         ]
@@ -4588,18 +4588,18 @@
         "score": 277.29149403321117,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 3.0793535709381104,
-        "median_distance_mm": 2.999969482421875,
-        "trimmed_mean_distance_mm": 3.1388731002807617,
-        "trimmed_std_distance_mm": 0.7949994802474976,
-        "std_distance_mm": 1.1432979106903076,
-        "min_distance_mm": 0.8571624755859375,
-        "max_distance_mm": 4.825387001037598,
-        "range_distance_mm": 3.96822452545166,
-        "cv_distance": 0.3712785441335362,
-        "robust_cv_distance": 0.2532754446735637,
+        "mean_distance_mm": 657.0,
+        "median_distance_mm": 657.0,
+        "trimmed_mean_distance_mm": 657.0,
+        "trimmed_std_distance_mm": 14.256896018981934,
+        "std_distance_mm": 17.87196922302246,
+        "min_distance_mm": 629.0,
+        "max_distance_mm": 685.0,
+        "range_distance_mm": 56.0,
+        "cv_distance": 0.02720238846730968,
+        "robust_cv_distance": 0.02169999394061177,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 3.1388731002807617,
+        "recommended_distance_mm": 657.0,
         "samples": [
           {
             "image_name": "Multimedia_43.jpg",
@@ -4612,8 +4612,8 @@
             "point_b_x_px": 225.14288330078125,
             "point_b_y_px": 115.0,
             "distance_px": 4.571441650390625,
-            "distance_mm": 4.571441650390625,
-            "used_in_trimmed_mean": true
+            "distance_mm": 685.0,
+            "used_in_trimmed_mean": false
           },
           {
             "image_name": "Multimedia_43.jpg",
@@ -4626,8 +4626,8 @@
             "point_b_x_px": 225.0,
             "point_b_y_px": 121.22222137451172,
             "distance_px": 4.8253870161715895,
-            "distance_mm": 4.8253870161715895,
-            "used_in_trimmed_mean": false
+            "distance_mm": 678.7777786254883,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_43.jpg",
@@ -4640,7 +4640,7 @@
             "point_b_x_px": 225.0,
             "point_b_y_px": 127.44444274902344,
             "distance_px": 4.0,
-            "distance_mm": 4.0,
+            "distance_mm": 672.5555572509766,
             "used_in_trimmed_mean": true
           },
           {
@@ -4654,7 +4654,7 @@
             "point_b_x_px": 225.0,
             "point_b_y_px": 133.6666717529297,
             "distance_px": 3.333322434220463,
-            "distance_mm": 3.333322434220463,
+            "distance_mm": 666.3333282470703,
             "used_in_trimmed_mean": true
           },
           {
@@ -4668,7 +4668,7 @@
             "point_b_x_px": 225.0,
             "point_b_y_px": 139.88888549804688,
             "distance_px": 2.999969482421875,
-            "distance_mm": 2.999969482421875,
+            "distance_mm": 660.1111145019531,
             "used_in_trimmed_mean": true
           },
           {
@@ -4682,7 +4682,7 @@
             "point_b_x_px": 225.0,
             "point_b_y_px": 146.11111450195312,
             "distance_px": 2.999969482421875,
-            "distance_mm": 2.999969482421875,
+            "distance_mm": 653.8888854980469,
             "used_in_trimmed_mean": true
           },
           {
@@ -4696,7 +4696,7 @@
             "point_b_x_px": 225.0,
             "point_b_y_px": 152.33334350585938,
             "distance_px": 2.999969482421875,
-            "distance_mm": 2.999969482421875,
+            "distance_mm": 647.6666564941406,
             "used_in_trimmed_mean": true
           },
           {
@@ -4710,7 +4710,7 @@
             "point_b_x_px": 225.0,
             "point_b_y_px": 158.55555725097656,
             "distance_px": 2.2063274080865085,
-            "distance_mm": 2.2063274080865085,
+            "distance_mm": 641.4444427490234,
             "used_in_trimmed_mean": true
           },
           {
@@ -4724,7 +4724,7 @@
             "point_b_x_px": 225.0,
             "point_b_y_px": 164.77777099609375,
             "distance_px": 1.9999847412109375,
-            "distance_mm": 1.9999847412109375,
+            "distance_mm": 635.2222290039062,
             "used_in_trimmed_mean": true
           },
           {
@@ -4738,7 +4738,7 @@
             "point_b_x_px": 224.4285888671875,
             "point_b_y_px": 171.0,
             "distance_px": 0.8571624755859375,
-            "distance_mm": 0.8571624755859375,
+            "distance_mm": 629.0,
             "used_in_trimmed_mean": false
           }
         ]
@@ -4750,10 +4750,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 2,
     "n_valid_gaps": 2,
-    "image_mean_gap_width_mm": 7.664273262023926,
-    "image_trimmed_mean_gap_width_mm": 7.681535243988037,
-    "image_recommended_gap_width_mm": 7.681535243988037,
-    "image_std_gap_width_mm": 2.092247486114502,
+    "image_mean_dist_to_bottom_mm": 242.49282836914062,
+    "image_trimmed_mean_dist_to_bottom_mm": 242.5535430908203,
+    "image_recommended_dist_to_bottom_mm": 242.5535430908203,
+    "image_std_dist_to_bottom_mm": 6.708343505859375,
     "measurements": [
       {
         "gap_id": 0,
@@ -4777,18 +4777,18 @@
         "score": 750.4726215719174,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 9.914263725280762,
-        "median_distance_mm": 9.5,
-        "trimmed_mean_distance_mm": 9.773782730102539,
-        "trimmed_std_distance_mm": 1.285203218460083,
-        "std_distance_mm": 1.5919045209884644,
-        "min_distance_mm": 8.095197677612305,
-        "max_distance_mm": 12.857177734375,
-        "range_distance_mm": 4.761980056762695,
-        "cv_distance": 0.16056709455178259,
-        "robust_cv_distance": 0.1314949650458006,
+        "mean_distance_mm": 235.81900024414062,
+        "median_distance_mm": 235.99993896484375,
+        "trimmed_mean_distance_mm": 235.84519958496094,
+        "trimmed_std_distance_mm": 0.7181390523910522,
+        "std_distance_mm": 1.0015298128128052,
+        "min_distance_mm": 234.0,
+        "max_distance_mm": 237.42852783203125,
+        "range_distance_mm": 3.42852783203125,
+        "cv_distance": 0.0042470276431327975,
+        "robust_cv_distance": 0.0030449593786722362,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 9.773782730102539,
+        "recommended_distance_mm": 235.84519958496094,
         "samples": [
           {
             "image_name": "Multimedia_45.jpg",
@@ -4801,8 +4801,8 @@
             "point_b_x_px": 111.0,
             "point_b_y_px": 576.4286499023438,
             "distance_px": 12.857177734375,
-            "distance_mm": 12.857177734375,
-            "used_in_trimmed_mean": false
+            "distance_mm": 236.42852783203125,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_45.jpg",
@@ -4815,7 +4815,7 @@
             "point_b_x_px": 137.3333282470703,
             "point_b_y_px": 575.0,
             "distance_px": 11.809489659033716,
-            "distance_mm": 11.809489659033716,
+            "distance_mm": 236.80948965903372,
             "used_in_trimmed_mean": true
           },
           {
@@ -4829,7 +4829,7 @@
             "point_b_x_px": 163.6666717529297,
             "point_b_y_px": 575.0,
             "distance_px": 10.99993896484375,
-            "distance_mm": 10.99993896484375,
+            "distance_mm": 235.99993896484375,
             "used_in_trimmed_mean": true
           },
           {
@@ -4843,7 +4843,7 @@
             "point_b_x_px": 190.0,
             "point_b_y_px": 575.0,
             "distance_px": 10.99993896484375,
-            "distance_mm": 10.99993896484375,
+            "distance_mm": 235.99993896484375,
             "used_in_trimmed_mean": true
           },
           {
@@ -4857,7 +4857,7 @@
             "point_b_x_px": 216.33334350585938,
             "point_b_y_px": 575.0,
             "distance_px": 10.0,
-            "distance_mm": 10.0,
+            "distance_mm": 235.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -4871,8 +4871,8 @@
             "point_b_x_px": 242.6666717529297,
             "point_b_y_px": 575.0,
             "distance_px": 9.0,
-            "distance_mm": 9.0,
-            "used_in_trimmed_mean": true
+            "distance_mm": 234.0,
+            "used_in_trimmed_mean": false
           },
           {
             "image_name": "Multimedia_45.jpg",
@@ -4885,7 +4885,7 @@
             "point_b_x_px": 269.0,
             "point_b_y_px": 573.857177734375,
             "distance_px": 8.28570556640625,
-            "distance_mm": 8.28570556640625,
+            "distance_mm": 234.42852783203125,
             "used_in_trimmed_mean": true
           },
           {
@@ -4899,7 +4899,7 @@
             "point_b_x_px": 295.3333435058594,
             "point_b_y_px": 572.2381373811513,
             "distance_px": 8.238076345995069,
-            "distance_mm": 8.238076345995069,
+            "distance_mm": 235.99993896484375,
             "used_in_trimmed_mean": true
           },
           {
@@ -4913,8 +4913,8 @@
             "point_b_x_px": 321.66668701171875,
             "point_b_y_px": 572.0,
             "distance_px": 8.095197405666113,
-            "distance_mm": 8.095197405666113,
-            "used_in_trimmed_mean": false
+            "distance_mm": 236.0951974056661,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_45.jpg",
@@ -4927,8 +4927,8 @@
             "point_b_x_px": 348.0,
             "point_b_y_px": 571.4285888671875,
             "distance_px": 8.85711669921875,
-            "distance_mm": 8.85711669921875,
-            "used_in_trimmed_mean": true
+            "distance_mm": 237.42852783203125,
+            "used_in_trimmed_mean": false
           }
         ]
       },
@@ -4954,18 +4954,18 @@
         "score": 538.4385375976562,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 5.41428279876709,
-        "median_distance_mm": 5.944489002227783,
-        "trimmed_mean_distance_mm": 5.589287757873535,
-        "trimmed_std_distance_mm": 1.4767858982086182,
-        "std_distance_mm": 2.200622797012329,
-        "min_distance_mm": 0.85711669921875,
-        "max_distance_mm": 8.5714111328125,
-        "range_distance_mm": 7.71429443359375,
-        "cv_distance": 0.4064477011643061,
-        "robust_cv_distance": 0.26421718869784344,
+        "mean_distance_mm": 249.16665649414062,
+        "median_distance_mm": 249.44442749023438,
+        "trimmed_mean_distance_mm": 249.2618865966797,
+        "trimmed_std_distance_mm": 3.002298355102539,
+        "std_distance_mm": 4.251216888427734,
+        "min_distance_mm": 241.42852783203125,
+        "max_distance_mm": 256.142822265625,
+        "range_distance_mm": 14.71429443359375,
+        "cv_distance": 0.01706174071701165,
+        "robust_cv_distance": 0.012044755000833454,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 5.589287757873535,
+        "recommended_distance_mm": 249.2618865966797,
         "samples": [
           {
             "image_name": "Multimedia_45.jpg",
@@ -4978,7 +4978,7 @@
             "point_b_x_px": 523.0,
             "point_b_y_px": 559.4285888671875,
             "distance_px": 0.85711669921875,
-            "distance_mm": 0.85711669921875,
+            "distance_mm": 241.42852783203125,
             "used_in_trimmed_mean": false
           },
           {
@@ -4992,7 +4992,7 @@
             "point_b_x_px": 541.4444580078125,
             "point_b_y_px": 559.0,
             "distance_px": 2.920595198869705,
-            "distance_mm": 2.920595198869705,
+            "distance_mm": 243.9205951988697,
             "used_in_trimmed_mean": true
           },
           {
@@ -5006,7 +5006,7 @@
             "point_b_x_px": 559.888916015625,
             "point_b_y_px": 557.7301664799452,
             "distance_px": 3.857123479247093,
-            "distance_mm": 3.857123479247093,
+            "distance_mm": 246.1269569993019,
             "used_in_trimmed_mean": true
           },
           {
@@ -5020,7 +5020,7 @@
             "point_b_x_px": 578.3333129882812,
             "point_b_y_px": 557.0000610351562,
             "distance_px": 5.333371117711067,
-            "distance_mm": 5.333371117711067,
+            "distance_mm": 248.33331008255482,
             "used_in_trimmed_mean": true
           },
           {
@@ -5034,7 +5034,7 @@
             "point_b_x_px": 596.7777709960938,
             "point_b_y_px": 557.0000610351562,
             "distance_px": 6.00006103515625,
-            "distance_mm": 6.00006103515625,
+            "distance_mm": 249.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -5048,7 +5048,7 @@
             "point_b_x_px": 615.2222290039062,
             "point_b_y_px": 556.0000610351562,
             "distance_px": 5.888916984200478,
-            "distance_mm": 5.888916984200478,
+            "distance_mm": 249.88885594904423,
             "used_in_trimmed_mean": true
           },
           {
@@ -5062,7 +5062,7 @@
             "point_b_x_px": 633.6666870117188,
             "point_b_y_px": 555.6190359927714,
             "distance_px": 6.42852783203125,
-            "distance_mm": 6.42852783203125,
+            "distance_mm": 250.80949183925986,
             "used_in_trimmed_mean": true
           },
           {
@@ -5076,7 +5076,7 @@
             "point_b_x_px": 652.111083984375,
             "point_b_y_px": 554.2698403000832,
             "distance_px": 6.28570556640625,
-            "distance_mm": 6.28570556640625,
+            "distance_mm": 252.0158652663231,
             "used_in_trimmed_mean": true
           },
           {
@@ -5090,7 +5090,7 @@
             "point_b_x_px": 670.5555419921875,
             "point_b_y_px": 554.0,
             "distance_px": 8.0,
-            "distance_mm": 8.0,
+            "distance_mm": 254.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -5104,7 +5104,7 @@
             "point_b_x_px": 689.0,
             "point_b_y_px": 552.4285888671875,
             "distance_px": 8.5714111328125,
-            "distance_mm": 8.5714111328125,
+            "distance_mm": 256.142822265625,
             "used_in_trimmed_mean": false
           }
         ]
@@ -5116,10 +5116,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 2,
     "n_valid_gaps": 2,
-    "image_mean_gap_width_mm": 6.849193334579468,
-    "image_trimmed_mean_gap_width_mm": 6.847204685211182,
-    "image_recommended_gap_width_mm": 6.847204685211182,
-    "image_std_gap_width_mm": 1.7222285270690918,
+    "image_mean_dist_to_bottom_mm": 232.7118911743164,
+    "image_trimmed_mean_dist_to_bottom_mm": 232.69342803955078,
+    "image_recommended_dist_to_bottom_mm": 232.69342803955078,
+    "image_std_dist_to_bottom_mm": 4.485115051269531,
     "measurements": [
       {
         "gap_id": 0,
@@ -5143,18 +5143,18 @@
         "score": 717.1840034298275,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 8.74125862121582,
-        "median_distance_mm": 8.37298583984375,
-        "trimmed_mean_distance_mm": 8.569433212280273,
-        "trimmed_std_distance_mm": 1.333897352218628,
-        "std_distance_mm": 1.6495758295059204,
-        "min_distance_mm": 7.0,
-        "max_distance_mm": 11.85711669921875,
-        "range_distance_mm": 4.85711669921875,
-        "cv_distance": 0.18871147748703507,
-        "robust_cv_distance": 0.155657593585899,
+        "mean_distance_mm": 228.3095245361328,
+        "median_distance_mm": 227.71429443359375,
+        "trimmed_mean_distance_mm": 228.20831298828125,
+        "trimmed_std_distance_mm": 1.5444790124893188,
+        "std_distance_mm": 1.850063443183899,
+        "min_distance_mm": 226.0,
+        "max_distance_mm": 231.42852783203125,
+        "range_distance_mm": 5.42852783203125,
+        "cv_distance": 0.008103312583838803,
+        "robust_cv_distance": 0.006767847289457109,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 8.569433212280273,
+        "recommended_distance_mm": 228.20831298828125,
         "samples": [
           {
             "image_name": "Multimedia_46.jpg",
@@ -5167,7 +5167,7 @@
             "point_b_x_px": 114.0,
             "point_b_y_px": 580.4285888671875,
             "distance_px": 11.85711669921875,
-            "distance_mm": 11.85711669921875,
+            "distance_mm": 231.42852783203125,
             "used_in_trimmed_mean": false
           },
           {
@@ -5181,7 +5181,7 @@
             "point_b_x_px": 139.44444274902344,
             "point_b_y_px": 580.0,
             "distance_px": 11.0,
-            "distance_mm": 11.0,
+            "distance_mm": 231.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -5195,7 +5195,7 @@
             "point_b_x_px": 164.88888549804688,
             "point_b_y_px": 580.0,
             "distance_px": 9.99993896484375,
-            "distance_mm": 9.99993896484375,
+            "distance_mm": 229.99993896484375,
             "used_in_trimmed_mean": true
           },
           {
@@ -5209,7 +5209,7 @@
             "point_b_x_px": 190.33334350585938,
             "point_b_y_px": 580.0,
             "distance_px": 8.99993896484375,
-            "distance_mm": 8.99993896484375,
+            "distance_mm": 228.99993896484375,
             "used_in_trimmed_mean": true
           },
           {
@@ -5223,7 +5223,7 @@
             "point_b_x_px": 215.77777099609375,
             "point_b_y_px": 581.0,
             "distance_px": 9.0,
-            "distance_mm": 9.0,
+            "distance_mm": 228.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -5237,8 +5237,8 @@
             "point_b_x_px": 241.22222900390625,
             "point_b_y_px": 581.7460336834192,
             "distance_px": 7.746033683419228,
-            "distance_mm": 7.746033683419228,
-            "used_in_trimmed_mean": true
+            "distance_mm": 226.0,
+            "used_in_trimmed_mean": false
           },
           {
             "image_name": "Multimedia_46.jpg",
@@ -5251,7 +5251,7 @@
             "point_b_x_px": 266.66668701171875,
             "point_b_y_px": 581.0,
             "distance_px": 7.238080706447363,
-            "distance_mm": 7.238080706447363,
+            "distance_mm": 226.23808070644736,
             "used_in_trimmed_mean": true
           },
           {
@@ -5265,8 +5265,8 @@
             "point_b_x_px": 292.1111145019531,
             "point_b_y_px": 580.0,
             "distance_px": 7.0,
-            "distance_mm": 7.0,
-            "used_in_trimmed_mean": false
+            "distance_mm": 227.0,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_46.jpg",
@@ -5279,7 +5279,7 @@
             "point_b_x_px": 317.5555419921875,
             "point_b_y_px": 580.0,
             "distance_px": 7.0,
-            "distance_mm": 7.0,
+            "distance_mm": 227.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -5293,7 +5293,7 @@
             "point_b_x_px": 343.0,
             "point_b_y_px": 580.1428833007812,
             "distance_px": 7.57147216796875,
-            "distance_mm": 7.57147216796875,
+            "distance_mm": 227.4285888671875,
             "used_in_trimmed_mean": true
           }
         ]
@@ -5320,18 +5320,18 @@
         "score": 490.3551740883159,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 4.957128047943115,
-        "median_distance_mm": 5.341216564178467,
-        "trimmed_mean_distance_mm": 5.12497615814209,
-        "trimmed_std_distance_mm": 1.2767510414123535,
-        "std_distance_mm": 1.941074013710022,
-        "min_distance_mm": 0.857177734375,
-        "max_distance_mm": 7.71429443359375,
-        "range_distance_mm": 6.85711669921875,
-        "cv_distance": 0.3915722964863579,
-        "robust_cv_distance": 0.2491233133609742,
+        "mean_distance_mm": 237.1142578125,
+        "median_distance_mm": 236.99993896484375,
+        "trimmed_mean_distance_mm": 237.1785430908203,
+        "trimmed_std_distance_mm": 2.14615797996521,
+        "std_distance_mm": 3.097618579864502,
+        "min_distance_mm": 231.42852783203125,
+        "max_distance_mm": 242.28570556640625,
+        "range_distance_mm": 10.857177734375,
+        "cv_distance": 0.013063822515109862,
+        "robust_cv_distance": 0.00904870209588649,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 5.12497615814209,
+        "recommended_distance_mm": 237.1785430908203,
         "samples": [
           {
             "image_name": "Multimedia_46.jpg",
@@ -5344,7 +5344,7 @@
             "point_b_x_px": 531.0,
             "point_b_y_px": 569.4286499023438,
             "distance_px": 0.857177734375,
-            "distance_mm": 0.857177734375,
+            "distance_mm": 231.42852783203125,
             "used_in_trimmed_mean": false
           },
           {
@@ -5358,7 +5358,7 @@
             "point_b_x_px": 547.2222290039062,
             "point_b_y_px": 569.0,
             "distance_px": 2.4603281170129776,
-            "distance_mm": 2.4603281170129776,
+            "distance_mm": 233.46032811701298,
             "used_in_trimmed_mean": true
           },
           {
@@ -5372,7 +5372,7 @@
             "point_b_x_px": 563.4444580078125,
             "point_b_y_px": 569.0,
             "distance_px": 4.063478499650955,
-            "distance_mm": 4.063478499650955,
+            "distance_mm": 235.06347849965096,
             "used_in_trimmed_mean": true
           },
           {
@@ -5386,7 +5386,7 @@
             "point_b_x_px": 579.6666870117188,
             "point_b_y_px": 569.0,
             "distance_px": 5.523745581507683,
-            "distance_mm": 5.523745581507683,
+            "distance_mm": 236.52374558150768,
             "used_in_trimmed_mean": true
           },
           {
@@ -5400,7 +5400,7 @@
             "point_b_x_px": 595.888916015625,
             "point_b_y_px": 568.1587485671043,
             "distance_px": 5.15868753194809,
-            "distance_mm": 5.15868753194809,
+            "distance_mm": 236.99993896484375,
             "used_in_trimmed_mean": true
           },
           {
@@ -5414,7 +5414,7 @@
             "point_b_x_px": 612.111083984375,
             "point_b_y_px": 568.0,
             "distance_px": 4.99993896484375,
-            "distance_mm": 4.99993896484375,
+            "distance_mm": 236.99993896484375,
             "used_in_trimmed_mean": true
           },
           {
@@ -5428,7 +5428,7 @@
             "point_b_x_px": 628.3333129882812,
             "point_b_y_px": 567.2380807064474,
             "distance_px": 5.57139078900218,
-            "distance_mm": 5.57139078900218,
+            "distance_mm": 238.33331008255482,
             "used_in_trimmed_mean": true
           },
           {
@@ -5442,7 +5442,7 @@
             "point_b_x_px": 644.5555419921875,
             "point_b_y_px": 567.0,
             "distance_px": 6.507932633161545,
-            "distance_mm": 6.507932633161545,
+            "distance_mm": 239.50793263316154,
             "used_in_trimmed_mean": true
           },
           {
@@ -5456,7 +5456,7 @@
             "point_b_x_px": 660.7777709960938,
             "point_b_y_px": 566.1746361143887,
             "distance_px": 6.714307997375727,
-            "distance_mm": 6.714307997375727,
+            "distance_mm": 240.53967188298702,
             "used_in_trimmed_mean": true
           },
           {
@@ -5470,7 +5470,7 @@
             "point_b_x_px": 677.0,
             "point_b_y_px": 565.4285888671875,
             "distance_px": 7.71429443359375,
-            "distance_mm": 7.71429443359375,
+            "distance_mm": 242.28570556640625,
             "used_in_trimmed_mean": false
           }
         ]
@@ -5482,10 +5482,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 2,
     "n_valid_gaps": 2,
-    "image_mean_gap_width_mm": 5.6142895221710205,
-    "image_trimmed_mean_gap_width_mm": 5.550596237182617,
-    "image_recommended_gap_width_mm": 5.550596237182617,
-    "image_std_gap_width_mm": 1.252974510192871,
+    "image_mean_dist_to_bottom_mm": 241.24681854248047,
+    "image_trimmed_mean_dist_to_bottom_mm": 241.10316467285156,
+    "image_recommended_dist_to_bottom_mm": 241.10316467285156,
+    "image_std_dist_to_bottom_mm": 13.698410034179688,
     "measurements": [
       {
         "gap_id": 0,
@@ -5509,18 +5509,18 @@
         "score": 726.9001195187391,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 7.033334255218506,
-        "median_distance_mm": 6.78570556640625,
-        "trimmed_mean_distance_mm": 6.803570747375488,
-        "trimmed_std_distance_mm": 1.2164888381958008,
-        "std_distance_mm": 1.7557332515716553,
-        "min_distance_mm": 5.047604560852051,
-        "max_distance_mm": 10.857177734375,
-        "range_distance_mm": 5.809573173522949,
-        "cv_distance": 0.24963028740870066,
-        "robust_cv_distance": 0.1788015269283512,
+        "mean_distance_mm": 227.7809600830078,
+        "median_distance_mm": 226.69049072265625,
+        "trimmed_mean_distance_mm": 227.40475463867188,
+        "trimmed_std_distance_mm": 1.743132472038269,
+        "std_distance_mm": 2.443840742111206,
+        "min_distance_mm": 225.4285888671875,
+        "max_distance_mm": 233.142822265625,
+        "range_distance_mm": 7.7142333984375,
+        "cv_distance": 0.010728907021994388,
+        "robust_cv_distance": 0.007665329930361255,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 6.803570747375488,
+        "recommended_distance_mm": 227.40475463867188,
         "samples": [
           {
             "image_name": "Multimedia_47.jpg",
@@ -5533,7 +5533,7 @@
             "point_b_x_px": 112.0,
             "point_b_y_px": 585.4285888671875,
             "distance_px": 10.857177734375,
-            "distance_mm": 10.857177734375,
+            "distance_mm": 225.4285888671875,
             "used_in_trimmed_mean": false
           },
           {
@@ -5547,7 +5547,7 @@
             "point_b_x_px": 138.6666717529297,
             "point_b_y_px": 583.047627040185,
             "distance_px": 9.047627040185034,
-            "distance_mm": 9.047627040185034,
+            "distance_mm": 226.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -5561,7 +5561,7 @@
             "point_b_x_px": 165.3333282470703,
             "point_b_y_px": 582.0,
             "distance_px": 8.0,
-            "distance_mm": 8.0,
+            "distance_mm": 226.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -5575,7 +5575,7 @@
             "point_b_x_px": 192.0,
             "point_b_y_px": 581.0,
             "distance_px": 7.0,
-            "distance_mm": 7.0,
+            "distance_mm": 226.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -5589,7 +5589,7 @@
             "point_b_x_px": 218.66665649414062,
             "point_b_y_px": 580.0,
             "distance_px": 6.3809596467763186,
-            "distance_mm": 6.3809596467763186,
+            "distance_mm": 226.38095964677632,
             "used_in_trimmed_mean": true
           },
           {
@@ -5603,7 +5603,7 @@
             "point_b_x_px": 245.3333282470703,
             "point_b_y_px": 580.0,
             "distance_px": 7.0,
-            "distance_mm": 7.0,
+            "distance_mm": 227.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -5617,7 +5617,7 @@
             "point_b_x_px": 272.0,
             "point_b_y_px": 577.71435546875,
             "distance_px": 5.14288330078125,
-            "distance_mm": 5.14288330078125,
+            "distance_mm": 227.42852783203125,
             "used_in_trimmed_mean": true
           },
           {
@@ -5631,7 +5631,7 @@
             "point_b_x_px": 298.6666564941406,
             "point_b_y_px": 575.9047866091132,
             "distance_px": 5.285685220733285,
-            "distance_mm": 5.285685220733285,
+            "distance_mm": 229.38089861162007,
             "used_in_trimmed_mean": true
           },
           {
@@ -5645,8 +5645,8 @@
             "point_b_x_px": 325.33331298828125,
             "point_b_y_px": 574.0,
             "distance_px": 5.047604516148567,
-            "distance_mm": 5.047604516148567,
-            "used_in_trimmed_mean": false
+            "distance_mm": 231.04760451614857,
+            "used_in_trimmed_mean": true
           },
           {
             "image_name": "Multimedia_47.jpg",
@@ -5659,8 +5659,8 @@
             "point_b_x_px": 352.0,
             "point_b_y_px": 573.4285888671875,
             "distance_px": 6.5714111328125,
-            "distance_mm": 6.5714111328125,
-            "used_in_trimmed_mean": true
+            "distance_mm": 233.142822265625,
+            "used_in_trimmed_mean": false
           }
         ]
       },
@@ -5686,18 +5686,18 @@
         "score": 484.97670428736683,
         "valid_for_metric": true,
         "n_valid_samples": 10,
-        "mean_distance_mm": 4.195244789123535,
-        "median_distance_mm": 4.079432010650635,
-        "trimmed_mean_distance_mm": 4.297621726989746,
-        "trimmed_std_distance_mm": 1.2336585521697998,
-        "std_distance_mm": 1.724745273590088,
-        "min_distance_mm": 0.857177734375,
-        "max_distance_mm": 6.71429443359375,
-        "range_distance_mm": 5.85711669921875,
-        "cv_distance": 0.4111191027664489,
-        "robust_cv_distance": 0.28705610464090603,
+        "mean_distance_mm": 254.71267700195312,
+        "median_distance_mm": 254.4285888671875,
+        "trimmed_mean_distance_mm": 254.80157470703125,
+        "trimmed_std_distance_mm": 3.945607900619507,
+        "std_distance_mm": 5.331960678100586,
+        "min_distance_mm": 245.42852783203125,
+        "max_distance_mm": 263.28570556640625,
+        "range_distance_mm": 17.857177734375,
+        "cv_distance": 0.02093323638563816,
+        "robust_cv_distance": 0.01548502164932118,
         "n_trimmed_samples": 8,
-        "recommended_distance_mm": 4.297621726989746,
+        "recommended_distance_mm": 254.80157470703125,
         "samples": [
           {
             "image_name": "Multimedia_47.jpg",
@@ -5710,7 +5710,7 @@
             "point_b_x_px": 537.0,
             "point_b_y_px": 555.4286499023438,
             "distance_px": 0.857177734375,
-            "distance_mm": 0.857177734375,
+            "distance_mm": 245.42852783203125,
             "used_in_trimmed_mean": false
           },
           {
@@ -5724,7 +5724,7 @@
             "point_b_x_px": 553.2222290039062,
             "point_b_y_px": 554.0,
             "distance_px": 2.3174448162317276,
-            "distance_mm": 2.3174448162317276,
+            "distance_mm": 248.31744481623173,
             "used_in_trimmed_mean": true
           },
           {
@@ -5738,7 +5738,7 @@
             "point_b_x_px": 569.4444580078125,
             "point_b_y_px": 552.0,
             "distance_px": 2.920595198869705,
-            "distance_mm": 2.920595198869705,
+            "distance_mm": 250.9205951988697,
             "used_in_trimmed_mean": true
           },
           {
@@ -5752,7 +5752,7 @@
             "point_b_x_px": 585.6666870117188,
             "point_b_y_px": 551.0,
             "distance_px": 4.0,
-            "distance_mm": 4.0,
+            "distance_mm": 253.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -5766,7 +5766,7 @@
             "point_b_x_px": 601.888916015625,
             "point_b_y_px": 550.3016318678856,
             "distance_px": 4.142937555909157,
-            "distance_mm": 4.142937555909157,
+            "distance_mm": 253.84130568802357,
             "used_in_trimmed_mean": true
           },
           {
@@ -5780,7 +5780,7 @@
             "point_b_x_px": 618.111083984375,
             "point_b_y_px": 549.0000610351562,
             "distance_px": 4.01592630147934,
-            "distance_mm": 4.01592630147934,
+            "distance_mm": 255.0158652663231,
             "used_in_trimmed_mean": true
           },
           {
@@ -5794,7 +5794,7 @@
             "point_b_x_px": 634.3333129882812,
             "point_b_y_px": 548.0,
             "distance_px": 5.095168340951204,
-            "distance_mm": 5.095168340951204,
+            "distance_mm": 257.0951683409512,
             "used_in_trimmed_mean": true
           },
           {
@@ -5808,7 +5808,7 @@
             "point_b_x_px": 650.5555419921875,
             "point_b_y_px": 546.4920673668385,
             "distance_px": 5.714267306029797,
-            "distance_mm": 5.714267306029797,
+            "distance_mm": 259.22219993919134,
             "used_in_trimmed_mean": true
           },
           {
@@ -5822,7 +5822,7 @@
             "point_b_x_px": 666.7777709960938,
             "point_b_y_px": 545.1746361143887,
             "distance_px": 6.174636114388704,
-            "distance_mm": 6.174636114388704,
+            "distance_mm": 261.0,
             "used_in_trimmed_mean": true
           },
           {
@@ -5836,7 +5836,7 @@
             "point_b_x_px": 683.0,
             "point_b_y_px": 543.4285888671875,
             "distance_px": 6.71429443359375,
-            "distance_mm": 6.71429443359375,
+            "distance_mm": 263.28570556640625,
             "used_in_trimmed_mean": false
           }
         ]
@@ -5848,10 +5848,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 0,
     "n_valid_gaps": 0,
-    "image_mean_gap_width_mm": null,
-    "image_trimmed_mean_gap_width_mm": null,
-    "image_recommended_gap_width_mm": null,
-    "image_std_gap_width_mm": null,
+    "image_mean_dist_to_bottom_mm": null,
+    "image_trimmed_mean_dist_to_bottom_mm": null,
+    "image_recommended_dist_to_bottom_mm": null,
+    "image_std_dist_to_bottom_mm": null,
     "measurements": []
   },
   "Multimedia_49.jpg": {
@@ -5859,10 +5859,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 0,
     "n_valid_gaps": 0,
-    "image_mean_gap_width_mm": null,
-    "image_trimmed_mean_gap_width_mm": null,
-    "image_recommended_gap_width_mm": null,
-    "image_std_gap_width_mm": null,
+    "image_mean_dist_to_bottom_mm": null,
+    "image_trimmed_mean_dist_to_bottom_mm": null,
+    "image_recommended_dist_to_bottom_mm": null,
+    "image_std_dist_to_bottom_mm": null,
     "measurements": []
   },
   "Multimedia_50.jpg": {
@@ -5870,10 +5870,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 0,
     "n_valid_gaps": 0,
-    "image_mean_gap_width_mm": null,
-    "image_trimmed_mean_gap_width_mm": null,
-    "image_recommended_gap_width_mm": null,
-    "image_std_gap_width_mm": null,
+    "image_mean_dist_to_bottom_mm": null,
+    "image_trimmed_mean_dist_to_bottom_mm": null,
+    "image_recommended_dist_to_bottom_mm": null,
+    "image_std_dist_to_bottom_mm": null,
     "measurements": []
   },
   "Multimedia_51.jpg": {
@@ -5881,10 +5881,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 0,
     "n_valid_gaps": 0,
-    "image_mean_gap_width_mm": null,
-    "image_trimmed_mean_gap_width_mm": null,
-    "image_recommended_gap_width_mm": null,
-    "image_std_gap_width_mm": null,
+    "image_mean_dist_to_bottom_mm": null,
+    "image_trimmed_mean_dist_to_bottom_mm": null,
+    "image_recommended_dist_to_bottom_mm": null,
+    "image_std_dist_to_bottom_mm": null,
     "measurements": []
   },
   "Multimedia_52.jpg": {
@@ -5892,10 +5892,10 @@
     "px_per_mm": 1.0,
     "n_gaps": 0,
     "n_valid_gaps": 0,
-    "image_mean_gap_width_mm": null,
-    "image_trimmed_mean_gap_width_mm": null,
-    "image_recommended_gap_width_mm": null,
-    "image_std_gap_width_mm": null,
+    "image_mean_dist_to_bottom_mm": null,
+    "image_trimmed_mean_dist_to_bottom_mm": null,
+    "image_recommended_dist_to_bottom_mm": null,
+    "image_std_dist_to_bottom_mm": null,
     "measurements": []
   }
 }
