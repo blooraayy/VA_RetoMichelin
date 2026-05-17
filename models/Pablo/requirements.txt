@@ -1,0 +1,30 @@
+# Michelin Challenge 2 - Grounded-SAM Pipeline (Pablo)
+# Tested on Python 3.10 + CUDA 12.1.
+#
+# For a CUDA build of PyTorch, install torch/torchvision FIRST with:
+#     pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+# and then:
+#     pip install -r requirements.txt
+#
+# For CPU-only, just run:
+#     pip install -r requirements.txt
+# (the default PyPI index ships a CPU build of torch).
+
+torch
+torchvision
+
+# Grounding DINO (HuggingFace, IDEA-Research/grounding-dino-base)
+transformers
+
+# Vision + scientific stack
+opencv-python
+numpy
+pandas
+matplotlib
+Pillow
+
+# COCO ground-truth loading (data/labels/_annotations.coco.json)
+pycocotools
+
+# Segment Anything (SAM ViT-H) from the official Facebook Research repo
+segment-anything @ git+https://github.com/facebookresearch/segment-anything.git
