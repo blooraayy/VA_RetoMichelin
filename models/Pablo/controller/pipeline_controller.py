@@ -194,6 +194,8 @@ class PipelineController:
             "elapsed_s":         round(elapsed_s, 3),
             "calibration_valid": calibration_valid,
             "n_qr":              len(pipeline_result.qr_detections),
+            "qr_boxes":          [[float(v) for v in det.box_xyxy]
+                                  for det in pipeline_result.qr_detections],
             "n_edges":           len(pipeline_result.edge_detections),
             "edges":             edges,
             "inter_edge_distances_mm": measurements.inter_edge_distances_mm,
@@ -209,6 +211,7 @@ class PipelineController:
                 "per_edge_iou":     eval_metrics.per_edge_iou,
                 "per_edge_rmse_mm": eval_metrics.per_edge_rmse_mm,
                 "per_edge_mae_mm":  eval_metrics.per_edge_mae_mm,
+                "per_qr_iou":       eval_metrics.per_qr_iou,
             }
         return d
 

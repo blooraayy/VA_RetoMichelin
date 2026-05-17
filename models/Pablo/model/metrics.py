@@ -37,6 +37,7 @@ class EvaluationMetrics:
     per_edge_iou:     list[float]     = field(default_factory=list)
     per_edge_rmse_mm: list[float]     = field(default_factory=list)
     per_edge_mae_mm:  list[float]     = field(default_factory=list)
+    per_qr_iou:       list[float]     = field(default_factory=list)
 
 
 # ── Geometric measurement ─────────────────────────────────────────────────────
@@ -56,10 +57,12 @@ class MeasurementEngine:
         meas = GeometricMeasurements()
         W    = result.image_shape[1]
 
-        bottom_left_mm  = self.calibrator.pixel_to_mm(
-            (0.0, float(self.img_height_px - 1)), homography)
-        bottom_right_mm = self.calibrator.pixel_to_mm(
-            (float(W - 1), float(self.img_height_px - 1)), homography)
+        if result.qr_detections:
+            ref_y_px = float(max(det.box_xyxy[3] for det in result.qr_detections))
+        else:
+            ref_y_px = float(self.img_height_px - 1)
+        bottom_left_mm  = self.calibrator.pixel_to_mm((0.0, ref_y_px), homography)
+        bottom_right_mm = self.calibrator.pixel_to_mm((float(W - 1), ref_y_px), homography)
         table_bottom_y_mm = (bottom_left_mm[1] + bottom_right_mm[1]) / 2.0
 
         edge_centres_y_mm: list[float] = []
@@ -102,6 +105,17 @@ class MetricEvaluator:
             return float("nan")
         n = min(len(pred), len(gt))
         return float(np.mean(np.abs(pred[:n] - gt[:n])))
+
+    @staticmethod
+    def bbox_iou(a: np.ndarray, b: np.ndarray) -> float:
+        """IoU between two [x1,y1,x2,y2] bounding boxes."""
+        x1 = max(float(a[0]), float(b[0])); y1 = max(float(a[1]), float(b[1]))
+        x2 = min(float(a[2]), float(b[2])); y2 = min(float(a[3]), float(b[3]))
+        inter = max(0.0, x2 - x1) * max(0.0, y2 - y1)
+        area_a = max(0.0, float(a[2]-a[0])) * max(0.0, float(a[3]-a[1]))
+        area_b = max(0.0, float(b[2]-b[0])) * max(0.0, float(b[3]-b[1]))
+        union = area_a + area_b - inter
+        return inter / union if union > 0 else 0.0
 
     @staticmethod
     def iou(pred_mask: np.ndarray, gt_mask: np.ndarray) -> float:
@@ -189,7 +203,10 @@ class MetricEvaluator:
 
         # ── Distance RMSE / MAE ──────────────────────────────────────────────
         if homography is not None and qr_calibrator is not None:
-            gt_dists = self._gt_to_distances(gt, homography, qr_calibrator, H, W)
+            gt_dists = self._gt_to_distances(
+                gt, homography, qr_calibrator, H, W,
+                qr_detections=pipeline_result.qr_detections,
+            )
 
             # Greedy one-to-one matching by mask IoU.
             # Only matched true positives contribute to the geometric error;
@@ -231,11 +248,24 @@ class MetricEvaluator:
             em.rmse_mm = float(np.nanmean(rmse_vals)) if rmse_vals else float("nan")
             em.mae_mm  = float(np.nanmean(mae_vals))  if mae_vals  else float("nan")
 
+        # ── QR bbox IoU ──────────────────────────────────────────────────────
+        qr_pred_boxes = [det.box_xyxy for det in pipeline_result.qr_detections]
+        gt_qr_boxes   = gt.qr_boxes
+        per_qr_iou = []
+        for pred_box in qr_pred_boxes:
+            best = max(
+                (self.bbox_iou(pred_box, gt_box) for gt_box in gt_qr_boxes),
+                default=0.0,
+            )
+            per_qr_iou.append(best)
+        em.per_qr_iou = per_qr_iou
+
         return em
 
     @staticmethod
     def _gt_to_distances(
-        gt, homography, qr_calibrator, H: int, W: int
+        gt, homography, qr_calibrator, H: int, W: int,
+        qr_detections=None,
     ) -> list[np.ndarray]:
         """Convert GT cut-edge masks into bottom-edge distances in mm.
 
@@ -246,8 +276,12 @@ class MetricEvaluator:
         # Local import avoids adding any extra model-loading side effect.
         from model.grounded_sam import GroundedSAMModel
 
-        bl = qr_calibrator.pixel_to_mm((0.0, float(H - 1)), homography)
-        br = qr_calibrator.pixel_to_mm((float(W - 1), float(H - 1)), homography)
+        if qr_detections:
+            ref_y_px = float(max(det.box_xyxy[3] for det in qr_detections))
+        else:
+            ref_y_px = float(H - 1)
+        bl = qr_calibrator.pixel_to_mm((0.0, ref_y_px), homography)
+        br = qr_calibrator.pixel_to_mm((float(W - 1), ref_y_px), homography)
         table_bottom_y_mm = (bl[1] + br[1]) / 2.0
 
         dists_list = []

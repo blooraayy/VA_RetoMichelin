@@ -61,6 +61,11 @@ CUT_MIN_AREA_FRAC_OF_STRIP = 0.002
 CUT_MAX_AREA_FRAC_OF_STRIP = 0.12
 CUT_MIN_ASPECT_RATIO       = 8.0
 
+# Real cut gaps expose the white table at their core. Below this 90th
+# percentile of grayscale intensity (0–255) the detection is treated as
+# a dark-on-dark false positive (rubber inner section, not a true gap).
+CUT_GAP_BRIGHTNESS_MIN = 120.0
+
 NMS_IOU_THRESHOLD     = 0.5
 STRIP_MAX_DETECTIONS  = 2
 
