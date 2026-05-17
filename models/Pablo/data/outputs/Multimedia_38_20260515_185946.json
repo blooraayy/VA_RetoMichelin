@@ -1,0 +1,263 @@
+{
+  "image_path": "data/images\\Multimedia_38.jpg",
+  "calibration_valid": false,
+  "n_qr_detected": 2,
+  "qr_boxes": [
+    [
+      62.87205123901367,
+      1287.8192138671875,
+      104.9681167602539,
+      1328.7652587890625
+    ],
+    [
+      46.60000228881836,
+      50.22871017456055,
+      91.41493225097656,
+      98.51710510253906
+    ]
+  ],
+  "n_cut_gaps_detected": 2,
+  "edges": [
+    {
+      "edge_id": 1,
+      "calibration_available": false,
+      "interpretation": "Detected region is treated as the cut gap between two rubber bands. Points P1-P5 belong to one border and points P6-P10 belong to the opposite border.",
+      "n_sample_points": 10,
+      "sample_points_px": [
+        [
+          249.0,
+          1052.4000244140625
+        ],
+        [
+          341.0,
+          1044.949951171875
+        ],
+        [
+          433.0,
+          1049.75
+        ],
+        [
+          525.0,
+          1052.6500244140625
+        ],
+        [
+          617.0,
+          1053.3499755859375
+        ],
+        [
+          249.0,
+          1059.5999755859375
+        ],
+        [
+          341.0,
+          1062.050048828125
+        ],
+        [
+          433.0,
+          1063.25
+        ],
+        [
+          525.0,
+          1064.3499755859375
+        ],
+        [
+          617.0,
+          1059.6500244140625
+        ]
+      ],
+      "sample_points_mm": [],
+      "distances_to_bottom_mm": [],
+      "border_points_px": {
+        "border_1": [
+          [
+            249.0,
+            1052.4000244140625
+          ],
+          [
+            341.0,
+            1044.949951171875
+          ],
+          [
+            433.0,
+            1049.75
+          ],
+          [
+            525.0,
+            1052.6500244140625
+          ],
+          [
+            617.0,
+            1053.3499755859375
+          ]
+        ],
+        "border_2": [
+          [
+            249.0,
+            1059.5999755859375
+          ],
+          [
+            341.0,
+            1062.050048828125
+          ],
+          [
+            433.0,
+            1063.25
+          ],
+          [
+            525.0,
+            1064.3499755859375
+          ],
+          [
+            617.0,
+            1059.6500244140625
+          ]
+        ]
+      },
+      "border_points_mm": {
+        "border_1": [],
+        "border_2": []
+      },
+      "border_distances_to_bottom_mm": {
+        "border_1": [],
+        "border_2": []
+      },
+      "distance_summary_mm": {
+        "mean_mm": null,
+        "std_mm": null,
+        "min_mm": null,
+        "max_mm": null
+      },
+      "border_summary_mm": {
+        "border_1": null,
+        "border_2": null
+      }
+    },
+    {
+      "edge_id": 2,
+      "calibration_available": false,
+      "interpretation": "Detected region is treated as the cut gap between two rubber bands. Points P1-P5 belong to one border and points P6-P10 belong to the opposite border.",
+      "n_sample_points": 10,
+      "sample_points_px": [
+        [
+          1091.199951171875,
+          1154.0
+        ],
+        [
+          1086.3499755859375,
+          1201.75
+        ],
+        [
+          1082.5,
+          1249.5
+        ],
+        [
+          1087.4000244140625,
+          1297.25
+        ],
+        [
+          1080.25,
+          1345.0
+        ],
+        [
+          1094.800048828125,
+          1154.0
+        ],
+        [
+          1092.6500244140625,
+          1201.75
+        ],
+        [
+          1091.5,
+          1249.5
+        ],
+        [
+          1094.5999755859375,
+          1297.25
+        ],
+        [
+          1084.75,
+          1345.0
+        ]
+      ],
+      "sample_points_mm": [],
+      "distances_to_bottom_mm": [],
+      "border_points_px": {
+        "border_1": [
+          [
+            1091.199951171875,
+            1154.0
+          ],
+          [
+            1086.3499755859375,
+            1201.75
+          ],
+          [
+            1082.5,
+            1249.5
+          ],
+          [
+            1087.4000244140625,
+            1297.25
+          ],
+          [
+            1080.25,
+            1345.0
+          ]
+        ],
+        "border_2": [
+          [
+            1094.800048828125,
+            1154.0
+          ],
+          [
+            1092.6500244140625,
+            1201.75
+          ],
+          [
+            1091.5,
+            1249.5
+          ],
+          [
+            1094.5999755859375,
+            1297.25
+          ],
+          [
+            1084.75,
+            1345.0
+          ]
+        ]
+      },
+      "border_points_mm": {
+        "border_1": [],
+        "border_2": []
+      },
+      "border_distances_to_bottom_mm": {
+        "border_1": [],
+        "border_2": []
+      },
+      "distance_summary_mm": {
+        "mean_mm": null,
+        "std_mm": null,
+        "min_mm": null,
+        "max_mm": null
+      },
+      "border_summary_mm": {
+        "border_1": null,
+        "border_2": null
+      }
+    }
+  ],
+  "inter_edge_distances_mm": [],
+  "evaluation": {
+    "rmse_mm": null,
+    "mae_mm": null,
+    "iou": 0.44592854380607605,
+    "precision": 0.669809040367416,
+    "recall": 0.4794532398996453,
+    "f1": 0.5588665355720264,
+    "per_qr_iou": [
+      0.690388416579543,
+      0.7774920345607248
+    ]
+  }
+}

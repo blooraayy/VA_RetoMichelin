@@ -135,13 +135,15 @@ class PipelineController:
                     measurements=measurements,
                     eval_metrics=eval_metrics,
                     base_name=base_name,
+                    calibration_valid=qr_result.success,
         )
 
         elapsed = time.perf_counter() - t0
         print(f"[Controller] Done in {elapsed:.2f}s")
 
         return self._build_summary_dict(
-            image_path, pipeline_result, measurements, eval_metrics, elapsed
+            image_path, pipeline_result, measurements, eval_metrics, elapsed,
+            calibration_valid=qr_result.success,
         )
 
     # ── Batch processing (unchanged) ─────────────────────────────────────────
@@ -176,17 +178,26 @@ class PipelineController:
 
     @staticmethod
     def _build_summary_dict(image_path, pipeline_result, measurements,
-                             eval_metrics, elapsed_s: float) -> dict:
+                             eval_metrics, elapsed_s: float,
+                             calibration_valid: bool = True) -> dict:
+        n_meas = len(measurements.distances_to_bottom_mm)
+        edges = []
+        for i, det in enumerate(pipeline_result.edge_detections):
+            if i < n_meas and len(measurements.distances_to_bottom_mm[i]) > 0:
+                dists = measurements.distances_to_bottom_mm[i].tolist()
+            else:
+                dists = []
+            edges.append({"edge_id": i + 1, "distances_to_bottom_mm": dists})
+
         d = {
-            "image_path":  image_path,
-            "elapsed_s":   round(elapsed_s, 3),
-            "n_qr":        len(pipeline_result.qr_detections),
-            "n_edges":     len(pipeline_result.edge_detections),
-            "edges": [
-                {"edge_id": i + 1,
-                 "distances_to_bottom_mm": dists.tolist() if len(dists) else []}
-                for i, dists in enumerate(measurements.distances_to_bottom_mm)
-            ],
+            "image_path":        image_path,
+            "elapsed_s":         round(elapsed_s, 3),
+            "calibration_valid": calibration_valid,
+            "n_qr":              len(pipeline_result.qr_detections),
+            "qr_boxes":          [[float(v) for v in det.box_xyxy]
+                                  for det in pipeline_result.qr_detections],
+            "n_edges":           len(pipeline_result.edge_detections),
+            "edges":             edges,
             "inter_edge_distances_mm": measurements.inter_edge_distances_mm,
         }
         if eval_metrics:
@@ -200,6 +211,7 @@ class PipelineController:
                 "per_edge_iou":     eval_metrics.per_edge_iou,
                 "per_edge_rmse_mm": eval_metrics.per_edge_rmse_mm,
                 "per_edge_mae_mm":  eval_metrics.per_edge_mae_mm,
+                "per_qr_iou":       eval_metrics.per_qr_iou,
             }
         return d
 
