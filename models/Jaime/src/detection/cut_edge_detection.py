@@ -6,7 +6,7 @@ from pathlib import Path
 from ultralytics import YOLO
 
 # ── Configuración ────────────────────────────────────────────────────────────
-WEIGHTS        = "models/Jaime/test/runs/data/runs/michelin_v3-4/weights/best.pt"
+WEIGHTS        = "models/Jaime/utils/runs/data/runs/michelin_v3-4/weights/best.pt"
 CUT_EDGE_CLASS = 0
 CONF_THR       = 0.65
 IOU_THR        = 0.50

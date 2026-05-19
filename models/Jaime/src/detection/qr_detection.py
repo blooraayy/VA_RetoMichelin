@@ -214,11 +214,11 @@ def save_figures(model: YOLO) -> None:
 
         fig, ax = plt.subplots(1, 1, figsize=(8, 8))
         ax.imshow(overlay)
-        ax.set_title("GT (verde) vs Pred (amarillo)")
         ax.axis("off")
-        fig.suptitle(f"{img_path.name}\n{subtitle}", fontsize=10, fontweight="bold")
+        clean_stem = img_path.stem.split("_jpg.rf.")[0]
+        fig.suptitle(f"{clean_stem}.jpg", fontsize=10, fontweight="bold")
         plt.tight_layout()
-        plt.savefig(OUT_FIG / f"{img_path.stem}.jpg", dpi=100, bbox_inches="tight")
+        plt.savefig(OUT_FIG / f"{clean_stem}.jpg", dpi=100, bbox_inches="tight")
         plt.close()
         print(f"  {img_path.name} → {subtitle}")
 

@@ -39,7 +39,7 @@ MAX_BOX_RATIO = 0.95   # rubber strips ocupan ~30% de la imagen → sin filtro p
 COLOR_GT   = (0, 220, 80)    # verde   — ground truth
 COLOR_PRED = (255, 220, 0)   # amarillo — predicción
 
-DEFAULT_WEIGHTS = str(_HERE / "data" / "runs" / "michelin_v1" / "weights" / "best.pt")
+DEFAULT_WEIGHTS = str(_HERE / "utils" / "runs" / "data" / "runs" / "michelin_v1" / "weights" / "best.pt")
 
 
 # ── Helpers de métricas ───────────────────────────────────────────────────────
