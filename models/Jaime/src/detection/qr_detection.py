@@ -39,7 +39,7 @@ OUTPUT_SIZE   = (1000, 1400)
 OUT_W, OUT_H  = OUTPUT_SIZE
 
 COLOR_GT   = (0, 220, 80)    # verde   — ground truth
-COLOR_PRED = (255, 220, 0)   # amarillo — predicción
+COLOR_PRED = (0, 255, 0)     # verde — predicción
 
 DEFAULT_WEIGHTS = str(_HERE / "utils" / "runs" / "data" / "runs" / "michelin_v1" / "weights" / "best.pt")
 
@@ -95,6 +95,7 @@ def filter_preds(preds, img_h: int, img_w: int) -> tuple:
     raw = [(b.xyxy[0], float(b.conf[0])) for b in preds.boxes if int(b.cls[0]) == QR_CLASS]
     raw = [p for p in raw
            if (int(p[0][2]) - int(p[0][0])) * (int(p[0][3]) - int(p[0][1])) / (img_h * img_w) <= MAX_BOX_RATIO]
+    raw = sorted(raw, key=lambda p: p[1], reverse=True)[:3]
     boxes = [[*map(int, p[0])] for p in raw]
     confs = [p[1] for p in raw]
     return boxes, confs
@@ -188,29 +189,19 @@ def save_figures(model: YOLO) -> None:
         for img in sorted((DATA_ROOT / "valid" / "images").glob("*.jpg"))
     ]
 
-    for img_path, lbl_path in splits:
+    for img_path, _ in splits:
         img_bgr = cv2.imread(str(img_path))
         img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
         H, W    = img_rgb.shape[:2]
-        gt      = load_gt_qr(lbl_path, W, H)
         preds   = model(img_bgr, verbose=False, conf=CONF_THR)[0]
         pred_boxes, pred_confs = filter_preds(preds, H, W)
-        tp_ious, n_fp, n_fn    = match_predictions(gt, pred_boxes)
 
         overlay = img_rgb.copy()
-        for box in gt:
-            x1, y1, x2, y2 = map(int, box)
-            cv2.rectangle(overlay, (x1, y1), (x2, y2), COLOR_GT, 3)
-            cv2.putText(overlay, "GT", (x1, max(y1 - 8, 12)),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.65, COLOR_GT, 2)
         for box, conf in zip(pred_boxes, pred_confs):
             x1, y1, x2, y2 = box
             cv2.rectangle(overlay, (x1, y1), (x2, y2), COLOR_PRED, 2)
             cv2.putText(overlay, f"pred {conf:.2f}", (x1, y2 + 18),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, COLOR_PRED, 2)
-
-        iou_str  = f"IoU={np.mean(tp_ious):.3f}" if tp_ious else "IoU=nulo"
-        subtitle = f"GT={len(gt)}  Pred={len(pred_boxes)}  TP={len(tp_ious)}  FP={n_fp}  FN={n_fn}  {iou_str}"
 
         fig, ax = plt.subplots(1, 1, figsize=(8, 8))
         ax.imshow(overlay)
@@ -220,7 +211,7 @@ def save_figures(model: YOLO) -> None:
         plt.tight_layout()
         plt.savefig(OUT_FIG / f"{clean_stem}.jpg", dpi=100, bbox_inches="tight")
         plt.close()
-        print(f"  {img_path.name} → {subtitle}")
+        print(f"  {clean_stem}.jpg guardada")
 
     print(f"[viz] Figuras guardadas en: {OUT_FIG.resolve()}")
 
@@ -239,7 +230,6 @@ def export_homographies(model: YOLO) -> None:
                    if int(b.cls[0]) == QR_CLASS
                    and (int(b.xyxy[0][2]) - int(b.xyxy[0][0])) *
                        (int(b.xyxy[0][3]) - int(b.xyxy[0][1])) / (ih * iw) <= MAX_BOX_RATIO]
-
         if len(boxes) < 3:
             print(f"  [SKIP] {img_path.name}: solo {len(boxes)} QRs detectados")
             continue
