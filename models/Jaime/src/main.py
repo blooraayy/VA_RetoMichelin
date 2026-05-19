@@ -24,15 +24,17 @@ from pathlib import Path
 _SRC  = Path(__file__).resolve().parent   # models/Jaime/src/
 _BASE = _SRC.parent                        # models/Jaime/
 
-for _subdir in ("detection", "segmentation", "measurement"):
-    sys.path.insert(0, str(_SRC / _subdir))
+# Añade src/ al path para que los subpaquetes sean visibles como paquetes
+if str(_SRC) not in sys.path:
+    sys.path.insert(0, str(_SRC.parent))  # models/Jaime/ → permite `from src.detection import ...`
+    sys.path.insert(0, str(_SRC))         # models/Jaime/src/ → permite `from detection import ...`
 
-import qr_detection          as qr_det
-import rubber_detection      as rb_det
-import cut_edge_detection    as ce_det
-import rubber_segmentation   as rb_seg
-import cut_edge_segmentation as ce_seg
-import cut_edge_measurement  as ce_meas
+from detection    import qr_detection          as qr_det
+from detection    import rubber_detection      as rb_det
+from detection    import cut_edge_detection    as ce_det
+from segmentation import rubber_segmentation   as rb_seg
+from segmentation import cut_edge_segmentation as ce_seg
+from measurement  import cut_edge_measurement  as ce_meas
 
 
 # ── Rutas por defecto ─────────────────────────────────────────────────────────
