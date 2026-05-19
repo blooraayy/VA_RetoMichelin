@@ -41,7 +41,7 @@ OUT_W, OUT_H  = OUTPUT_SIZE
 COLOR_GT   = (0, 220, 80)    # verde   — ground truth
 COLOR_PRED = (255, 220, 0)   # amarillo — predicción
 
-DEFAULT_WEIGHTS = str(_HERE / "data" / "runs" / "michelin_v1" / "weights" / "best.pt")
+DEFAULT_WEIGHTS = str(_HERE / "utils" / "runs" / "data" / "runs" / "michelin_v1" / "weights" / "best.pt")
 
 
 # ── Helpers de métricas ───────────────────────────────────────────────────────
