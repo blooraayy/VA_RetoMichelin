@@ -1,4 +1,5 @@
 import json
+import time
 import torch
 import numpy as np
 import cv2
@@ -84,6 +85,9 @@ def overlay_mask(base: np.ndarray, mask: np.ndarray, bbox, conf: float) -> np.nd
 def segment_all(detections: dict, raw_dir: Path, sam, out_dir: Path):
     """Segmenta todas las imágenes y guarda las visualizaciones en out_dir."""
     out_dir.mkdir(parents=True, exist_ok=True)
+    n = len(detections)
+    print(f"[rubber_seg] Segmentando ({n} imágenes)...")
+    t0 = time.time()
 
     for img_name, bboxes in sorted(detections.items()):
         img_path = raw_dir / img_name
@@ -115,9 +119,8 @@ def segment_all(detections: dict, raw_dir: Path, sam, out_dir: Path):
 
         plt.savefig(out_dir / (Path(img_name).stem + ".jpg"), dpi=100, bbox_inches="tight")
         plt.close()
-        print(f"  {img_name} → {len(bboxes)} mask(s) guardadas")
 
-    print(f"\nFiguras guardadas en: {out_dir.resolve()}")
+    print(f"[rubber_seg] Segmentación completada — {n} imágenes — {time.time()-t0:.1f} s")
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────

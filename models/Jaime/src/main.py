@@ -11,7 +11,7 @@ Pasos en orden:
 
 Uso:
   python main.py
-  python main.py --skip-eval --skip-viz          # solo exportar JSONs y segmentar
+  python main.py --skip-viz                      # solo exportar JSONs y segmentar
   python main.py --skip-seg --skip-measure       # solo detección
   python main.py --weights-qr-rubber ruta/best.pt --weights-cut-edge ruta/best.pt
 """
@@ -74,8 +74,6 @@ def parse_args() -> argparse.Namespace:
                    metavar="PATH", help="Pesos YOLO para cut-edge")
     p.add_argument("--weights-sam",       default=_DEFAULT_WEIGHTS_SAM,
                    metavar="PATH", help="Pesos EfficientSAM ViT-Tiny")
-    p.add_argument("--skip-eval",    action="store_true",
-                   help="Omitir evaluación sobre el dataset anotado")
     p.add_argument("--skip-viz",     action="store_true",
                    help="Omitir guardado de figuras de detección")
     p.add_argument("--skip-seg",     action="store_true",
@@ -96,16 +94,12 @@ def main() -> None:
     model_qr_rubber = YOLO(args.weights_qr_rubber)
     print(f"[init] Modelo QR/rubber: {args.weights_qr_rubber}")
 
-    if not args.skip_eval:
-        qr_det.evaluate(model_qr_rubber)
     if not args.skip_viz:
         qr_det.save_figures(model_qr_rubber)
     qr_det.export_homographies(model_qr_rubber)
 
     # ── 2. Rubber detection ───────────────────────────────────────────────────
     _step("2 / 6  Rubber detection")
-    if not args.skip_eval:
-        rb_det.evaluate(model_qr_rubber)
     if not args.skip_viz:
         rb_det.save_figures(model_qr_rubber)
     rb_det.export_detections(model_qr_rubber)
@@ -114,9 +108,6 @@ def main() -> None:
     _step("3 / 6  Cut-edge detection")
     model_ce = YOLO(args.weights_cut_edge)
     print(f"[init] Modelo cut-edge: {args.weights_cut_edge}")
-
-    if not args.skip_eval and _DATA_SEG_CE.exists():
-        ce_det.run_evaluation(_DATA_SEG_CE, model_ce)
 
     if not args.skip_viz and _DATA_SEG_CE.exists():
         all_imgs_ce = [

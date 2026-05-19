@@ -1,4 +1,5 @@
 import json
+import time
 import torch
 import numpy as np
 import cv2
@@ -161,9 +162,9 @@ def draw_qr_triangle(ax, qr_centers: dict):
 def process_single_point(qr_data: dict, cut_edges: dict, raw_dir: Path,
                          sam, out_dir: Path):
     out_dir.mkdir(parents=True, exist_ok=True)
-
-    print(f"{'Imagen':<25} {'Borde':>6} {'conf':>5}  {'dist_BL (mm)':>13}")
-    print("-" * 58)
+    n = len(qr_data)
+    print(f"[medición] Calculando distancias punto único ({n} imágenes)...")
+    t0 = time.time()
 
     for img_name in sorted(qr_data.keys()):
         if img_name not in cut_edges or not cut_edges[img_name]:
@@ -207,7 +208,6 @@ def process_single_point(qr_data: dict, cut_edges: dict, raw_dir: Path,
             ax.text(px + 8, mid_y, f"{dist_mm:.1f} mm",
                     color="violet", fontsize=10, fontweight="bold",
                     bbox=dict(boxstyle="round,pad=0.25", fc="black", alpha=0.6), zorder=7)
-            print(f"{img_name:<25} {'#'+str(i+1):>6} {det['conf']:>5.2f}  {dist_mm:>13.1f}")
 
         ax.set_title("Segmentación bordes de corte · Línea BL · Distancias en mm", fontsize=10)
         ax.axis("off")
@@ -217,7 +217,7 @@ def process_single_point(qr_data: dict, cut_edges: dict, raw_dir: Path,
                     dpi=100, bbox_inches="tight")
         plt.close()
 
-    print(f"\nGuardado en: {out_dir.resolve()}")
+    print(f"[medición] Distancias punto único completadas — {n} imágenes — {time.time()-t0:.1f} s")
 
 
 # ── Pipeline 2: multi-punto (5 puntos por lado por segmentación) ──────────────
@@ -225,9 +225,9 @@ def process_single_point(qr_data: dict, cut_edges: dict, raw_dir: Path,
 def process_multipoint(qr_data: dict, cut_edges: dict, raw_dir: Path,
                        sam, out_dir: Path):
     out_dir.mkdir(parents=True, exist_ok=True)
-
-    print(f"{'Imagen':<25} {'#':>4} {'Lado':<7} {'Punto':<8} {'dist_BL (mm)':>14}")
-    print("-" * 65)
+    n = len(qr_data)
+    print(f"[medición] Calculando distancias multi-punto ({n} imágenes)...")
+    t0 = time.time()
 
     for img_name in sorted(qr_data.keys()):
         if img_name not in cut_edges or not cut_edges[img_name]:
@@ -280,7 +280,6 @@ def process_multipoint(qr_data: dict, cut_edges: dict, raw_dir: Path,
                                 zorder=7)
 
                     label = "sup" if j == 0 else ("inf" if j == n_pts - 1 else f"int{j}")
-                    print(f"{img_name:<25} {'#'+str(i+1):>4} {side:<7} {label:<8} {dist_mm:>14.1f}")
 
         patches = [
             mpatches.Patch(color="deepskyblue", label="Lado izquierdo"),
@@ -297,7 +296,7 @@ def process_multipoint(qr_data: dict, cut_edges: dict, raw_dir: Path,
                     dpi=100, bbox_inches="tight")
         plt.close()
 
-    print(f"\nGuardado en: {out_dir.resolve()}")
+    print(f"[medición] Distancias multi-punto completadas — {n} imágenes — {time.time()-t0:.1f} s")
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
