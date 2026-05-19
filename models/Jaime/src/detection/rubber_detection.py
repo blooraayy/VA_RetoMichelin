@@ -36,8 +36,7 @@ CONF_THR      = 0.65   # TPs tienen conf ~1.0; umbral alto evita FPs de fragment
 IOU_THR       = 0.50
 MAX_BOX_RATIO = 0.95   # rubber strips ocupan ~30% de la imagen → sin filtro práctico
 
-COLOR_GT   = (0, 220, 80)    # verde   — ground truth
-COLOR_PRED = (255, 220, 0)   # amarillo — predicción
+COLOR_PRED = (0, 200, 0)     # verde — predicción
 
 DEFAULT_WEIGHTS = str(_HERE / "utils" / "runs" / "data" / "runs" / "michelin_v1" / "weights" / "best.pt")
 
@@ -159,35 +158,30 @@ def save_figures(model: YOLO) -> None:
         img_bgr = cv2.imread(str(img_path))
         img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
         H, W    = img_rgb.shape[:2]
-        gt      = load_gt_rubber(lbl_path, W, H)
         preds   = model(img_bgr, verbose=False, conf=CONF_THR)[0]
         pred_boxes, pred_confs = filter_preds(preds, H, W)
-        tp_ious, n_fp, n_fn    = match_predictions(gt, pred_boxes)
+
+        # top-2 por score
+        if pred_confs:
+            top2 = sorted(zip(pred_confs, pred_boxes), key=lambda x: x[0], reverse=True)[:2]
+            pred_confs, pred_boxes = zip(*top2)
 
         overlay = img_rgb.copy()
-        for box in gt:
-            x1, y1, x2, y2 = map(int, box)
-            cv2.rectangle(overlay, (x1, y1), (x2, y2), COLOR_GT, 3)
-            cv2.putText(overlay, "GT", (x1, max(y1 - 8, 12)),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.65, COLOR_GT, 2)
         for box, conf in zip(pred_boxes, pred_confs):
             x1, y1, x2, y2 = box
             cv2.rectangle(overlay, (x1, y1), (x2, y2), COLOR_PRED, 2)
             cv2.putText(overlay, f"pred {conf:.2f}", (x1, y2 + 18),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, COLOR_PRED, 2)
 
-        iou_str  = f"IoU={np.mean(tp_ious):.3f}" if tp_ious else "IoU=nulo"
-        subtitle = f"GT={len(gt)}  Pred={len(pred_boxes)}  TP={len(tp_ious)}  FP={n_fp}  FN={n_fn}  {iou_str}"
-
+        clean_stem = img_path.stem.split("_jpg.rf.")[0]
         fig, ax = plt.subplots(1, 1, figsize=(8, 8))
         ax.imshow(overlay)
-        ax.set_title("GT (verde) vs Pred (amarillo)")
+        ax.set_title(f"{clean_stem}.jpg")
         ax.axis("off")
-        fig.suptitle(f"{img_path.name}\n{subtitle}", fontsize=10, fontweight="bold")
         plt.tight_layout()
-        plt.savefig(OUT_FIG / f"{img_path.stem}.jpg", dpi=100, bbox_inches="tight")
+        plt.savefig(OUT_FIG / f"{clean_stem}.jpg", dpi=100, bbox_inches="tight")
         plt.close()
-        print(f"  {img_path.name} → {subtitle}")
+        print(f"  {clean_stem}.jpg → {len(pred_boxes)} detecciones")
 
     print(f"[viz] Figuras guardadas en: {OUT_FIG.resolve()}")
 
@@ -205,6 +199,11 @@ def save_figures_raw(model: YOLO) -> None:
         preds   = model(img_bgr, verbose=False, conf=CONF_THR)[0]
         pred_boxes, pred_confs = filter_preds(preds, H, W)
 
+        # top-2 por score
+        if pred_confs:
+            top2 = sorted(zip(pred_confs, pred_boxes), key=lambda x: x[0], reverse=True)[:2]
+            pred_confs, pred_boxes = zip(*top2)
+
         overlay = img_rgb.copy()
         for box, conf in zip(pred_boxes, pred_confs):
             x1, y1, x2, y2 = box
@@ -214,9 +213,8 @@ def save_figures_raw(model: YOLO) -> None:
 
         fig, ax = plt.subplots(1, 1, figsize=(8, 8))
         ax.imshow(overlay)
-        ax.set_title(f"{len(pred_boxes)} rubber strip(s) detectado(s)")
+        ax.set_title(img_path.name)
         ax.axis("off")
-        fig.suptitle(img_path.name, fontsize=11, fontweight="bold")
         plt.tight_layout()
         plt.savefig(OUT_FIG / img_path.name, dpi=100, bbox_inches="tight")
         plt.close()
