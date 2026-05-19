@@ -163,6 +163,7 @@ def main() -> None:
         ce_meas.process_multipoint(
             qr_data, ce_dets, _RAW_DIR, sam,
             _BASE / "outputs" / "figures" / "cut_edge_multipoint",
+            json_out=_BASE / "outputs" / "detections" / "cut_edge_measurements.json",
         )
 
     _step("Pipeline completado")

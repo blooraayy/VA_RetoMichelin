@@ -14,10 +14,14 @@ CATETO_MM   = 800
 SCALE_X = CATETO_MM / CANONICAL_W
 SCALE_Y = CATETO_MM / CANONICAL_H
 
-QR_JSON      = Path("../outputs/detections/qr_homographies.json")
-CUTEDGE_JSON = Path("../outputs/detections/cut_edge_detections.json")
-RAW_DIR      = Path("../data/raw")
-ESAM_WEIGHTS = Path("efficient_sam_vitt.pt")
+_MODULE_DIR  = Path(__file__).parent          # models/Jaime/src/measurement
+_JAIME_DIR   = _MODULE_DIR.parent.parent      # models/Jaime
+
+QR_JSON      = _JAIME_DIR / "outputs/detections/qr_homographies.json"
+CUTEDGE_JSON = _JAIME_DIR / "outputs/detections/cut_edge_detections.json"
+MEAS_JSON    = _JAIME_DIR / "outputs/detections/cut_edge_measurements.json"
+RAW_DIR      = _JAIME_DIR / "data/raw"
+ESAM_WEIGHTS = _MODULE_DIR / "efficient_sam_vitt.pt"
 
 COLOR_MASK  = np.array([0, 200, 255], dtype=np.uint8)
 COLOR_BBOX  = (255, 220, 0)
@@ -223,11 +227,13 @@ def process_single_point(qr_data: dict, cut_edges: dict, raw_dir: Path,
 # ── Pipeline 2: multi-punto (5 puntos por lado por segmentación) ──────────────
 
 def process_multipoint(qr_data: dict, cut_edges: dict, raw_dir: Path,
-                       sam, out_dir: Path):
+                       sam, out_dir: Path, json_out: Path = None):
     out_dir.mkdir(parents=True, exist_ok=True)
     n = len(qr_data)
     print(f"[medición] Calculando distancias multi-punto ({n} imágenes)...")
     t0 = time.time()
+
+    measurements = {}
 
     for img_name in sorted(qr_data.keys()):
         if img_name not in cut_edges or not cut_edges[img_name]:
@@ -257,29 +263,37 @@ def process_multipoint(qr_data: dict, cut_edges: dict, raw_dir: Path,
         ax.text(10, BL_y - 14, "Borde inferior mesa", color="orange",
                 fontsize=8, bbox=dict(boxstyle="round,pad=0.2", fc="black", alpha=0.55))
 
+        img_measurements = []
         for i, (mask, det) in enumerate(zip(masks, detections)):
             edge_pts = mask_edge_sample_points(mask)
-            if edge_pts is None:
-                continue
-            n_pts = len(next(iter(edge_pts.values())))
-            for side, pts in edge_pts.items():
-                color = SIDE_COLORS[side]
-                for j, (px, py) in enumerate(pts):
-                    canon   = apply_H(H_mat, [[px, py]])[0]
-                    dist_mm = max(0.0, (CANONICAL_H - canon[1]) * SCALE_Y)
+            edge_entry = {"conf": det["conf"], "bbox": det["bbox"], "sides": {}}
 
-                    ax.plot([px, px], [py, BL_y], color=color, lw=1.5,
-                            linestyle=":", alpha=0.75, zorder=4)
-                    marker = "^" if j == 0 else ("v" if j == n_pts - 1 else "o")
-                    ax.plot(px, py, marker, color=color, ms=8, zorder=6,
-                            markeredgecolor="black", markeredgewidth=0.7)
-                    if j in (0, n_pts - 1):
-                        ax.text(px + 6, (py + BL_y) / 2, f"{dist_mm:.1f}",
-                                color=color, fontsize=8, fontweight="bold",
-                                bbox=dict(boxstyle="round,pad=0.2", fc="black", alpha=0.5),
-                                zorder=7)
+            if edge_pts is not None:
+                n_pts = len(next(iter(edge_pts.values())))
+                for side, pts in edge_pts.items():
+                    color = SIDE_COLORS[side]
+                    side_dists = []
+                    for j, (px, py) in enumerate(pts):
+                        canon   = apply_H(H_mat, [[px, py]])[0]
+                        dist_mm = max(0.0, (CANONICAL_H - canon[1]) * SCALE_Y)
+                        side_dists.append({"x": px, "y": py,
+                                           "dist_mm": round(dist_mm, 2)})
 
-                    label = "sup" if j == 0 else ("inf" if j == n_pts - 1 else f"int{j}")
+                        ax.plot([px, px], [py, BL_y], color=color, lw=1.5,
+                                linestyle=":", alpha=0.75, zorder=4)
+                        marker = "^" if j == 0 else ("v" if j == n_pts - 1 else "o")
+                        ax.plot(px, py, marker, color=color, ms=8, zorder=6,
+                                markeredgecolor="black", markeredgewidth=0.7)
+                        if j in (0, n_pts - 1):
+                            ax.text(px + 6, (py + BL_y) / 2, f"{dist_mm:.1f}",
+                                    color=color, fontsize=8, fontweight="bold",
+                                    bbox=dict(boxstyle="round,pad=0.2", fc="black", alpha=0.5),
+                                    zorder=7)
+                    edge_entry["sides"][side] = side_dists
+
+            img_measurements.append(edge_entry)
+
+        measurements[img_name] = img_measurements
 
         patches = [
             mpatches.Patch(color="deepskyblue", label="Lado izquierdo"),
@@ -296,7 +310,13 @@ def process_multipoint(qr_data: dict, cut_edges: dict, raw_dir: Path,
                     dpi=100, bbox_inches="tight")
         plt.close()
 
+    if json_out is not None:
+        json_out.parent.mkdir(parents=True, exist_ok=True)
+        json_out.write_text(json.dumps(measurements, indent=2))
+        print(f"[medición] Medidas guardadas en: {json_out.resolve()}")
+
     print(f"[medición] Distancias multi-punto completadas — {n} imágenes — {time.time()-t0:.1f} s")
+    return measurements
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
@@ -322,4 +342,5 @@ if __name__ == "__main__":
     process_multipoint(
         qr_data, cut_edges, RAW_DIR, sam,
         out_dir=Path("../outputs/figures/cut_edge_multipoint"),
+        json_out=MEAS_JSON,
     )
