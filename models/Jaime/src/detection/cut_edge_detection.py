@@ -13,8 +13,7 @@ IOU_THR        = 0.50
 MAX_BOX_RATIO  = 0.10
 NMS_IOU        = 0.30
 
-COLOR_GT   = (0, 220, 80)
-COLOR_PRED = (255, 220, 0)
+COLOR_PRED = (0, 200, 0)
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -178,14 +177,13 @@ def run_evaluation(data_root: Path, model: YOLO):
 
 
 def save_visualizations(all_imgs, model: YOLO, out_dir: Path):
-    """Guarda visualizaciones GT vs predicciones en out_dir."""
+    """Guarda visualizaciones de predicciones en out_dir."""
     out_dir.mkdir(parents=True, exist_ok=True)
 
     for img_path, lbl_path in all_imgs:
         img_bgr  = cv2.imread(str(img_path))
         img_rgb  = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
         H, W     = img_rgb.shape[:2]
-        gt_boxes = load_gt_cut_edge(lbl_path, W, H)
         preds    = model(img_bgr, verbose=False, conf=CONF_THR)[0]
 
         raw_preds = [
@@ -194,35 +192,26 @@ def save_visualizations(all_imgs, model: YOLO, out_dir: Path):
             if int(b.cls[0]) == CUT_EDGE_CLASS
             and (int(b.xyxy[0][2])-int(b.xyxy[0][0])) * (int(b.xyxy[0][3])-int(b.xyxy[0][1])) / (H * W) <= MAX_BOX_RATIO
         ]
-        raw_preds  = nms_preds(raw_preds)
+        raw_preds  = nms_preds(raw_preds)[:2]
         pred_boxes = [[*map(int, p[0])] for p in raw_preds]
         pred_confs = [p[1] for p in raw_preds]
 
-        tp_ious, n_fp, n_fn = match_predictions(gt_boxes, pred_boxes)
-
         overlay = img_rgb.copy()
-        for box in gt_boxes:
-            x1, y1, x2, y2 = map(int, box)
-            cv2.rectangle(overlay, (x1, y1), (x2, y2), COLOR_GT, 3)
-            cv2.putText(overlay, "GT", (x1, max(y1-8, 12)), cv2.FONT_HERSHEY_SIMPLEX, 0.65, COLOR_GT, 2)
         for box, conf in zip(pred_boxes, pred_confs):
             x1, y1, x2, y2 = box
             cv2.rectangle(overlay, (x1, y1), (x2, y2), COLOR_PRED, 2)
             cv2.putText(overlay, f"pred {conf:.2f}", (x1, y2+18), cv2.FONT_HERSHEY_SIMPLEX, 0.6, COLOR_PRED, 2)
 
-        iou_str  = f"IoU={np.mean(tp_ious):.3f}" if tp_ious else "IoU=nulo"
-        subtitle = f"GT={len(gt_boxes)}  Pred={len(pred_boxes)}  TP={len(tp_ious)}  FP={n_fp}  FN={n_fn}  {iou_str}"
-
+        clean_stem = img_path.stem.split("_jpg.rf.")[0]
         fig, ax = plt.subplots(1, 1, figsize=(8, 8))
         ax.imshow(overlay)
-        ax.set_title("GT (verde) vs Pred (amarillo)")
+        ax.set_title(f"{clean_stem}.jpg")
         ax.axis("off")
-        fig.suptitle(f"{img_path.name}\n{subtitle}", fontsize=10, fontweight="bold")
         plt.tight_layout()
 
-        plt.savefig(out_dir / f"{img_path.stem}.jpg", dpi=100, bbox_inches="tight")
+        plt.savefig(out_dir / f"{clean_stem}.jpg", dpi=100, bbox_inches="tight")
         plt.close()
-        print(f"  {img_path.name} → {subtitle}")
+        print(f"  {clean_stem}.jpg → {len(pred_boxes)} detecciones")
 
     print(f"\nFiguras guardadas en: {out_dir.resolve()}")
 
