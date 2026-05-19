@@ -2,3 +2,5 @@
 .vscode
 .claude
 *.claude
+__pycache__
+__init__.py
