@@ -57,7 +57,6 @@ dos clasicos) para comparar precision, robustez y coste computacional.
   |   `-- GroundingDINO/         # Repo auxiliar (no usado en runtime)
   |
   +-- README.md                  # Indice de papers consultados por cada autor
-  +-- JAIMEreadme.md             # README detallado del pipeline de Jaime
   `-- README.TXT                 # (este archivo)
 
 
@@ -137,22 +136,23 @@ Requisitos instalados : torch, torchvision, transformers, opencv-python, numpy,
 
 5.2 JAIME - YOLOv9 + EFFICIENTSAM   (models/Jaime)
 --------------------------------------------------
-Pipeline en 6 notebooks: QR detect -> rubber detect -> rubber seg ->
-cut-edge detect -> cut-edge seg -> measurement.
+Pipeline modular en src/ y notebooks de exploracion en test/. Usa YOLOv9
+para deteccion y EfficientSAM ViT-Tiny para segmentacion y medicion.
 
   cd models/Jaime
 
-  # No hay requirements.txt en esta carpeta; instalar manualmente:
-  pip install ultralytics torch torchvision opencv-python matplotlib numpy
-
-  # EfficientSAM (clonar el repo oficial localmente):
+  # 1) EfficientSAM (requiere instalacion local desde su repo):
   git clone https://github.com/yformer/EfficientSAM efficient_sam_repo
   cd efficient_sam_repo && pip install -e . && cd ..
 
+  # 2) Resto de dependencias:
+  pip install -r requirements.txt
+
 Pesos necesarios (ya incluidos en el repo):
-    test/efficient_sam_vitt.pt                                  (~40 MB)
-    test/runs/data/runs/michelin_v2/weights/best.pt             (QR + rubber)
-    test/runs/data/runs/michelin_v3-4/weights/best.pt           (cut edge)
+    test/efficient_sam_vitt.pt                                          (~40 MB)
+    utils/runs/data/runs/michelin_v1/weights/best.pt                    (QR + rubber — pipeline src/)
+    utils/runs/data/runs/michelin_v3-4/weights/best.pt                  (cut edge   — pipeline src/)
+    test/runs/data/runs/michelin_v3-4/weights/best.pt                   (cut edge   — notebooks test/)
 
 
 5.3 MIGUEL - CLASICO OPENCV   (models/Miguel)
@@ -200,17 +200,23 @@ Pipeline classical adaptativo (Canny + Otsu + morfologia), tambien CPU-only.
 
 6.2 JAIME   (YOLOv9 + EfficientSAM, GPU)
 ----------------------------------------
-Ejecutar los notebooks de  models/Jaime/test/  en orden:
+Opcion A — Pipeline modular (recomendado):
 
-  1. qr_detection.ipynb            -> outputs/detections/qr_homographies.json
-  2. rubber_detection.ipynb        -> outputs/detections/rubber_detections.json
-  3. rubber_segmentation.ipynb     -> outputs/figures/rubber_segmentation/
-  4. cut_edge_detection.ipynb      -> outputs/detections/cut_edge_detections.json
-  5. cut_edge_segmentation.ipynb   -> outputs/figures/cut_edge_segmentation/
-  6. cut_edge_measurement.ipynb    -> outputs/figures/cut_edge_distances/
+  cd models/Jaime
+  python src/main.py                             # pipeline completo
+  python src/main.py --skip-viz                  # solo JSONs + segmentacion
+  python src/main.py --skip-seg --skip-measure   # solo deteccion
 
-Lanzar el kernel desde  models/Jaime/test/  (los notebooks usan rutas relativas
-../data/  y  ../outputs/).
+Opcion B — Notebooks paso a paso (lanzar el kernel desde models/Jaime/test/):
+
+  1. qr_detection.ipynb              -> outputs/detections/qr_homographies.json
+  2. rubber_detection.ipynb          -> outputs/detections/rubber_detections.json
+  3. rubber_segmentation.ipynb       -> outputs/figures/rubber_segmentation/
+  4. cut_edge_detection.ipynb        -> outputs/detections/cut_edge_detections.json
+  5. cut_edge_segmentation.ipynb     -> outputs/figures/cut_edge_segmentation/
+  6. cut_edge_measurement_test.ipynb -> outputs/figures/cut_edge_distances/
+                                        outputs/figures/cut_edge_multipoint/
+                                        outputs/detections/cut_edge_measurements.json
 
 
 6.3 MIGUEL   (Clasico OpenCV, CPU)
@@ -240,13 +246,17 @@ Cada notebook lee la salida del anterior. El reporte final queda en
 7. RESULTADOS RESUMIDOS (22 imagenes)
 -------------------------------------
                             Det F1   Pixel IoU   MAE (mm)   Tiempo / img
-  Grounded-SAM (Pablo)      0.879    0.530       11.14      ~6.85 s   (GPU)
-  YOLOv9+ESAM  (Jaime)      QR 0.948 / Strip 0.989 (cut_edge: validacion visual)
+  Grounded-SAM (Pablo)      0.879    0.686       16.34      ~6.85 s   (GPU)
+  YOLOv9+ESAM  (Jaime)      0.841    0.674 [1]    — [2]     GPU
   Clasico OCV  (Miguel)     0.879    0.574       24.63      <0.1 s    (CPU)
   Clasico Canny(David)      0.758    0.467       21.06      0.024 s   (CPU)
 
+[1] IoU de bounding box por TP (no a nivel de pixel como el resto).
+[2] Medicion multi-punto implementada pero MAE vs GT no calculado formalmente.
+    QR detection: F1=0.948  /  Rubber strip detection: F1=0.989
+
 Recomendacion:
-  - Mejor por metricas      -> Grounded-SAM (Pablo). Mejor MAE (11.14 mm) y F1
+  - Mejor por metricas      -> Grounded-SAM (Pablo). Mejor MAE (16.34 mm) y F1
                                de deteccion mas alto empatado con Miguel; los
                                5 casos sin corte se resuelven sin falsos
                                positivos gracias al filtro de brillo.
