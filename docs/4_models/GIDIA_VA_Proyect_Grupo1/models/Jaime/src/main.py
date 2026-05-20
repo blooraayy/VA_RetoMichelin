@@ -8,12 +8,6 @@ Pasos en orden:
   4. Rubber segmentation
   5. Cut-edge segmentation
   6. Cut-edge measurement (punto único + multi-punto)
-
-Uso:
-  python main.py
-  python main.py --skip-viz                      # solo exportar JSONs y segmentar
-  python main.py --skip-seg --skip-measure       # solo detección
-  python main.py --weights-qr-rubber ruta/best.pt --weights-cut-edge ruta/best.pt
 """
 
 import sys
