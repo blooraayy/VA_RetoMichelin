@@ -3,6 +3,11 @@
 # EfficientSAM requiere instalación local:
 #   git clone https://github.com/yformer/EfficientSAM.git
 #   cd EfficientSAM && pip install -e .
+#
+# Pesos preentrenados (colocar en utils/weights/):
+#   yolov9c.pt → descarga automática al ejecutar YOLO("yolov9c.pt") con ultralytics
+#                o manualmente desde: https://github.com/WongKinYiu/yolov9/releases
+#   efficient_sam_vitt.pt → descargar desde: https://github.com/yformer/EfficientSAM/releases
 
 torch>=2.0.0
 torchvision>=0.15.0

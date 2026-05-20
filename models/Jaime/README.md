@@ -170,13 +170,13 @@ models/Jaime/
 │   ├── cut_edge_measurement_test.ipynb
 │   ├── yolo_finetune.ipynb
 │   ├── efficientSAM.ipynb
-│   └── efficient_sam_vitt.pt              # Pesos EfficientSAM ViT-Tiny
+│   
 │
 ├── utils/
-│   └── runs/data/runs/
-│       ├── michelin_v1/weights/best.pt    # YOLO — QR + rubber strip
-│       └── michelin_v3-4/weights/best.pt  # YOLO — cut edge
-│
+│   ├── runs/data/runs/
+│   │    ├── michelin_v1/weights/best.pt    # YOLO — QR + rubber strip
+│   │    └── michelin_v3-4/weights/best.pt  # YOLO — cut edge
+│   └── weights/ # aqui se guardan los pesos a descargar
 ├── data/
 │   ├── raw/                               # 22 imágenes originales (multimedia_01..22.jpg)
 │   ├── new_samples_qr_rubber/             # Dataset etiquetado QR + rubber (train/valid)

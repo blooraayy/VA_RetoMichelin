@@ -118,6 +118,8 @@ Cada imagen contiene una lista de cortes detectados. Cada corte incluye la confi
 
 ## Notebooks de exploración y métricas (`test/`)
 
+Todos los notebooks guardan sus salidas en `test/outputs/` (misma estructura que `outputs/`).
+
 | Notebook | Propósito |
 |----------|-----------|
 | `qr_detection.ipynb` | Evaluación de detección QR: P, R, F1, IoU medio sobre train+valid |
@@ -127,16 +129,16 @@ Cada imagen contiene una lista de cortes detectados. Cada corte incluye la confi
 | `cut_edge_segmentation.ipynb` | Pruebas de segmentación EfficientSAM sobre bordes de corte |
 | `cut_edge_measurement_test.ipynb` | Pruebas del pipeline de medición multi-punto y visualización de distancias |
 | `yolo_finetune.ipynb` | Fine-tuning de YOLOv9 sobre el dataset de Michelin |
-| `efficientSAM.ipynb` | Experimentos con EfficientSAM: prompts de bbox, evaluación de IoU de máscara |
 
+---
 
 ## Entrenamiento (`src/models/yolo_finetune.py`)
 
 Script para fine-tuning de YOLOv9 sobre el dataset de Michelin.
 
 ```bash
-# Entrenamiento completo (split + train + eval + inferencia visual)
 python src/models/yolo_finetune.py
+```
 
 Configuración por defecto: YOLOv9c, 100 épocas, imgsz=640, batch=8, patience=20, augmentación activada.
 
@@ -145,7 +147,7 @@ Configuración por defecto: YOLOv9c, 100 épocas, imgsz=640, batch=8, patience=2
 ## Estructura de directorios
 
 ```
-models/Jaime/
+Jaime/
 ├── src/                                    # Pipeline modular
 │   ├── main.py                             # Punto de entrada del pipeline completo
 │   ├── detection/
@@ -160,53 +162,71 @@ models/Jaime/
 │   └── models/
 │       └── yolo_finetune.py
 │
-├── test/                                  # Notebooks de evaluación y pruebas
-│   ├── outputs/                           # JSON, imágenes de salida de las pruebas y GT (misma estructura que el otro outputs)  
+├── test/                                   # Notebooks de evaluación y pruebas
+│   ├── outputs/                            # Salidas de los notebooks (JSONs + figuras)
 │   ├── qr_detection.ipynb
 │   ├── rubber_detection.ipynb
 │   ├── cut_edge_detection.ipynb
 │   ├── rubber_segmentation.ipynb
 │   ├── cut_edge_segmentation.ipynb
 │   ├── cut_edge_measurement_test.ipynb
-│   ├── yolo_finetune.ipynb
-│   ├── efficientSAM.ipynb
-│   └── efficient_sam_vitt.pt              # Pesos EfficientSAM ViT-Tiny
+│   └── yolo_finetune.ipynb
 │
 ├── utils/
+│   ├── weights/
+│   │   ├── efficient_sam_vitt.pt           # Pesos EfficientSAM ViT-Tiny (*)
+│   │   └── yolov9c.pt                      # Pesos YOLOv9c base COCO (*)
 │   └── runs/data/runs/
-│       ├── michelin_v1/weights/best.pt    # YOLO — QR + rubber strip
-│       └── michelin_v3-4/weights/best.pt  # YOLO — cut edge
+│       ├── michelin_v1/weights/best.pt     # YOLO fine-tuned — QR + rubber strip
+│       └── michelin_v3-4/weights/best.pt   # YOLO fine-tuned — cut edge
 │
 ├── data/
-│   ├── raw/                               # 22 imágenes originales (multimedia_01..22.jpg)
-│   ├── new_samples_qr_rubber/             # Dataset etiquetado QR + rubber (train/valid)
+│   ├── raw/                                # 22 imágenes originales (multimedia_01..22.jpg)
+│   ├── new_samples_qr_rubber/              # Dataset etiquetado QR + rubber (train/valid)
 │   └── segmentation_cut_edge/             # Dataset etiquetado cut edge (train/valid)
 │
 ├── outputs/
 │   ├── detections/
-│   │   ├── qr_homographies.json           # Centros QR + matrices H por imagen
-│   │   ├── rubber_detections.json         # Bboxes de rubber strips por imagen
-│   │   ├── cut_edge_detections.json       # Bboxes de bordes de corte por imagen
-│   │   └── cut_edge_measurements.json     # Distancias en mm por borde y por punto
+│   │   ├── qr_homographies.json            # Centros QR + matrices H por imagen
+│   │   ├── rubber_detections.json          # Bboxes de rubber strips por imagen
+│   │   ├── cut_edge_detections.json        # Bboxes de bordes de corte por imagen
+│   │   └── cut_edge_measurements.json      # Distancias en mm por borde y por punto
 │   └── figures/
-│       ├── qr_detection/                  # Visualizaciones detección QR
-│       ├── rubber_detection/              # Visualizaciones detección rubber
-│       ├── rubber_segmentation/           # Máscaras de rubber strips
-│       ├── cut_edge_detection/            # Visualizaciones detección cut edge
-│       ├── cut_edge_segmentation/         # Máscaras de bordes de corte
-│       ├── cut_edge_distances/            # Figuras punto único con distancias en mm
-│       └── cut_edge_multipoint/           # Figuras multi-punto con distancias en mm
+│       ├── qr_detection/                   # Visualizaciones detección QR
+│       ├── rubber_detection/               # Visualizaciones detección rubber
+│       ├── rubber_segmentation/            # Máscaras de rubber strips
+│       ├── cut_edge_detection/             # Visualizaciones detección cut edge
+│       ├── cut_edge_segmentation/          # Máscaras de bordes de corte
+│       ├── cut_edge_distances/             # Figuras punto único con distancias en mm
+│       └── cut_edge_multipoint/            # Figuras multi-punto con distancias en mm
 │
-└── docs/                                  # Documentación y notas de diseño
+└── requirements.txt
 ```
+
+`(*)` Ver sección de requisitos para instrucciones de descarga.
 
 ---
 
 ## Requisitos
 
-Ver `requirements.txt`. EfficientSAM requiere instalación local desde su repositorio:
+Ver `requirements.txt`. Instalación de dependencias:
+
+```bash
+pip install -r requirements.txt
+```
+
+EfficientSAM requiere instalación local desde su repositorio:
 
 ```bash
 git clone https://github.com/yformer/EfficientSAM.git
 cd EfficientSAM && pip install -e .
 ```
+
+### Pesos preentrenados
+
+Colocar en `utils/weights/`:
+
+- **`yolov9c.pt`** — Se descarga automáticamente al ejecutar `YOLO("yolov9c.pt")` con ultralytics, o manualmente desde: https://github.com/WongKinYiu/yolov9/releases
+- **`efficient_sam_vitt.pt`** — Descargar desde: https://github.com/yformer/EfficientSAM/releases
+
+Los pesos fine-tuned (`michelin_v1` y `michelin_v3-4`) no son descargables públicamente; se generan ejecutando `yolo_finetune.ipynb`.
