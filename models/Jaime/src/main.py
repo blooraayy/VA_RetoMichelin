@@ -40,7 +40,7 @@ from measurement  import cut_edge_measurement  as ce_meas
 # ── Rutas por defecto ─────────────────────────────────────────────────────────
 _DEFAULT_WEIGHTS_QR_RUBBER = str(_BASE / "utils" / "runs" / "data" / "runs" / "michelin_v1" / "weights" / "best.pt")
 _DEFAULT_WEIGHTS_CUT_EDGE  = str(_BASE / "utils" / "runs" / "data" / "runs" / "michelin_v3-4" / "weights" / "best.pt")
-_DEFAULT_WEIGHTS_SAM       = str(_BASE / "test" / "efficient_sam_vitt.pt")
+_DEFAULT_WEIGHTS_SAM       = str(_BASE / "utils" / "weights" / "efficient_sam_vitt.pt")
 
 _QR_JSON      = _BASE / "outputs" / "detections" / "qr_homographies.json"
 _RUBBER_JSON  = _BASE / "outputs" / "detections" / "rubber_detections.json"
