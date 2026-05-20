@@ -1,0 +1,40 @@
+Una de las modalidades para el desarrollo del proyecto de la asignatura de Visión
+Artificial es la participación en el II Premio al Talento Joven promovido por FACYL –
+Cluster de Automoción y Movilidad de Castilla y León, desarrollando un proyecto
+de Visión Artificial para solucionar un reto real propuesto por la empresa
+Michelín de Aranda de Duero.
+Para esta edición, Michelín ha propuesto dos retos, de los cuales se elegirá uno
+para su desarrollo durante la asignatura. Ambos se enmarcan en la fabricación de
+neumáticos para camión.
+MOTIVACIÓN Y OBJETIVO
+En el taller de ensamblado se colocan bandas de goma sobre un tambor
+cilíndrico, se cortan y luego se unen los bordes. Actualmente, las tareas de unión
+de los bordes y de la verificación de la posición de la banda las realiza una persona
+en la planta. La intención es automatizar estas tareas utilizando Visión Artificial.
+Para que un brazo robótico pueda realizar esta unión y verificación
+automáticamente, debe conocer la posición del corte de la goma. Para ello, dicha
+posición se calcularía automáticamente a partir de una imagen tomada por una
+persona en la planta, con un teléfono móvil.
+MATERIALES Y REQUISITOS
+Michelín ha proporcionado un conjunto de imágenes para trabajar con ellas. 
+Estas imágenes provienen de una simulación de las posiciones de las bandas en
+laboratorio, utilizando una mesa plana, estan en models/Jaime/data.
+Como veis, sobre la mesa se han colocado unos códigos QR para calibrar la
+distancia (en mm). Estos forman un triángulo rectángulo cuyos catetos miden
+800mm.
+Dado que la cámara usada es la de un móvil y las imágenes reales las toma una
+persona en la fábrica, la posición de la cámara respecto a la goma puede variar.
+RETOS
+Teniendo en cuenta el objetivo, y las necesidades de Michelín, se proponen dos
+retos. En ambos será necesario calibrar las distancias, según las posiciones de
+los códigos QR en la imagen, y estimar las posiciones de la banda de goma y de
+los bordes de corte, con respecto a un sistema de referencia definido por los
+códigos QR, en que el punto (0, 0) es el centro del QR de la esquina superior
+izquierda.
+RETO
+Calibración de las distancias según posiciones de los códigos QR, y
+segmentación de la mesa/banda.
+• Detección y segmentación de los bordes de corte.
+• Estimación de la posición y distancias de los bordes de corte (por
+ejemplo, medir las distancias desde los puntos del borde de corte al
+borde inferior de la mesa)
