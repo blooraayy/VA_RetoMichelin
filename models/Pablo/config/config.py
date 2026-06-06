@@ -21,7 +21,7 @@ GDINO_WEIGHTS = ""
 # New images (May 2026) use real black-and-white QR codes, not pink stickers.
 # Keep the pink-sticker terms as fallback so old dataset still works.
 PROMPT_QR = "qr code . black square qr code . white square with qr pattern . pink square sticker"
-PROMPT_STRIP = "black rubber strip on white table"
+PROMPT_STRIP = "black rubber strip . dark rubber band on table"
 
 PROMPT_CUT_CANDIDATES = [
     "gap between rubber pieces .",

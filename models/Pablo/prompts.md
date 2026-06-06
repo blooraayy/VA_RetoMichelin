@@ -40,34 +40,30 @@ python reto_challenge.py --folder competition_images/
 
 ---
 
-## Proceso batch — todas las imágenes (data/images/ + new_images/Pos*/)
+## Proceso batch — todas las imágenes (carpeta única `all_images/`)
 
-Procesa en un solo paso todas las imágenes del dataset original **y** las nuevas.
-Genera visualizaciones Reto 2 (`*_reto.png`) + tabla xlsx de resultados.
+Todas las imágenes del dataset (22 Multimedia_* + 35 Pos1–Pos8) están copiadas
+en `all_images/` con nombres únicos (`Multimedia_31.jpg`, `Pos1_20260514_*.jpg`, etc.).
 
 ```bash
-python run_all.py --no-show
+python reto_challenge.py --folder all_images/ --no-show
 ```
 
 Con CPU:
 
 ```bash
-python run_all.py --device cpu --no-show
-```
-
-Opciones adicionales:
-
-```bash
-# Especificar carpeta de salida y xlsx
-python run_all.py --no-show --output-dir data/outputs/run_all --xlsx run_all_results.xlsx
-
-# Sin guardar imágenes anotadas (solo xlsx)
-python run_all.py --no-show --no-save
+python reto_challenge.py --folder all_images/ --device cpu --no-show
 ```
 
 Salida:
-- `data/outputs/run_all/` — imágenes `*_detection.png`, `*_measurement.png`, `*_reto.png`
-- `run_all_results.xlsx` — tabla Reto 1 / Reto 2 de todas las imágenes
+- `data/outputs/reto/` — imágenes `*_detection.png`, `*_measurement.png`, `*_reto.png`
+- `reto_results.xlsx` — tabla Reto 1 / Reto 2 de todas las imágenes (una hoja por foto)
+
+Alternativamente, `run_all.py` busca automáticamente en `data/images/` y `new_images/Pos*/`:
+
+```bash
+python run_all.py --no-show
+```
 
 ---
 

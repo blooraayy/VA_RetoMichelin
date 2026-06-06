@@ -148,6 +148,54 @@ en lugar de pasar las rutas de las fotos una a una.
 
 ---
 
+## Phase 4 — Robustez para cortes oscuros + carpeta all_images (sesión junio 2026)
+
+### Problema resuelto: cortes de goma presionada (Pos4, Pos7, Pos8)
+
+En estas imágenes el corte no crea un hueco blanco visible sino una fina línea
+oscura (goma presionada). Ni DINO ni el fallback de gradiente la detectaban
+de forma fiable con los umbrales previos.
+
+### Cambios en `model/grounded_sam.py`
+
+**1. Umbral de gradiente clásico rebajado** (`_conditioned_classical_fallback`)
+
+`max(7.0, mean + 1.3σ)` → `max(5.0, mean + 1.0σ)`.
+
+Más sensible a gradientes sutiles sin sacrificar precisión, gracias al filtro
+`_is_valid_cutgap_box` que descarta falsos positivos de geometría.
+
+**2. `_intensity_valley_fallback()` (cuarto pase, nuevo)**
+
+Si tras los tres pases anteriores (DINO normal, DINO con umbral bajo, gradiente)
+alguna banda sigue sin corte detectado, se ejecuta este pase que busca un
+**valle de intensidad**: una columna (o fila) cuya media de grises es
+significativamente más oscura que la media local del strip calculada con una
+ventana deslizante.
+
+Umbral de disparo: `max(6.0, mean_darkness + 1.5σ)`.
+Solo genera una caja de 16 px de anchura; pasa por `_is_valid_cutgap_box`.
+No interfiere con imágenes donde DINO ya detectó el corte blanco (no se ejecuta).
+
+### Cambio en `config/config.py`
+
+`PROMPT_STRIP`: `"black rubber strip on white table"` → `"black rubber strip . dark rubber band on table"`
+
+Añade soporte explícito para fondos grises/oscuros (nuevas imágenes en mesa de metal).
+
+### Archivo nuevo: `all_images/`
+
+Carpeta con las 57 imágenes del dataset completo (22 Multimedia_* + 35 Pos1–Pos8).
+Creada para poder ejecutar un único comando sobre todo el dataset:
+
+```bash
+python reto_challenge.py --folder all_images/ --no-show
+```
+
+Contiene `.gitignore` que evita que las fotos entren en el repositorio.
+
+---
+
 ## Phase 3 — Visualización Reto 2 + batch run_all (commit `e68adf3`)
 
 ### Archivos nuevos

@@ -216,6 +216,21 @@ class GroundedSAMModel:
             edge_detections.extend(classical_dets)
             edge_sample_points.extend(classical_pts)
 
+        # Fourth pass — intensity-valley fallback for pressed-rubber cuts where
+        # the separation is a dark crevice rather than a bright white gap.
+        # Runs only when strips are still missing a cut after the three DINO/gradient passes.
+        if len(strip_detections) > 0 and len(edge_detections) < min(len(strip_detections), 2):
+            valley_dets, valley_pts = self._intensity_valley_fallback(
+                image_bgr=image_bgr,
+                strip_detections=strip_detections,
+                H=H,
+                W=W,
+                max_new=2 - len(edge_detections),
+                existing_edges=edge_detections,
+            )
+            edge_detections.extend(valley_dets)
+            edge_sample_points.extend(valley_pts)
+
         if len(edge_detections) > 1:
             edge_detections, edge_sample_points = self._deduplicate_edges(
                 edge_detections, edge_sample_points
@@ -808,7 +823,7 @@ class GroundedSAMModel:
             local = profile.copy()
             local[~valid] = 0
             peak = float(local.max())
-            if peak < max(7.0, float(profile.mean() + 1.3 * profile.std())):
+            if peak < max(5.0, float(profile.mean() + 1.0 * profile.std())):
                 continue
             idx = int(np.argmax(local))
             coord = float(coords[idx])
@@ -955,6 +970,113 @@ class GroundedSAMModel:
         if len(strips) < 2:
             strips = _find_strips_from_projection(axis=0)
         return strips
+
+    def _intensity_valley_fallback(
+        self,
+        image_bgr: np.ndarray,
+        strip_detections: list[DetectionResult],
+        H: int,
+        W: int,
+        max_new: int = 2,
+        existing_edges: Optional[list[DetectionResult]] = None,
+    ) -> tuple[list[DetectionResult], list[np.ndarray]]:
+        """Detect cuts as intensity valleys (dark crevice) in the strip ROI.
+
+        Used for pressed-rubber images where the separation between pieces
+        is a dark thin line rather than a bright white gap.  The method
+        looks for a narrow column (or row) whose mean intensity is
+        significantly lower than the local baseline computed by a moving
+        average across the strip.
+        """
+        gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
+        new_dets: list[DetectionResult] = []
+        new_pts:  list[np.ndarray]      = []
+        existing_edges = existing_edges or []
+
+        for strip in strip_detections:
+            if len(new_dets) >= max_new:
+                break
+            sbox = strip.box_xyxy.astype(np.float32)
+
+            # Skip strips that already contain a detected cut edge.
+            already = False
+            for edge in existing_edges + new_dets:
+                inter = self._box_intersection_area(edge.box_xyxy, sbox)
+                area  = max(1.0, (edge.box_xyxy[2] - edge.box_xyxy[0])
+                                * (edge.box_xyxy[3] - edge.box_xyxy[1]))
+                if inter / area > 0.55:
+                    already = True
+                    break
+            if already:
+                continue
+
+            sx1, sy1, sx2, sy2 = self._clip_box(sbox, W, H).astype(int)
+            roi = gray[sy1:sy2, sx1:sx2]
+            if roi.size == 0:
+                continue
+            sw, sh = max(1, sx2 - sx1), max(1, sy2 - sy1)
+
+            strip_is_horizontal = sw >= sh
+
+            if strip_is_horizontal:
+                # Vertical cut → column-wise mean intensity profile
+                profile = roi.mean(axis=0).astype(np.float32)
+                coords  = np.arange(sx1, sx2, dtype=np.float32)
+            else:
+                # Horizontal cut → row-wise mean intensity profile
+                profile = roi.mean(axis=1).astype(np.float32)
+                coords  = np.arange(sy1, sy2, dtype=np.float32)
+
+            if len(profile) < 20:
+                continue
+
+            # Local baseline via moving average; window = ~1/5 of the profile length
+            window = max(10, min(len(profile) // 5, 80))
+            kernel   = np.ones(window, dtype=np.float32) / window
+            baseline = np.convolve(profile, kernel, mode="same")
+            darkness = baseline - profile    # positive where darker than local mean
+
+            # Restrict search to the central 80 % to avoid rubber-edge artefacts.
+            margin = max(1, int(0.10 * len(darkness)))
+            valid_darkness = darkness.copy()
+            valid_darkness[:margin]  = 0.0
+            valid_darkness[-margin:] = 0.0
+
+            peak_dark = float(valid_darkness.max())
+            threshold = max(6.0, float(np.mean(darkness) + 1.5 * np.std(darkness)))
+            if peak_dark < threshold:
+                continue
+
+            idx   = int(np.argmax(valid_darkness))
+            coord = float(coords[idx])
+
+            if strip_is_horizontal:
+                box = np.array([
+                    coord - 8.0,
+                    sy1 + 0.06 * sh,
+                    coord + 8.0,
+                    sy2 - 0.06 * sh,
+                ], dtype=np.float32)
+            else:
+                box = np.array([
+                    sx1 + 0.06 * sw,
+                    coord - 8.0,
+                    sx2 - 0.06 * sw,
+                    coord + 8.0,
+                ], dtype=np.float32)
+
+            box = self._clip_box(box, W, H)
+            if not self._is_valid_cutgap_box(box, W, H, strip_box=sbox):
+                continue
+
+            mask = self._make_rect_mask(box, H, W)
+            det  = DetectionResult("cut_edge_valley", 0.08, box, mask)
+            new_dets.append(det)
+            new_pts.append(self._extract_cut_gap_borders(mask))
+            print(f"[Stage 2] Intensity-valley fallback: cut at coord={coord:.1f}  "
+                  f"darkness_peak={peak_dark:.1f} (thr={threshold:.1f})")
+
+        return new_dets, new_pts
 
     @staticmethod
     def _deduplicate_edges(
