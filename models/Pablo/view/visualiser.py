@@ -755,6 +755,265 @@ class Visualiser:
 
         print(f"[Visualiser] Saved CSV measurements → {path}")
 
+    # ── Reto visualisation ────────────────────────────────────────────────────
+
+    def render_reto(
+        self,
+        image_bgr: np.ndarray,
+        pipeline_res: PipelineResult,
+        band_a,
+        band_b,
+        cut_a,
+        cut_b,
+        reto1_rows: list,
+        reto2_rows: list,
+        homography,
+        qr_calibrator,
+        base_name: str = "result",
+    ) -> np.ndarray:
+        """Draw strip masks, cut masks, QR detections, and Reto 2 measurement
+        lines on a single canvas, then save/show it.
+
+        Parameters
+        ----------
+        band_a, band_b : DetectionResult | None
+            Rubber strip detections for Band A and Band B.
+        cut_a, cut_b : DetectionResult | None
+            Cut-gap detections for Band A and Band B.
+        reto1_rows, reto2_rows : list
+            Output of RetoMeasurementEngine.
+        homography : np.ndarray | None
+            Pixel → mm homography from QRCalibrator.
+        qr_calibrator : QRCalibrator | None
+            Calibration object (needed for coordinate conversion).
+        base_name : str
+            Stem used when saving the output file.
+        """
+        canvas = image_bgr.copy()
+        H_img, W = canvas.shape[:2]
+
+        # ── Band masks ────────────────────────────────────────────────────────
+        COLOR_BAND_A = (0, 140, 255)    # BGR orange
+        COLOR_BAND_B = (200, 160, 0)    # BGR teal
+        ALPHA_BAND   = 0.28
+
+        for det, color, label in [
+            (band_a, COLOR_BAND_A, "Banda A"),
+            (band_b, COLOR_BAND_B, "Banda B"),
+        ]:
+            if det is None:
+                continue
+            if det.mask is not None:
+                overlay = canvas.copy()
+                overlay[det.mask] = color
+                cv2.addWeighted(overlay, ALPHA_BAND, canvas, 1.0 - ALPHA_BAND,
+                                0, canvas)
+            x1, y1, x2, y2 = det.box_xyxy.astype(int)
+            cv2.rectangle(canvas, (x1, y1), (x2, y2), color, 2)
+            (lw, lh), _ = cv2.getTextSize(
+                label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
+            tx = max(0, min(x1, W - lw - 2))
+            ty = max(lh + 2, y1 - 4)
+            cv2.putText(canvas, label, (tx, ty),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1, cv2.LINE_AA)
+
+        # ── Cut masks ─────────────────────────────────────────────────────────
+        COLOR_CUT_A = (40, 40, 220)     # BGR red
+        COLOR_CUT_B = (40, 180, 40)     # BGR green
+        ALPHA_CUT   = 0.5
+
+        for det, color, label in [
+            (cut_a, COLOR_CUT_A, "Cut A"),
+            (cut_b, COLOR_CUT_B, "Cut B"),
+        ]:
+            if det is None:
+                continue
+            if det.mask is not None:
+                overlay = canvas.copy()
+                overlay[det.mask] = color
+                cv2.addWeighted(overlay, ALPHA_CUT, canvas, 1.0 - ALPHA_CUT,
+                                0, canvas)
+            x1, y1, x2, y2 = det.box_xyxy.astype(int)
+            cv2.rectangle(canvas, (x1, y1), (x2, y2), color, 2)
+            (lw, lh), _ = cv2.getTextSize(
+                label, cv2.FONT_HERSHEY_SIMPLEX, 0.4, 1)
+            tx = max(0, min(x1, W - lw - 2))
+            ty = max(lh + 2, y1 - 4)
+            cv2.putText(canvas, label, (tx, ty),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.4, color, 1, cv2.LINE_AA)
+
+        # ── QR detections ─────────────────────────────────────────────────────
+        self._draw_qr_detections(canvas, pipeline_res)
+
+        # ── Reto 2 measurement lines ──────────────────────────────────────────
+        if (
+            homography is not None
+            and qr_calibrator is not None
+            and reto2_rows
+        ):
+            self._draw_reto2_visuals(
+                canvas, reto2_rows, band_a, band_b, cut_a, cut_b,
+                homography, qr_calibrator, H_img, W,
+            )
+
+        # ── Save / show ───────────────────────────────────────────────────────
+        if self.save:
+            self._save_image(canvas, base_name + "_reto")
+        if self.show:
+            self._show_image(canvas, base_name + "_reto")
+
+        return canvas
+
+    def _draw_reto2_visuals(
+        self,
+        canvas: np.ndarray,
+        reto2_rows: list,
+        band_a,
+        band_b,
+        cut_a,
+        cut_b,
+        homography: np.ndarray,
+        qr_calibrator,
+        H_img: int,
+        W: int,
+    ) -> None:
+        """Draw 10 horizontal measurement lines and YSA/YSB arrows for Reto 2.
+
+        Line colours:
+          YELLOW = (0, 220, 220) for Band A
+          CYAN   = (200, 200, 0) for Band B
+          WHITE  = (255, 255, 255) for SA1/SB1 gap segments
+        """
+        YELLOW = (0, 220, 220)
+        CYAN   = (200, 200, 0)
+        WHITE  = (255, 255, 255)
+
+        # Retrieve YSA and YSB from the first row (same for all rows)
+        first = reto2_rows[0]
+        ysa_val = getattr(first, "YSA", None)
+        ysb_val = getattr(first, "YSB", None)
+
+        bands = [
+            (band_a, cut_a, ysa_val, YELLOW, "SA1", "YSA"),
+            (band_b, cut_b, ysb_val, CYAN,   "SB1", "YSB"),
+        ]
+
+        for band_det, cut_det, ys_val, col, sa1_key, ys_key in bands:
+            if band_det is None or ys_val is None:
+                continue
+
+            # ── X range in mm from the band bounding box ──────────────────────
+            bx1, by1, bx2, by2 = band_det.box_xyxy
+            corners_px = np.array([
+                [bx1, by1],
+                [bx2, by1],
+                [bx1, by2],
+                [bx2, by2],
+            ], dtype=np.float32)
+            corners_mm = qr_calibrator.pixels_to_mm_bulk(corners_px, homography)
+            x_lo = float(corners_mm[:, 0].min()) + 8.0
+            x_hi = float(corners_mm[:, 0].max()) - 8.0
+            x_cx = (x_lo + x_hi) / 2.0
+
+            # ── YSA/YSB arrow from table edge (Y=0) to cut top ────────────────
+            arrow_pts_mm = np.array(
+                [[x_cx, 0.0], [x_cx, ys_val]], dtype=np.float32
+            )
+            arrow_pts_px = qr_calibrator.mm_to_pixels_bulk(
+                arrow_pts_mm, homography
+            )
+            p_table = (int(round(float(arrow_pts_px[0, 0]))),
+                       int(round(float(arrow_pts_px[0, 1]))))
+            p_cut   = (int(round(float(arrow_pts_px[1, 0]))),
+                       int(round(float(arrow_pts_px[1, 1]))))
+
+            if (
+                0 <= p_table[1] < H_img
+                and 0 <= p_cut[1] < H_img
+            ):
+                cv2.arrowedLine(canvas, p_cut, p_table, col, 2,
+                                tipLength=0.04)
+                mid_x = (p_table[0] + p_cut[0]) // 2
+                mid_y = (p_table[1] + p_cut[1]) // 2
+                arrow_label = f"{ys_key}={ys_val:.1f}mm"
+                cv2.putText(
+                    canvas, arrow_label,
+                    (min(max(mid_x + 4, 0), W - 1),
+                     min(max(mid_y - 4, 10), H_img - 1)),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.35, col, 1, cv2.LINE_AA,
+                )
+
+            # ── 10 measurement lines ──────────────────────────────────────────
+            for row in reto2_rows:
+                y_mm   = ys_val + row.y_offset_mm
+                sa1_val = getattr(row, sa1_key, None)
+
+                # Convert line endpoints from mm to px
+                line_pts_mm = np.array(
+                    [[x_lo, y_mm], [x_hi, y_mm]], dtype=np.float32
+                )
+                line_pts_px = qr_calibrator.mm_to_pixels_bulk(
+                    line_pts_mm, homography
+                )
+                p1 = (int(round(float(line_pts_px[0, 0]))),
+                      int(round(float(line_pts_px[0, 1]))))
+                p2 = (int(round(float(line_pts_px[1, 0]))),
+                      int(round(float(line_pts_px[1, 1]))))
+
+                if not (0 <= p1[1] < H_img and 0 <= p2[1] < H_img):
+                    continue
+
+                cv2.line(canvas, p1, p2, col, 1)
+
+                # ── White gap segment (SA1 / SB1) ─────────────────────────────
+                if sa1_val is not None and sa1_val > 0 and cut_det is not None:
+                    cut_cx_px = float(
+                        (cut_det.box_xyxy[0] + cut_det.box_xyxy[2]) / 2.0
+                    )
+                    cut_cy_px = float(
+                        (cut_det.box_xyxy[1] + cut_det.box_xyxy[3]) / 2.0
+                    )
+                    cut_pts_mm = qr_calibrator.pixels_to_mm_bulk(
+                        np.array([[cut_cx_px, cut_cy_px]], dtype=np.float32),
+                        homography,
+                    )
+                    cut_cx_mm = float(cut_pts_mm[0, 0])
+
+                    gap_pts_mm = np.array([
+                        [cut_cx_mm - sa1_val / 2.0, y_mm],
+                        [cut_cx_mm + sa1_val / 2.0, y_mm],
+                    ], dtype=np.float32)
+                    gap_pts_px = qr_calibrator.mm_to_pixels_bulk(
+                        gap_pts_mm, homography
+                    )
+                    gp1 = (int(round(float(gap_pts_px[0, 0]))),
+                           int(round(float(gap_pts_px[0, 1]))))
+                    gp2 = (int(round(float(gap_pts_px[1, 0]))),
+                           int(round(float(gap_pts_px[1, 1]))))
+
+                    cv2.line(canvas, gp1, gp2, WHITE, 3)
+
+                    # Small vertical tick marks at each endpoint (height 5 px)
+                    for gp in (gp1, gp2):
+                        tx_c = min(max(gp[0], 0), W - 1)
+                        ty_t = min(max(gp[1] - 2, 0), H_img - 1)
+                        ty_b = min(max(gp[1] + 2, 0), H_img - 1)
+                        cv2.line(canvas, (tx_c, ty_t), (tx_c, ty_b), WHITE, 2)
+
+                # ── Annotation text ───────────────────────────────────────────
+                if sa1_val is not None:
+                    txt = (f"+{row.y_offset_mm:.0f}mm  "
+                           f"{sa1_key}={sa1_val:.1f}")
+                else:
+                    txt = f"+{row.y_offset_mm:.0f}mm"
+
+                tx_ann = min(max(p2[0] + 5, 0), W - 1)
+                ty_ann = min(max(p2[1] + 4, 10), H_img - 1)
+                cv2.putText(
+                    canvas, txt, (tx_ann, ty_ann),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.31, col, 1, cv2.LINE_AA,
+                )
+
     @staticmethod
     def _show_image(canvas: np.ndarray, title: str) -> None:
         cv2.imshow(title, canvas)

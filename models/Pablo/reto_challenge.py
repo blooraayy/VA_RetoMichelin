@@ -77,6 +77,8 @@ def _process_image(
     reto1_rows = []
     reto2_rows = []
 
+    band_a = band_b = cut_a_det = cut_b_det = None
+
     if qr_result.success:
         # Assign strips to Band A and Band B
         band_a, band_b = assign_bands(
@@ -130,6 +132,21 @@ def _process_image(
         eval_metrics=None,
         base_name=base_name,
         calibration_valid=qr_result.success,
+    )
+
+    # Reto visualization (strip masks + measurement lines)
+    visualiser.render_reto(
+        image_bgr=image_bgr,
+        pipeline_res=pipeline_result,
+        band_a=band_a,
+        band_b=band_b,
+        cut_a=cut_a_det,
+        cut_b=cut_b_det,
+        reto1_rows=reto1_rows,
+        reto2_rows=reto2_rows,
+        homography=qr_result.homography if qr_result.success else None,
+        qr_calibrator=qr_calibrator,
+        base_name=base_name,
     )
 
     elapsed = time.perf_counter() - t0
