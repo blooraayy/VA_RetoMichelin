@@ -148,6 +148,47 @@ en lugar de pasar las rutas de las fotos una a una.
 
 ---
 
+## Phase 5 — Visualización referencia + corrección falsos positivos (commit `0710a0c`)
+
+### Cambios en `view/visualiser.py`
+
+**`render_reto()` y `_draw_reto2_visuals()`** rediseñados para coincidir con
+la imagen de referencia de `nuevas_normas.pdf`:
+
+- **Relleno de bandas**: alpha 0.28 → 0.12 (el patrón de la goma es visible)
+- **Líneas de medida**: trazan el ancho COMPLETO de la banda (no solo la zona de corte)
+- **Grosor**: 2 px + marca vertical de 3 px en el borde izquierdo
+- **Marcador de origen `(0)`**: círculo + texto en la posición YSA/YSB (top del corte)
+- **Sombra de texto**: todos los textos tienen contorno negro (±1 px) para legibilidad
+- **Anotaciones**: formato `"N. SA1=x.x"` numerado en el borde derecho
+- **Cajas de corte**: borde 1 px, sin etiqueta de texto (no contamina la vista)
+
+### Cambios en `model/grounded_sam.py`
+
+**1. Umbral de intensidad strip fallback** (`_intensity_strip_fallback`)
+
+`gray < 80` → `gray < 95`.
+
+Pos5 (mesa gris) tiene goma con nivel ~85–90; el umbral anterior de 80
+no la detectaba. El umbral de 95 cubre ambos tipos de mesa.
+
+**2. Check de brillo en fallback clásico** (`_conditioned_classical_fallback`)
+
+Antes de aceptar una detección clásica, se comprueba que el centro del gap
+supere `CUT_GAP_BRIGHTNESS_MIN = 120` (mismo check que el path DINO).
+Esto elimina los falsos positivos de borde-de-goma (Multimedia_35) que el
+fallback de gradiente detectaba como corte.
+
+```python
+p90 = self._gap_centre_brightness(
+    cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB), box
+)
+if p90 < CUT_GAP_BRIGHTNESS_MIN:
+    continue  # borde oscuro, no es un gap real
+```
+
+---
+
 ## Phase 4 — Robustez para cortes oscuros + carpeta all_images (sesión junio 2026)
 
 ### Problema resuelto: cortes de goma presionada (Pos4, Pos7, Pos8)
