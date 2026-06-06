@@ -4,7 +4,7 @@
 
 Se han implementado dos fases de mejora sobre el pipeline original para adaptarlo
 al formato exigido por `nuevas_normas.pdf` (junio 2026) y para que funcione con
-las nuevas imágenes del dataset.
+las nuevas imágenes del dataset, más una corrección al origen de las medidas Reto 2.
 
 ---
 
@@ -97,3 +97,36 @@ DA  Distancia a borde mesa ...
 
 Los valores ausentes son celdas vacías (no texto "N/A") para que Michelin pueda
 comparar numéricamente contra su ground truth.
+
+---
+
+## Corrección Reto 2 — origen de medidas (commit posterior)
+
+### Archivo modificado: `model/reto_measurements.py`
+
+**Bug corregido**: el origen de las 10 posiciones Y en `compute_reto2()` usaba
+`top_y_a` (top del strip completo) en lugar de `ysa` (top de la zona de corte).
+
+El spec (`nuevas_normas.pdf`) dice explícitamente:
+
+> "El origen de las 10 divisiones sobre la goma (OJO, no de coordenadas) es la
+> parte superior de la zona de corte de cada banda"
+
+`top_y_a` = mínima Y del strip = puede incluir goma por encima del corte.
+`ysa` = mínima Y de la máscara del corte = primer píxel visible del gap.
+
+El código correcto es:
+```python
+y_global = ysa + y_off   # no top_y_a + y_off
+```
+
+También se eliminaron las variables `top_y_a` y `top_y_b` que ya no se usan.
+
+### Definición correcta de cada métrica (según nuevas_normas.pdf)
+
+| Métrica | Definición |
+|---|---|
+| **SA1** | Distancia horizontal (en X) entre los dos bordes superiores del corte en la Banda A, a cada posición Y (puntos `a` y `b` del diagrama). |
+| **SA2** | Misma distancia incluyendo el chaflán del corte. En vista cenital SA2 ≈ SA1. Valor negativo si el borde inferior queda bajo el superior (solape). |
+| **YSA** | Distancia global en Y (desde el borde de la mesa, Y=0) al borde superior del corte. Valor único, repetido en las 10 filas. Es también el origen (Y=0) de las divisiones. |
+| **SB1/SB2/YSB** | Equivalentes para Banda B. |

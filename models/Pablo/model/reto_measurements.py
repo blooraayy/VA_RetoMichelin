@@ -8,14 +8,20 @@
 #   LA  Width of Band A (Y extent of the rubber strip)
 #   LB  Width of Band B
 #
-# Reto 2 — 10 fixed Y offsets (5…230 mm from the TOP of each band's cut zone):
-#   SA1  Gap width between upper cut borders of Band A at that Y slice
-#   SA2  Gap including chamfer (upper-to-lower border distance); ≈SA1 for
-#        top-view images where the chamfer is not visible
-#   YSA  Global Y distance (from table edge, Y=0) to nearest cut border in A
-#   SB1  Same metrics for Band B
-#   SB2
-#   YSB
+# Reto 2 — 10 measurement slices at fixed Y offsets from the TOP of the cut zone:
+#   Y offsets (mm): 5, 30, 55, 80, 105, 130, 155, 180, 205, 230
+#   Origin (Y=0 for offsets) = YSA = top of cut zone = nearest Y of cut mask to table edge
+#
+#   SA1  Horizontal distance between the two upper cut borders of Band A at each Y slice
+#        (= X gap width of the cut at that Y; points 'a' and 'b' in the spec diagram)
+#   SA2  Same but between upper and lower rubber surfaces (chamfer distance).
+#        For a top-view camera where the chamfer is not visible, SA2 ≈ SA1.
+#        Negative when the lower border is hidden under the upper (overlapping cut).
+#   YSA  Global Y (mm from table edge) of the TOP of the cut zone in Band A.
+#        Single value, repeated across all 10 rows.
+#   SB1  SA1 equivalent for Band B
+#   SB2  SA2 equivalent for Band B
+#   YSB  YSA equivalent for Band B
 # =============================================================================
 
 from __future__ import annotations
@@ -92,13 +98,10 @@ class RetoMeasurementEngine:
         strip_b_mask: Optional[np.ndarray],
         image_bgr:    Optional[np.ndarray] = None,
     ) -> list[Reto2Row]:
-        # Find the global Y (in mm) of the top edge of each band's cut zone.
-        # This is the top edge of the band itself (= DA from Reto 1).
-        top_y_a = self._band_top_y_mm(strip_a_mask)
-        top_y_b = self._band_top_y_mm(strip_b_mask)
-
-        # Y of nearest cut border in each band (YSA / YSB):
-        # = minimum global Y of any pixel belonging to the cut mask.
+        # YSA / YSB = global Y (mm from table edge) of the TOP of each cut zone.
+        # This is the spec-defined origin for the 10 measurement positions.
+        # nuevas_normas.pdf: "el origen de las divisiones es la parte superior
+        # de la zona de corte de cada banda".
         ysa = self._nearest_cut_y_mm(cut_a_mask)
         ysb = self._nearest_cut_y_mm(cut_b_mask)
 
@@ -106,15 +109,18 @@ class RetoMeasurementEngine:
         for y_off in RETO2_Y_OFFSETS_MM:
             sa1 = sa2 = sb1 = sb2 = None
 
-            if cut_a_mask is not None and top_y_a is not None:
-                y_global = top_y_a + y_off
+            # Measurement positions are offsets from the TOP of the cut zone,
+            # not from the top of the strip (those can differ when the cut
+            # starts inside the band rather than at its very edge).
+            if cut_a_mask is not None and ysa is not None:
+                y_global = ysa + y_off
                 sa1 = self._gap_width_at_y(cut_a_mask, y_global)
                 sa2 = self._gap_upper_to_lower_at_y(
                     cut_a_mask, y_global, image_bgr, band="A"
                 )
 
-            if cut_b_mask is not None and top_y_b is not None:
-                y_global = top_y_b + y_off
+            if cut_b_mask is not None and ysb is not None:
+                y_global = ysb + y_off
                 sb1 = self._gap_width_at_y(cut_b_mask, y_global)
                 sb2 = self._gap_upper_to_lower_at_y(
                     cut_b_mask, y_global, image_bgr, band="B"
