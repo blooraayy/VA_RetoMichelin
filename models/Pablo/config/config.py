@@ -18,7 +18,9 @@ GDINO_CONFIG  = ""
 GDINO_WEIGHTS = ""
 
 # ── Prompts ──────────────────────────────────────────────────────────────────
-PROMPT_QR = "pink square sticker . magenta square marker"
+# New images (May 2026) use real black-and-white QR codes, not pink stickers.
+# Keep the pink-sticker terms as fallback so old dataset still works.
+PROMPT_QR = "qr code . black square qr code . white square with qr pattern . pink square sticker"
 PROMPT_STRIP = "black rubber strip on white table"
 
 PROMPT_CUT_CANDIDATES = [
@@ -82,6 +84,14 @@ QR_MIN_AREA_PX  = 50
 
 # ── Sampling ─────────────────────────────────────────────────────────────────
 NUM_SAMPLE_POINTS = 10
+
+# ── Reto measurement positions (nuevas_normas.pdf, June 2026) ─────────────────
+# Reto 1: 9 columns at fixed X positions along the QR baseline (mm)
+RETO1_X_MM = [80, 160, 240, 320, 400, 480, 560, 640, 720]
+
+# Reto 2: 10 rows at fixed offsets from the TOP of each band's cut zone (mm)
+RETO2_Y_OFFSETS_MM = [5, 30, 55, 80, 105, 130, 155, 180, 205, 230]
+RETO2_BAND_WIDTH_MM = 250.0
 
 # ── Runtime ──────────────────────────────────────────────────────────────────
 DEVICE = "cuda"

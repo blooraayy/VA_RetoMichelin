@@ -231,20 +231,33 @@ class QRCalibrator:
     def _build_homography(self, centres_px) -> tuple[np.ndarray, float]:
         """Compute affine pixel→mm transform from 3 QR centres.
 
-        Top-left  → (0, 0)
-        Top-right → (L, 0)
-        Bottom-left → (0, L)
+        Handles two triangle layouts automatically:
+          TL / TR / BL  →  (0,0) / (L,0) / (0,L)   [old dataset, pink stickers]
+          TL / TR / BR  →  (0,0) / (L,0) / (L,L)   [new dataset, real QR codes]
+
+        In both cases the X axis runs along the top edge (TL→TR) and the Y
+        axis runs perpendicular into the table.  The origin (0,0) is always
+        the TL corner so X measurements are referenced from the LEFT side.
         """
         pts = np.array(centres_px, dtype=np.float64)
+        L   = self.qr_leg_mm
 
         idx_tl = int(np.argmin(pts[:, 0] + pts[:, 1]))
         remaining = [i for i in range(3) if i != idx_tl]
         idx_tr = remaining[int(np.argmax(pts[remaining, 0]))]
-        idx_bl = [i for i in remaining if i != idx_tr][0]
+        idx_3rd = [i for i in remaining if i != idx_tr][0]
 
-        src = np.float32([pts[idx_tl], pts[idx_tr], pts[idx_bl]])
-        L   = self.qr_leg_mm
-        dst = np.float32([[0.0, 0.0], [L, 0.0], [0.0, L]])
+        # Determine whether the 3rd point is bottom-LEFT (x ≈ TL) or
+        # bottom-RIGHT (x ≈ TR). Midpoint of TL→TR is the threshold.
+        mid_x = 0.5 * (pts[idx_tl, 0] + pts[idx_tr, 0])
+        if pts[idx_3rd, 0] <= mid_x:
+            # BL layout (original dataset)
+            src = np.float32([pts[idx_tl], pts[idx_tr], pts[idx_3rd]])
+            dst = np.float32([[0.0, 0.0], [L, 0.0], [0.0, L]])
+        else:
+            # BR layout (new dataset — third QR is below TR, not below TL)
+            src = np.float32([pts[idx_tl], pts[idx_tr], pts[idx_3rd]])
+            dst = np.float32([[0.0, 0.0], [L, 0.0], [L, L]])
 
         H_aff = cv2.getAffineTransform(src, dst)
         H = np.vstack([H_aff, [0.0, 0.0, 1.0]])
@@ -252,7 +265,6 @@ class QRCalibrator:
         leg_px    = float(np.linalg.norm(pts[idx_tr] - pts[idx_tl]))
         px_per_mm = leg_px / L
 
-        # Reject physically implausible scales before the caller uses them.
         if not (0.2 <= px_per_mm <= 15.0):
             raise ValueError(
                 f"px_per_mm={px_per_mm:.4f} outside [0.2, 15.0]; "
@@ -260,3 +272,11 @@ class QRCalibrator:
             )
 
         return H, px_per_mm
+
+    @staticmethod
+    def mm_to_pixels_bulk(points_mm: np.ndarray, homography: np.ndarray) -> np.ndarray:
+        """Inverse of pixels_to_mm_bulk: convert mm coordinates back to pixels."""
+        H_inv = np.linalg.inv(homography)
+        pts = points_mm.reshape(-1, 1, 2).astype(np.float32)
+        pts_px = cv2.perspectiveTransform(pts, H_inv)
+        return pts_px.reshape(-1, 2)

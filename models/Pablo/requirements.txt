@@ -28,3 +28,6 @@ pycocotools
 
 # Segment Anything (SAM ViT-H) from the official Facebook Research repo
 segment-anything @ git+https://github.com/facebookresearch/segment-anything.git
+
+# Excel output for Michelin evaluation table (nuevas_normas.pdf)
+openpyxl
