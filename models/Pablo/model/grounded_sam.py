@@ -847,6 +847,14 @@ class GroundedSAMModel:
             if not self._is_valid_cutgap_box(box, W, H, strip_box=sbox):
                 continue
             box = self._complete_second_border(image_bgr, box, sbox, H, W)
+            # Sanity: a real cut gap exposes the white table; rubber edges are dark.
+            # Reuse the same brightness check as the DINO path.
+            p90 = self._gap_centre_brightness(
+                cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB), box
+            )
+            if p90 < CUT_GAP_BRIGHTNESS_MIN:
+                print(f"[Stage 2] Classical fallback dropped dark FP: p90={p90:.1f}")
+                continue
             mask = self._make_rect_mask(box, H, W)
             det = DetectionResult("cut_edge_classical", 0.10, box, mask)
             new_dets.append(det)
@@ -903,7 +911,7 @@ class GroundedSAMModel:
         finding connected dark-pixel bands along the image's long axis.
         """
         gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
-        dark = (gray < 80).astype(np.uint8)
+        dark = (gray < 95).astype(np.uint8)
 
         def _find_strips_from_projection(axis: int) -> list[DetectionResult]:
             projection = dark.sum(axis=axis)  # sum along rows (axis=1→cols) or cols (axis=0→rows)
