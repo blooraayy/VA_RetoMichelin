@@ -80,8 +80,9 @@ class QRCalibrator:
             dist_centre = float(np.hypot(cx - W / 2.0, cy - H / 2.0)) / half_diag
             candidates.append((cx, cy, float(det.score), dist_centre))
 
-        # A real QR sits in the outer ~30 % of the image (dist_centre > 0.55).
-        DIST_TO_CENTRE_MIN = 0.55
+        # A real QR sits in the outer ~30 % of the image.
+        # New competition images have QRs slightly closer to centre → 0.40.
+        DIST_TO_CENTRE_MIN = 0.40
         filtered = [c for c in candidates if c[3] >= DIST_TO_CENTRE_MIN]
 
         if len(filtered) < 3:

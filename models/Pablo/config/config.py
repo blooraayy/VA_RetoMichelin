@@ -61,7 +61,7 @@ STRIP_MIN_AREA_FRAC   = 0.02
 
 CUT_MIN_AREA_FRAC_OF_STRIP = 0.002
 CUT_MAX_AREA_FRAC_OF_STRIP = 0.12
-CUT_MIN_ASPECT_RATIO       = 8.0
+CUT_MIN_ASPECT_RATIO       = 4.0
 
 # Real cut gaps expose the white table at their core. Below this 90th
 # percentile of grayscale intensity (0–255) the detection is treated as

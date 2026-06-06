@@ -151,6 +151,14 @@ class GroundedSAMModel:
         strip_detections = strip_detections[:STRIP_MAX_DETECTIONS]
         print(f"[Stage 1] STRIP raw={len(strip_boxes_raw)}  kept={len(strip_detections)}")
 
+        # Intensity fallback: when DINO finds no strips use row/col projection to
+        # locate dark rubber blobs directly.  Covers horizontal-strip images where
+        # DINO confidence is low.
+        if len(strip_detections) == 0:
+            strip_detections = self._intensity_strip_fallback(image_bgr, img_area, H, W)
+            if strip_detections:
+                print(f"[Stage 1] Intensity fallback → {len(strip_detections)} strip(s)")
+
         # Decide whether Stage 2 should be run on a 90°-CW rotated ROI.
         # Strips placed side-by-side (centres separated horizontally, e.g. M35,
         # M44) systematically fail; rotating the ROI puts them in the same
@@ -193,10 +201,10 @@ class GroundedSAMModel:
                     edge_detections.append(cut)
                     edge_sample_points.append(self._extract_cut_gap_borders(cut.mask, n_points=NUM_SAMPLE_POINTS))
 
-        # Third pass — classical gradient fallback for strips still missing a cut,
-        # only when DINO already found at least one anchor cut (ensures no-cut
-        # images stay at 0 detections).
-        if any(strip_had_cut) and len(edge_detections) < min(len(strip_detections), 2):
+        # Third pass — classical gradient fallback for any strip that still has no cut.
+        # Previously gated on DINO finding at least one anchor cut; removed because
+        # new competition images have barely-visible cuts that DINO misses entirely.
+        if len(strip_detections) > 0 and len(edge_detections) < min(len(strip_detections), 2):
             classical_dets, classical_pts = self._conditioned_classical_fallback(
                 image_bgr=image_bgr,
                 strip_detections=strip_detections,
@@ -866,6 +874,87 @@ class GroundedSAMModel:
             filtered_points.append(self._extract_cut_gap_borders(mask))
 
         return filtered_edges, filtered_points
+
+    def _intensity_strip_fallback(
+        self,
+        image_bgr: np.ndarray,
+        img_area:  float,
+        H:         int,
+        W:         int,
+    ) -> list[DetectionResult]:
+        """Find rubber strips via row/column intensity projection.
+
+        Works when DINO fails to detect horizontal (or vertical) strips by
+        finding connected dark-pixel bands along the image's long axis.
+        """
+        gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
+        dark = (gray < 80).astype(np.uint8)
+
+        def _find_strips_from_projection(axis: int) -> list[DetectionResult]:
+            projection = dark.sum(axis=axis)  # sum along rows (axis=1→cols) or cols (axis=0→rows)
+            size_perp = dark.shape[1 - axis]  # width for row-proj, height for col-proj
+
+            # A "strip line" has at least 8% of perpendicular size as dark pixels
+            thresh = 0.08 * size_perp
+            is_strip_line = projection >= thresh
+
+            ranges: list[tuple[int, int]] = []
+            in_strip = False
+            for i, flag in enumerate(is_strip_line):
+                if flag and not in_strip:
+                    start = i
+                    in_strip = True
+                elif not flag and in_strip:
+                    ranges.append((start, i - 1))
+                    in_strip = False
+            if in_strip:
+                ranges.append((start, len(is_strip_line) - 1))
+
+            # Filter: strip must span at least 5% of the full dimension
+            min_span = 0.05 * len(is_strip_line)
+            ranges = [(a, b) for a, b in ranges if (b - a) >= min_span]
+
+            # Sort by span descending, keep top 2
+            ranges.sort(key=lambda r: r[1] - r[0], reverse=True)
+            ranges = ranges[:STRIP_MAX_DETECTIONS]
+
+            results = []
+            for a, b in ranges:
+                if axis == 1:   # row projection → Y ranges
+                    slab = dark[a:b + 1, :]
+                    col_any = slab.sum(axis=0)
+                    xs = np.where(col_any > 0)[0]
+                    if len(xs) == 0:
+                        continue
+                    x1, x2, y1, y2 = int(xs.min()), int(xs.max()), a, b
+                else:           # col projection → X ranges
+                    slab = dark[:, a:b + 1]
+                    row_any = slab.sum(axis=1)
+                    ys = np.where(row_any > 0)[0]
+                    if len(ys) == 0:
+                        continue
+                    y1, y2, x1, x2 = int(ys.min()), int(ys.max()), a, b
+
+                area_frac = float((x2 - x1) * (y2 - y1)) / img_area
+                if not (STRIP_MIN_AREA_FRAC <= area_frac <= STRIP_MAX_AREA_FRAC):
+                    continue
+
+                box = np.array([x1, y1, x2, y2], dtype=np.float32)
+                mask = np.zeros((H, W), dtype=bool)
+                mask[y1:y2 + 1, x1:x2 + 1] = dark[y1:y2 + 1, x1:x2 + 1].astype(bool)
+                results.append(DetectionResult(
+                    label="strip_intensity",
+                    score=0.30,
+                    box_xyxy=box,
+                    mask=mask,
+                ))
+            return results
+
+        # Try horizontal strips first (row projection), then vertical
+        strips = _find_strips_from_projection(axis=1)
+        if len(strips) < 2:
+            strips = _find_strips_from_projection(axis=0)
+        return strips
 
     @staticmethod
     def _deduplicate_edges(
