@@ -100,7 +100,7 @@ comparar numéricamente contra su ground truth.
 
 ---
 
-## Corrección Reto 2 — origen de medidas (commit posterior)
+## Corrección Reto 2 — origen de medidas (commit `8ecd0dc`)
 
 ### Archivo modificado: `model/reto_measurements.py`
 
@@ -130,3 +130,17 @@ También se eliminaron las variables `top_y_a` y `top_y_b` que ya no se usan.
 | **SA2** | Misma distancia incluyendo el chaflán del corte. En vista cenital SA2 ≈ SA1. Valor negativo si el borde inferior queda bajo el superior (solape). |
 | **YSA** | Distancia global en Y (desde el borde de la mesa, Y=0) al borde superior del corte. Valor único, repetido en las 10 filas. Es también el origen (Y=0) de las divisiones. |
 | **SB1/SB2/YSB** | Equivalentes para Banda B. |
+
+---
+
+## Carpeta de competición (commit `765f072`)
+
+### Archivo nuevo: `competition_images/`
+
+Carpeta vacía creada para depositar las 3 fotos el día 10 de junio.
+Contiene un `.gitignore` que evita que las fotos entren en el repositorio.
+
+### Archivo modificado: `prompts.md`
+
+El flujo del día de competición actualizado para usar `--folder competition_images/`
+en lugar de pasar las rutas de las fotos una a una.

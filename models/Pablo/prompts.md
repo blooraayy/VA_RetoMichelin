@@ -103,6 +103,9 @@ automáticamente de HuggingFace la primera vez.
 ## Git — commits relevantes de la sesion
 
 ```
+765f072  chore: add competition_images/ folder and update prompts.md
+8ecd0dc  fix(reto2): use top of cut zone (ysa) as measurement origin, not top of strip
+f1010e3  docs: add changes.md and prompts.md
 e883651  feat(phase2): robust strip+cut detection for new competition images
 7f0ac52  fix(xlsx_writer): match exact Michelin PDF table format
 d1f3033  Formato Michelin nuevas_normas: xlsx, mediciones Reto1/2, homografia BR
