@@ -6,9 +6,7 @@ Todos los comandos se ejecutan desde `models/Pablo/`.
 
 ## Dia de competicion (10 de junio, 9:15)
 
-### Paso 1 — Pon las 3 imágenes descargadas de Agora en una carpeta
-
-Crea una carpeta (p.ej. `competition_images/`) y copia las 3 fotos dentro:
+### Paso 1 — Descarga las 3 imágenes de Agora y ponlas en esta carpeta
 
 ```
 models/Pablo/competition_images/
@@ -20,31 +18,25 @@ models/Pablo/competition_images/
 ### Paso 2 — Ejecuta el script principal
 
 ```bash
-python reto_challenge.py --images competition_images/foto1.jpg competition_images/foto2.jpg competition_images/foto3.jpg
+python reto_challenge.py --folder competition_images/ --no-show
 ```
 
-Esto genera `reto_results.xlsx` en la misma carpeta (`models/Pablo/`).
-
-**Opciones útiles:**
-
-```bash
-# Especificar ruta de salida del xlsx
-python reto_challenge.py --images foto1.jpg foto2.jpg foto3.jpg --output mi_resultado.xlsx
-
-# Procesar toda una carpeta de imágenes
-python reto_challenge.py --folder competition_images/
-
-# Ejecutar en CPU (si no hay GPU disponible)
-python reto_challenge.py --images foto1.jpg --device cpu
-
-# Sin ventanas de visualización (útil en servidor/headless)
-python reto_challenge.py --images foto1.jpg foto2.jpg foto3.jpg --no-show
-
-# Sin guardar imágenes anotadas (solo el xlsx)
-python reto_challenge.py --images foto1.jpg foto2.jpg foto3.jpg --no-show --no-save
-```
+Esto genera `reto_results.xlsx` en `models/Pablo/`. Súbelo a Agora.
 
 **Tiempo estimado:** ~5–15 min en GPU (CUDA), ~30–60 min en CPU.
+
+**Opciones adicionales:**
+
+```bash
+# Especificar nombre del xlsx de salida
+python reto_challenge.py --folder competition_images/ --no-show --output resultado_final.xlsx
+
+# Ejecutar en CPU (si no hay GPU disponible)
+python reto_challenge.py --folder competition_images/ --no-show --device cpu
+
+# Guardar también las imágenes anotadas (para revisar detecciones)
+python reto_challenge.py --folder competition_images/
+```
 
 ---
 
