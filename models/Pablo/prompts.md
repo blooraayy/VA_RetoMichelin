@@ -40,6 +40,37 @@ python reto_challenge.py --folder competition_images/
 
 ---
 
+## Proceso batch — todas las imágenes (data/images/ + new_images/Pos*/)
+
+Procesa en un solo paso todas las imágenes del dataset original **y** las nuevas.
+Genera visualizaciones Reto 2 (`*_reto.png`) + tabla xlsx de resultados.
+
+```bash
+python run_all.py --no-show
+```
+
+Con CPU:
+
+```bash
+python run_all.py --device cpu --no-show
+```
+
+Opciones adicionales:
+
+```bash
+# Especificar carpeta de salida y xlsx
+python run_all.py --no-show --output-dir data/outputs/run_all --xlsx run_all_results.xlsx
+
+# Sin guardar imágenes anotadas (solo xlsx)
+python run_all.py --no-show --no-save
+```
+
+Salida:
+- `data/outputs/run_all/` — imágenes `*_detection.png`, `*_measurement.png`, `*_reto.png`
+- `run_all_results.xlsx` — tabla Reto 1 / Reto 2 de todas las imágenes
+
+---
+
 ## Inferencia sobre new_images/ (exploración, sin ground truth)
 
 Procesa todas las imágenes de las carpetas `Pos1/`, `Pos2/`, etc. y guarda
@@ -103,6 +134,8 @@ automáticamente de HuggingFace la primera vez.
 ## Git — commits relevantes de la sesion
 
 ```
+e68adf3  feat: add render_reto visualisation and run_all batch processor
+2d33fa4  docs: sync changes.md and prompts.md with latest commits
 765f072  chore: add competition_images/ folder and update prompts.md
 8ecd0dc  fix(reto2): use top of cut zone (ysa) as measurement origin, not top of strip
 f1010e3  docs: add changes.md and prompts.md

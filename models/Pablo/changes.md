@@ -4,7 +4,8 @@
 
 Se han implementado dos fases de mejora sobre el pipeline original para adaptarlo
 al formato exigido por `nuevas_normas.pdf` (junio 2026) y para que funcione con
-las nuevas imágenes del dataset, más una corrección al origen de las medidas Reto 2.
+las nuevas imágenes del dataset, más una corrección al origen de las medidas Reto 2,
+más visualización Reto 2 completa y script de proceso en batch.
 
 ---
 
@@ -144,3 +145,20 @@ Contiene un `.gitignore` que evita que las fotos entren en el repositorio.
 
 El flujo del día de competición actualizado para usar `--folder competition_images/`
 en lugar de pasar las rutas de las fotos una a una.
+
+---
+
+## Phase 3 — Visualización Reto 2 + batch run_all (commit `e68adf3`)
+
+### Archivos nuevos
+
+| Archivo | Descripción |
+|---|---|
+| `run_all.py` | Script de proceso en batch. Recoge imágenes de `data/images/` (flat) y de `new_images/Pos*/` (recursive, saltando `outputs/`), carga los modelos una vez y ejecuta el pipeline completo en cada imagen. Escribe `run_all_results.xlsx` y un resumen de estadísticas. CLI: `--output-dir`, `--xlsx`, `--device`, `--no-show`, `--no-save`. |
+
+### Archivos modificados
+
+| Archivo | Cambio |
+|---|---|
+| `view/visualiser.py` | Nuevo método `render_reto()`: superpone máscaras de Banda A (naranja, α=0.28) y Banda B (teal), máscaras de corte Cut A (rojo, α=0.5) y Cut B (verde), cajas QR, y llama a `_draw_reto2_visuals()`. Guarda como `<base>_reto.png`. Nuevo método `_draw_reto2_visuals()`: dibuja flecha YSA/YSB desde el borde de la mesa hasta el top del corte; traza las 10 líneas horizontales de medida a los offsets Y especificados; para cada línea dibuja en blanco el segmento SA1/SB1 (ancho del gap) con marcas en los extremos; anota el offset Y y el valor. Colores: YELLOW=(0,220,220) para Banda A, CYAN=(200,200,0) para Banda B. |
+| `reto_challenge.py` | `_process_image()` llama a `visualiser.render_reto()` tras el `render()` existente, generando una tercera imagen de salida `*_reto.png` por imagen procesada. |
