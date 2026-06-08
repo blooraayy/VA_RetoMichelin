@@ -771,54 +771,69 @@ class Visualiser:
         qr_calibrator,
         base_name: str = "result",
     ) -> np.ndarray:
-        """Draw strip masks, cut masks, QR detections, and Reto 2 measurement
-        lines on a single canvas, then save/show it."""
+        """Draw SAM segmentation masks, bounding boxes, cut overlays, QR markers
+        and Reto 2 measurement lines matching the nuevas_normas reference style."""
         canvas = image_bgr.copy()
         H_img, W = canvas.shape[:2]
 
-        # ── Band masks — very light fill + solid outline ──────────────────────
-        COLOR_BAND_A = (0, 180, 255)    # BGR orange
-        COLOR_BAND_B = (200, 160, 0)    # BGR teal
-        ALPHA_BAND   = 0.12             # light fill so rubber texture shows
+        # Colors (BGR)
+        COLOR_BAND_A = (0, 220, 220)    # yellow
+        COLOR_BAND_B = (200, 200, 0)    # cyan
+        COLOR_CUT    = (50, 50, 220)    # red
+        BLACK        = (0, 0, 0)
 
+        ALPHA_BAND = 0.18   # band SAM mask fill
+        ALPHA_CUT  = 0.42   # cut SAM mask fill
+
+        # ── Band SAM mask overlay ─────────────────────────────────────────────
+        band_overlay = canvas.copy()
+        for det, color in [(band_a, COLOR_BAND_A), (band_b, COLOR_BAND_B)]:
+            if det is not None and det.mask is not None:
+                band_overlay[det.mask] = color
+        cv2.addWeighted(band_overlay, ALPHA_BAND, canvas, 1 - ALPHA_BAND, 0, canvas)
+
+        # ── Band bounding boxes + labels ──────────────────────────────────────
         for det, color, label in [
             (band_a, COLOR_BAND_A, "Banda A"),
             (band_b, COLOR_BAND_B, "Banda B"),
         ]:
             if det is None:
                 continue
-            if det.mask is not None:
-                overlay = canvas.copy()
-                overlay[det.mask] = color
-                cv2.addWeighted(overlay, ALPHA_BAND, canvas, 1.0 - ALPHA_BAND,
-                                0, canvas)
             x1, y1, x2, y2 = det.box_xyxy.astype(int)
             cv2.rectangle(canvas, (x1, y1), (x2, y2), color, 2)
             (lw, lh), _ = cv2.getTextSize(
-                label, cv2.FONT_HERSHEY_SIMPLEX, 0.55, 2)
+                label, cv2.FONT_HERSHEY_SIMPLEX, 0.50, 2)
             tx = max(0, min(x1 + 4, W - lw - 4))
             ty = max(lh + 4, y1 + lh + 4)
+            cv2.putText(canvas, label, (tx + 1, ty + 1),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.50, BLACK, 2, cv2.LINE_AA)
             cv2.putText(canvas, label, (tx, ty),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.55, color, 2, cv2.LINE_AA)
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.50, color, 1, cv2.LINE_AA)
 
-        # ── Cut masks — more opaque so the cut zone is clear ──────────────────
-        COLOR_CUT_A = (40, 40, 220)     # BGR red
-        COLOR_CUT_B = (40, 180, 40)     # BGR green
-        ALPHA_CUT   = 0.45
+        # ── Cut SAM mask overlay ──────────────────────────────────────────────
+        cut_overlay = canvas.copy()
+        for det in [cut_a, cut_b]:
+            if det is not None and det.mask is not None:
+                cut_overlay[det.mask] = COLOR_CUT
+        cv2.addWeighted(cut_overlay, ALPHA_CUT, canvas, 1 - ALPHA_CUT, 0, canvas)
 
-        for det, color, label in [
-            (cut_a, COLOR_CUT_A, "Cut A"),
-            (cut_b, COLOR_CUT_B, "Cut B"),
+        # ── Cut bounding boxes + labels ───────────────────────────────────────
+        for det, band_det, label in [
+            (cut_a, band_a, "Corte A"),
+            (cut_b, band_b, "Corte B"),
         ]:
             if det is None:
                 continue
-            if det.mask is not None:
-                overlay = canvas.copy()
-                overlay[det.mask] = color
-                cv2.addWeighted(overlay, ALPHA_CUT, canvas, 1.0 - ALPHA_CUT,
-                                0, canvas)
             x1, y1, x2, y2 = det.box_xyxy.astype(int)
-            cv2.rectangle(canvas, (x1, y1), (x2, y2), color, 1)
+            cv2.rectangle(canvas, (x1, y1), (x2, y2), COLOR_CUT, 2)
+            (lw, lh), _ = cv2.getTextSize(
+                label, cv2.FONT_HERSHEY_SIMPLEX, 0.40, 1)
+            tx = max(0, min(x1 + 2, W - lw - 4))
+            ty = max(lh + 2, y1 - 4)
+            cv2.putText(canvas, label, (tx + 1, ty + 1),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.40, BLACK, 2, cv2.LINE_AA)
+            cv2.putText(canvas, label, (tx, ty),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.40, COLOR_CUT, 1, cv2.LINE_AA)
 
         # ── QR detections ─────────────────────────────────────────────────────
         self._draw_qr_detections(canvas, pipeline_res)
@@ -855,48 +870,47 @@ class Visualiser:
         H_img: int,
         W: int,
     ) -> None:
-        """Draw 10 horizontal measurement lines, YSA/YSB arrows, and SA1 segments.
+        """Draw 10 measurement lines, SA1 segments and reference spine.
 
-        Design goals (matching nuevas_normas reference image):
-        - Lines span the FULL width of the band bounding box.
-        - Origin "(0)" label drawn at YSA/YSB position.
-        - SA1 white segment with tick marks at each measurement line.
-        - Minimal text clutter; annotations at the right edge only.
-        Colors:
-          Band A → YELLOW = (0, 220, 220)
-          Band B → CYAN   = (200, 200, 0)
-          SA1 segments → WHITE = (255, 255, 255)
+        Visual design:
+        - Brown vertical spine from table (Y=0) to last measurement (YSA+235mm),
+          at the X centre of the cut.  Tick marks every 25 mm from cut top.
+        - (0) circle at cut top + YSA label.
+        - 10 thin horizontal lines across the full band width (context grid).
+        - White SA1 segment with circles at actual gap edges A and B.
+        - A/B labels on line 1; SA1 value on lines 1, 5, 10.
         """
         YELLOW = (0, 220, 220)
         CYAN   = (200, 200, 0)
         WHITE  = (255, 255, 255)
         BLACK  = (0, 0, 0)
+        BROWN  = (19, 69, 139)
+
+        ANNOTATE_AT = {0, 4, 9}
 
         first = reto2_rows[0]
         ysa_val = getattr(first, "YSA", None)
         ysb_val = getattr(first, "YSB", None)
 
         bands = [
-            (band_a, cut_a, ysa_val, YELLOW, "SA1", "YSA"),
-            (band_b, cut_b, ysb_val, CYAN,   "SB1", "YSB"),
+            (band_a, cut_a, ysa_val, YELLOW, "SA1", "YSA", "SA1_xa_mm", "SA1_xb_mm"),
+            (band_b, cut_b, ysb_val, CYAN,   "SB1", "YSB", "SB1_xa_mm", "SB1_xb_mm"),
         ]
 
-        for band_det, cut_det, ys_val, col, sa1_key, ys_key in bands:
+        for band_det, cut_det, ys_val, col, sa1_key, ys_key, xa_key, xb_key in bands:
             if band_det is None or ys_val is None:
                 continue
 
-            # ── Full band X range from bounding box ───────────────────────────
+            # ── Band X range from bounding box ────────────────────────────────
             bx1, by1, bx2, by2 = band_det.box_xyxy
             corners_px = np.array([
                 [bx1, by1], [bx2, by1], [bx1, by2], [bx2, by2],
             ], dtype=np.float32)
             corners_mm = qr_calibrator.pixels_to_mm_bulk(corners_px, homography)
-            # Use slight inset so lines stay inside the box
             x_lo = float(corners_mm[:, 0].min()) + 5.0
             x_hi = float(corners_mm[:, 0].max()) - 5.0
-            x_cx = (x_lo + x_hi) / 2.0
 
-            # ── Cut centre in mm (for SA1 segment placement) ──────────────────
+            # ── Cut centre X in mm ─────────────────────────────────────────────
             cut_cx_mm = None
             if cut_det is not None:
                 cut_cx_px = float((cut_det.box_xyxy[0] + cut_det.box_xyxy[2]) / 2.0)
@@ -906,53 +920,63 @@ class Visualiser:
                 )
                 cut_cx_mm = float(cut_pts_mm[0, 0])
 
-            # ── Origin marker and YSA/YSB arrow ──────────────────────────────
-            # Arrow from table edge (Y=0 in mm) to cut top (Y=ys_val)
-            arrow_pts_mm = np.array(
-                [[x_cx, 0.0], [x_cx, ys_val]], dtype=np.float32
+            # Determine spine X: prefer cut centre, else band midpoint
+            if cut_cx_mm is not None:
+                ref_x_mm = cut_cx_mm
+            else:
+                # Try to use actual gap edges from first row
+                first_row = reto2_rows[0]
+                xa0 = getattr(first_row, xa_key, None)
+                xb0 = getattr(first_row, xb_key, None)
+                if xa0 is not None and xb0 is not None:
+                    ref_x_mm = (xa0 + xb0) / 2.0
+                else:
+                    ref_x_mm = (x_lo + x_hi) / 2.0
+
+            # ── Vertical reference spine: Y=0 → Y=ys_val+235 ─────────────────
+            spine_end_mm = ys_val + 235.0
+            spine_pts_mm = np.array(
+                [[ref_x_mm, 0.0], [ref_x_mm, spine_end_mm]], dtype=np.float32
             )
-            arrow_pts_px = qr_calibrator.mm_to_pixels_bulk(arrow_pts_mm, homography)
-            p_table = (int(round(float(arrow_pts_px[0, 0]))),
-                       int(round(float(arrow_pts_px[0, 1]))))
-            p_cut   = (int(round(float(arrow_pts_px[1, 0]))),
-                       int(round(float(arrow_pts_px[1, 1]))))
+            spine_pts_px = qr_calibrator.mm_to_pixels_bulk(spine_pts_mm, homography)
+            p_table  = (int(round(float(spine_pts_px[0, 0]))),
+                        int(round(float(spine_pts_px[0, 1]))))
+            p_bottom = (int(round(float(spine_pts_px[1, 0]))),
+                        int(round(float(spine_pts_px[1, 1]))))
+            if 0 <= p_table[1] < H_img:
+                cv2.line(canvas, p_table, p_bottom, BROWN, 1)
 
-            arrow_in_frame = (0 <= p_table[1] < H_img and 0 <= p_cut[1] < H_img)
-            if arrow_in_frame:
-                cv2.arrowedLine(canvas, p_cut, p_table, col, 2, tipLength=0.04)
-                mid_x = (p_table[0] + p_cut[0]) // 2
-                mid_y = (p_table[1] + p_cut[1]) // 2
-                arrow_label = f"{ys_key}={ys_val:.1f}mm"
-                # Draw with black shadow for readability
-                for dx, dy in [(-1, -1), (1, 1)]:
-                    cv2.putText(canvas, arrow_label,
-                                (min(max(mid_x + 4 + dx, 0), W - 1),
-                                 min(max(mid_y - 4 + dy, 10), H_img - 1)),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.38, BLACK, 2, cv2.LINE_AA)
-                cv2.putText(canvas, arrow_label,
-                            (min(max(mid_x + 4, 0), W - 1),
-                             min(max(mid_y - 4, 10), H_img - 1)),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.38, col, 1, cv2.LINE_AA)
-
-            # Draw origin "(0)" marker at the cut top position (YSA)
-            if 0 <= p_cut[1] < H_img:
-                cv2.circle(canvas, p_cut, 5, col, -1)
-                for dx, dy in [(-1, -1), (1, 1)]:
-                    cv2.putText(canvas, "(0)",
-                                (min(max(p_cut[0] + 6 + dx, 0), W - 1),
-                                 min(max(p_cut[1] + 5 + dy, 10), H_img - 1)),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.4, BLACK, 2, cv2.LINE_AA)
+            # ── (0) marker at cut top ─────────────────────────────────────────
+            origin_pts_mm = np.array([[ref_x_mm, ys_val]], dtype=np.float32)
+            origin_pts_px = qr_calibrator.mm_to_pixels_bulk(origin_pts_mm, homography)
+            p_origin = (int(round(float(origin_pts_px[0, 0]))),
+                        int(round(float(origin_pts_px[0, 1]))))
+            if 0 <= p_origin[1] < H_img:
+                cv2.circle(canvas, p_origin, 6, BROWN, -1)
+                cv2.circle(canvas, p_origin, 6, BLACK, 1)
+                lx = min(max(p_origin[0] + 9, 0), W - 1)
+                ly = min(max(p_origin[1] + 5, 10), H_img - 1)
                 cv2.putText(canvas, "(0)",
-                            (min(max(p_cut[0] + 6, 0), W - 1),
-                             min(max(p_cut[1] + 5, 10), H_img - 1)),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.4, col, 1, cv2.LINE_AA)
+                            (lx + 1, ly + 1), cv2.FONT_HERSHEY_SIMPLEX,
+                            0.42, BLACK, 2, cv2.LINE_AA)
+                cv2.putText(canvas, "(0)",
+                            (lx, ly), cv2.FONT_HERSHEY_SIMPLEX,
+                            0.42, BROWN, 1, cv2.LINE_AA)
+                ys_label = f"{ys_key}={ys_val:.1f}mm"
+                ly2 = min(ly + 16, H_img - 1)
+                cv2.putText(canvas, ys_label, (lx + 1, ly2 + 1),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.35, BLACK, 2, cv2.LINE_AA)
+                cv2.putText(canvas, ys_label, (lx, ly2),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.35, BROWN, 1, cv2.LINE_AA)
 
-            # ── 10 horizontal measurement lines ───────────────────────────────
+            # ── 10 measurement lines ──────────────────────────────────────────
             for line_num, row in enumerate(reto2_rows):
                 y_mm    = ys_val + row.y_offset_mm
                 sa1_val = getattr(row, sa1_key, None)
+                xa_val  = getattr(row, xa_key,  None)
+                xb_val  = getattr(row, xb_key,  None)
 
-                # Convert full-width endpoints from mm to px
+                # Thin full-band horizontal line (context)
                 line_pts_mm = np.array(
                     [[x_lo, y_mm], [x_hi, y_mm]], dtype=np.float32
                 )
@@ -961,54 +985,77 @@ class Visualiser:
                       int(round(float(line_pts_px[0, 1]))))
                 p2 = (int(round(float(line_pts_px[1, 0]))),
                       int(round(float(line_pts_px[1, 1]))))
-
                 if not (0 <= p1[1] < H_img and 0 <= p2[1] < H_img):
                     continue
+                cv2.line(canvas, p1, p2, col, 1)
 
-                # Draw the full-width horizontal line (2px)
-                cv2.line(canvas, p1, p2, col, 2)
+                # Y-offset label in white at the left end of the line
+                num_txt = str(int(row.y_offset_mm))
+                nx = max(0, p1[0] + 4)
+                ny = max(10, p1[1] - 3)
+                cv2.putText(canvas, num_txt, (nx + 1, ny + 1),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.28, (0, 0, 0), 2, cv2.LINE_AA)
+                cv2.putText(canvas, num_txt, (nx, ny),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.28, WHITE, 1, cv2.LINE_AA)
 
-                # Small vertical tick at the left edge
-                cv2.line(canvas,
-                         (p1[0], max(0, p1[1] - 3)),
-                         (p1[0], min(H_img - 1, p1[1] + 3)),
-                         col, 2)
+                # Tick mark on the vertical spine (±5mm)
+                tick_pts_mm = np.array(
+                    [[ref_x_mm - 5.0, y_mm], [ref_x_mm + 5.0, y_mm]], dtype=np.float32
+                )
+                tick_pts_px = qr_calibrator.mm_to_pixels_bulk(tick_pts_mm, homography)
+                t1 = (int(round(float(tick_pts_px[0, 0]))),
+                      int(round(float(tick_pts_px[0, 1]))))
+                t2 = (int(round(float(tick_pts_px[1, 0]))),
+                      int(round(float(tick_pts_px[1, 1]))))
+                cv2.line(canvas, t1, t2, BROWN, 2)
 
-                # ── SA1 white segment at cut centre ───────────────────────────
-                if (sa1_val is not None and sa1_val > 0.5
-                        and cut_cx_mm is not None):
-                    half = sa1_val / 2.0
-                    gap_pts_mm = np.array([
-                        [cut_cx_mm - half, y_mm],
-                        [cut_cx_mm + half, y_mm],
-                    ], dtype=np.float32)
-                    gap_pts_px = qr_calibrator.mm_to_pixels_bulk(
-                        gap_pts_mm, homography
-                    )
-                    gp1 = (int(round(float(gap_pts_px[0, 0]))),
-                           int(round(float(gap_pts_px[0, 1]))))
-                    gp2 = (int(round(float(gap_pts_px[1, 0]))),
-                           int(round(float(gap_pts_px[1, 1]))))
-                    cv2.line(canvas, gp1, gp2, WHITE, 3)
-                    for gp in (gp1, gp2):
-                        tx_c = min(max(gp[0], 0), W - 1)
-                        cv2.line(canvas, (tx_c, min(max(gp[1] - 3, 0), H_img - 1)),
-                                 (tx_c, min(max(gp[1] + 3, 0), H_img - 1)), WHITE, 2)
+                # SA1 segment: use actual gap edges, fallback to symmetric
+                if sa1_val is not None and sa1_val > 0.5:
+                    if xa_val is not None and xb_val is not None:
+                        gap_pts_mm = np.array(
+                            [[xa_val, y_mm], [xb_val, y_mm]], dtype=np.float32
+                        )
+                    elif cut_cx_mm is not None:
+                        half = sa1_val / 2.0
+                        gap_pts_mm = np.array(
+                            [[cut_cx_mm - half, y_mm], [cut_cx_mm + half, y_mm]],
+                            dtype=np.float32
+                        )
+                    else:
+                        gap_pts_mm = None
 
-                # ── Right-side annotation: line number + SA1 value ────────────
-                ann_x = min(max(p2[0] + 5, 0), W - 1)
-                ann_y = min(max(p2[1] + 4, 10), H_img - 1)
+                    if gap_pts_mm is not None:
+                        gap_pts_px = qr_calibrator.mm_to_pixels_bulk(
+                            gap_pts_mm, homography
+                        )
+                        gp1 = (int(round(float(gap_pts_px[0, 0]))),
+                               int(round(float(gap_pts_px[0, 1]))))
+                        gp2 = (int(round(float(gap_pts_px[1, 0]))),
+                               int(round(float(gap_pts_px[1, 1]))))
+                        cv2.line(canvas, gp1, gp2, WHITE, 2)
+                        cv2.circle(canvas, gp1, 5, WHITE, -1)
+                        cv2.circle(canvas, gp1, 5, BLACK, 1)
+                        cv2.circle(canvas, gp2, 5, WHITE, -1)
+                        cv2.circle(canvas, gp2, 5, BLACK, 1)
+                        if line_num == 0:
+                            cv2.putText(canvas, "A",
+                                        (max(0, gp1[0] - 12), max(10, gp1[1] - 6)),
+                                        cv2.FONT_HERSHEY_SIMPLEX, 0.40, WHITE, 2, cv2.LINE_AA)
+                            cv2.putText(canvas, "B",
+                                        (min(W - 12, gp2[0] + 4), max(10, gp2[1] - 6)),
+                                        cv2.FONT_HERSHEY_SIMPLEX, 0.40, WHITE, 2, cv2.LINE_AA)
+
+                # SA1 value annotation at lines 1, 5, 10 (right side)
+                if line_num not in ANNOTATE_AT:
+                    continue
                 if sa1_val is not None:
-                    txt = f"{line_num + 1}. {sa1_key}={sa1_val:.1f}"
-                else:
-                    txt = f"{line_num + 1}."
-                for dx, dy in [(-1, -1), (1, 1)]:
-                    cv2.putText(canvas, txt,
-                                (min(max(ann_x + dx, 0), W - 1),
-                                 min(max(ann_y + dy, 10), H_img - 1)),
+                    txt = f"{sa1_key}={sa1_val:.1f}"
+                    ann_x = min(max(p2[0] + 5, 0), W - 120)
+                    ann_y = min(max(p2[1] + 4, 10), H_img - 1)
+                    cv2.putText(canvas, txt, (ann_x + 1, ann_y + 1),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.30, BLACK, 2, cv2.LINE_AA)
-                cv2.putText(canvas, txt, (ann_x, ann_y),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.30, col, 1, cv2.LINE_AA)
+                    cv2.putText(canvas, txt, (ann_x, ann_y),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.30, WHITE, 1, cv2.LINE_AA)
 
     @staticmethod
     def _show_image(canvas: np.ndarray, title: str) -> None:

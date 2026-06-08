@@ -149,6 +149,11 @@ class GroundedSAMModel:
         )
         strip_detections = self._segment_boxes(strip_boxes, strip_scores, "strip", H, W)
         strip_detections = strip_detections[:STRIP_MAX_DETECTIONS]
+        # Expand partial strip masks to recover the other half of diagonally-cut bands
+        if len(strip_detections) > 0:
+            strip_detections = self._expand_strip_masks(
+                strip_detections, image_bgr, img_area, H, W
+            )
         print(f"[Stage 1] STRIP raw={len(strip_boxes_raw)}  kept={len(strip_detections)}")
 
         # Intensity fallback: when DINO finds no strips use row/col projection to
@@ -231,10 +236,37 @@ class GroundedSAMModel:
             edge_detections.extend(valley_dets)
             edge_sample_points.extend(valley_pts)
 
+        # Fifth pass — bright-gap fallback for cuts that expose the (white or
+        # grey) table background: the gap column/row is BRIGHTER than the rubber
+        # on either side.  Catches faint but real cuts missed by the gradient
+        # pass because rubber texture raises the overall gradient standard deviation.
+        if len(strip_detections) > 0 and len(edge_detections) < min(len(strip_detections), 2):
+            bright_dets, bright_pts = self._bright_gap_fallback(
+                image_bgr=image_bgr,
+                strip_detections=strip_detections,
+                H=H,
+                W=W,
+                max_new=2 - len(edge_detections),
+                existing_edges=edge_detections,
+            )
+            edge_detections.extend(bright_dets)
+            edge_sample_points.extend(bright_pts)
+
         if len(edge_detections) > 1:
             edge_detections, edge_sample_points = self._deduplicate_edges(
                 edge_detections, edge_sample_points
             )
+
+        # Refine all cut masks to follow the actual diagonal of the gap
+        refined_dets = []
+        refined_pts  = []
+        for det, pts in zip(edge_detections, edge_sample_points):
+            det = self._refine_cut_mask_robust(image_bgr, det, H, W)
+            pts = self._extract_cut_gap_borders(det.mask)
+            refined_dets.append(det)
+            refined_pts.append(pts)
+        edge_detections    = refined_dets
+        edge_sample_points = refined_pts
 
         print(f"[Stage 2] CUT detected={len(edge_detections)}")
 
@@ -823,7 +855,9 @@ class GroundedSAMModel:
             local = profile.copy()
             local[~valid] = 0
             peak = float(local.max())
-            if peak < max(5.0, float(profile.mean() + 1.0 * profile.std())):
+            # Lowered from max(5.0, mean+1.0σ) → max(3.5, mean+0.8σ) so that
+            # faint cuts (e.g. Pos7 Band A) are recovered by the gradient pass.
+            if peak < max(3.5, float(profile.mean() + 0.8 * profile.std())):
                 continue
             idx = int(np.argmax(local))
             coord = float(coords[idx])
@@ -909,23 +943,31 @@ class GroundedSAMModel:
 
         Works when DINO fails to detect horizontal (or vertical) strips by
         finding connected dark-pixel bands along the image's long axis.
+
+        Uses CLAHE-equalised grayscale so that low-contrast scenes (e.g. dark
+        rubber on a dark metallic table) produce a reliable dark-pixel mask.
+        If CLAHE still yields fewer than 2 strips we retry with an adaptive
+        threshold derived from the raw image histogram.
         """
         gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
-        dark = (gray < 95).astype(np.uint8)
 
-        def _find_strips_from_projection(axis: int) -> list[DetectionResult]:
-            projection = dark.sum(axis=axis)  # sum along rows (axis=1→cols) or cols (axis=0→rows)
-            size_perp = dark.shape[1 - axis]  # width for row-proj, height for col-proj
+        # Primary: CLAHE-equalised image → fixed threshold
+        clahe     = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
+        gray_eq   = clahe.apply(gray)
+        dark      = (gray_eq < 95).astype(np.uint8)
 
-            # A "strip line" has at least 8% of perpendicular size as dark pixels
-            thresh = 0.08 * size_perp
+        def _find_strips_from_projection(axis: int, dark_mask: np.ndarray) -> list[DetectionResult]:
+            projection = dark_mask.sum(axis=axis)
+            size_perp  = dark_mask.shape[1 - axis]
+
+            thresh        = 0.08 * size_perp
             is_strip_line = projection >= thresh
 
             ranges: list[tuple[int, int]] = []
             in_strip = False
             for i, flag in enumerate(is_strip_line):
                 if flag and not in_strip:
-                    start = i
+                    start    = i
                     in_strip = True
                 elif not flag and in_strip:
                     ranges.append((start, i - 1))
@@ -933,27 +975,24 @@ class GroundedSAMModel:
             if in_strip:
                 ranges.append((start, len(is_strip_line) - 1))
 
-            # Filter: strip must span at least 5% of the full dimension
             min_span = 0.05 * len(is_strip_line)
-            ranges = [(a, b) for a, b in ranges if (b - a) >= min_span]
-
-            # Sort by span descending, keep top 2
+            ranges   = [(a, b) for a, b in ranges if (b - a) >= min_span]
             ranges.sort(key=lambda r: r[1] - r[0], reverse=True)
             ranges = ranges[:STRIP_MAX_DETECTIONS]
 
             results = []
             for a, b in ranges:
-                if axis == 1:   # row projection → Y ranges
-                    slab = dark[a:b + 1, :]
+                if axis == 1:
+                    slab    = dark_mask[a:b + 1, :]
                     col_any = slab.sum(axis=0)
-                    xs = np.where(col_any > 0)[0]
+                    xs      = np.where(col_any > 0)[0]
                     if len(xs) == 0:
                         continue
                     x1, x2, y1, y2 = int(xs.min()), int(xs.max()), a, b
-                else:           # col projection → X ranges
-                    slab = dark[:, a:b + 1]
+                else:
+                    slab    = dark_mask[:, a:b + 1]
                     row_any = slab.sum(axis=1)
-                    ys = np.where(row_any > 0)[0]
+                    ys      = np.where(row_any > 0)[0]
                     if len(ys) == 0:
                         continue
                     y1, y2, x1, x2 = int(ys.min()), int(ys.max()), a, b
@@ -962,22 +1001,114 @@ class GroundedSAMModel:
                 if not (STRIP_MIN_AREA_FRAC <= area_frac <= STRIP_MAX_AREA_FRAC):
                     continue
 
-                box = np.array([x1, y1, x2, y2], dtype=np.float32)
-                mask = np.zeros((H, W), dtype=bool)
-                mask[y1:y2 + 1, x1:x2 + 1] = dark[y1:y2 + 1, x1:x2 + 1].astype(bool)
+                box          = np.array([x1, y1, x2, y2], dtype=np.float32)
+                mask_out     = np.zeros((H, W), dtype=bool)
+                mask_out[y1:y2 + 1, x1:x2 + 1] = dark_mask[y1:y2 + 1, x1:x2 + 1].astype(bool)
                 results.append(DetectionResult(
                     label="strip_intensity",
                     score=0.30,
                     box_xyxy=box,
-                    mask=mask,
+                    mask=mask_out,
                 ))
             return results
 
-        # Try horizontal strips first (row projection), then vertical
-        strips = _find_strips_from_projection(axis=1)
+        # Primary pass: CLAHE-equalized image → fixed threshold 95
+        strips = _find_strips_from_projection(axis=1, dark_mask=dark)
         if len(strips) < 2:
-            strips = _find_strips_from_projection(axis=0)
+            strips = _find_strips_from_projection(axis=0, dark_mask=dark)
+
+        # Adaptive fallback: if fewer than 2 strips found, retry with a
+        # threshold relative to the raw image's 20th-percentile intensity.
+        # This handles low-contrast scenes (dark rubber on dark metallic table).
+        if len(strips) < 2:
+            p20       = float(np.percentile(gray, 20))
+            p50       = float(np.percentile(gray, 50))
+            adapt_thr = int(min(110, max(70, p20 + 0.35 * (p50 - p20))))
+            dark_adapt = (gray < adapt_thr).astype(np.uint8)
+            strips2 = _find_strips_from_projection(axis=1, dark_mask=dark_adapt)
+            if len(strips2) < 2:
+                strips2 = _find_strips_from_projection(axis=0, dark_mask=dark_adapt)
+            if len(strips2) > len(strips):
+                strips = strips2
+                print(f"[Stage 1] Adaptive strip fallback (thr={adapt_thr}) → {len(strips)} strip(s)")
+
         return strips
+
+    def _expand_strip_masks(
+        self,
+        strip_detections: list,
+        image_bgr: np.ndarray,
+        img_area: float,
+        H: int,
+        W: int,
+    ) -> list:
+        """Expand partial SAM strip masks using the intensity-based full-width mask.
+
+        When DINO+SAM only detects one half of a band (split by a diagonal cut),
+        this method unions the SAM mask with the intensity dark-pixel mask found
+        in the same Y row range, recovering the missing piece.
+        """
+        intensity_strips = self._intensity_strip_fallback(image_bgr, img_area, H, W)
+        if not intensity_strips:
+            return strip_detections
+
+        result = []
+        for det in strip_detections:
+            if det.mask is None or not det.mask.any():
+                result.append(det)
+                continue
+
+            ys, _ = np.where(det.mask)
+            y_min, y_max = int(ys.min()), int(ys.max())
+            y_span = y_max - y_min
+
+            # Find the intensity strip with best Y overlap
+            best_istrip = None
+            best_overlap = 0.0
+            for istrip in intensity_strips:
+                iy1 = float(istrip.box_xyxy[1])
+                iy2 = float(istrip.box_xyxy[3])
+                overlap = max(0.0, min(y_max, iy2) - max(y_min, iy1))
+                if overlap > best_overlap:
+                    best_overlap = overlap
+                    best_istrip  = istrip
+
+            if best_istrip is None or best_overlap < 0.5 * y_span:
+                result.append(det)
+                continue
+
+            if best_istrip.mask is None:
+                result.append(det)
+                continue
+
+            merged = det.mask | best_istrip.mask
+            # Clip merged mask to the SAM band's original Y range so the
+            # expansion only fills missing horizontal sections, never grows
+            # the band taller (avoids including table pixels above/below).
+            merged[:y_min, :] = False
+            merged[y_max + 1:, :] = False
+
+            ys2, xs2 = np.where(merged)
+            if len(xs2) == 0:
+                result.append(det)
+                continue
+
+            new_box = np.array([
+                float(xs2.min()), float(ys2.min()),
+                float(xs2.max()), float(ys2.max()),
+            ], dtype=np.float32)
+
+            result.append(DetectionResult(
+                label=det.label,
+                score=det.score,
+                box_xyxy=new_box,
+                mask=merged,
+            ))
+            print(f"[Stage 1] Expanded strip mask: "
+                  f"x {det.box_xyxy[0]:.0f}-{det.box_xyxy[2]:.0f} → "
+                  f"{new_box[0]:.0f}-{new_box[2]:.0f}")
+
+        return result
 
     def _intensity_valley_fallback(
         self,
@@ -1000,6 +1131,8 @@ class GroundedSAMModel:
         new_dets: list[DetectionResult] = []
         new_pts:  list[np.ndarray]      = []
         existing_edges = existing_edges or []
+
+        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
 
         for strip in strip_detections:
             if len(new_dets) >= max_new:
@@ -1024,53 +1157,61 @@ class GroundedSAMModel:
                 continue
             sw, sh = max(1, sx2 - sx1), max(1, sy2 - sy1)
 
+            # Apply CLAHE inside the strip ROI to enhance subtle depressions
+            # caused by pressed rubber that may have very low absolute contrast.
+            roi_eq = clahe.apply(roi)
+
             strip_is_horizontal = sw >= sh
 
             if strip_is_horizontal:
-                # Vertical cut → column-wise mean intensity profile
-                profile = roi.mean(axis=0).astype(np.float32)
+                profile = roi_eq.mean(axis=0).astype(np.float32)
                 coords  = np.arange(sx1, sx2, dtype=np.float32)
             else:
-                # Horizontal cut → row-wise mean intensity profile
-                profile = roi.mean(axis=1).astype(np.float32)
+                profile = roi_eq.mean(axis=1).astype(np.float32)
                 coords  = np.arange(sy1, sy2, dtype=np.float32)
 
             if len(profile) < 20:
                 continue
 
-            # Local baseline via moving average; window = ~1/5 of the profile length
-            window = max(10, min(len(profile) // 5, 80))
+            # Local baseline via moving average; window ≈ 1/5 of profile
+            window   = max(10, min(len(profile) // 5, 80))
             kernel   = np.ones(window, dtype=np.float32) / window
             baseline = np.convolve(profile, kernel, mode="same")
             darkness = baseline - profile    # positive where darker than local mean
 
-            # Restrict search to the central 80 % to avoid rubber-edge artefacts.
             margin = max(1, int(0.10 * len(darkness)))
             valid_darkness = darkness.copy()
             valid_darkness[:margin]  = 0.0
             valid_darkness[-margin:] = 0.0
 
             peak_dark = float(valid_darkness.max())
-            threshold = max(6.0, float(np.mean(darkness) + 1.5 * np.std(darkness)))
+            # Relative threshold capped at 6.0 so that subtle depressions on dark
+            # metallic backgrounds (peak ~6 gray levels) are not rejected by a
+            # high σ from rubber texture noise.
+            threshold = min(6.0, max(2.5, float(np.mean(darkness) + 0.7 * np.std(darkness))))
             if peak_dark < threshold:
+                print(f"[Stage 2] Intensity-valley no peak  (peak={peak_dark:.1f} < thr={threshold:.1f})")
                 continue
 
             idx   = int(np.argmax(valid_darkness))
             coord = float(coords[idx])
 
+            # Use a narrower box half-width (4 px) to keep the mask tight around
+            # the actual crease; SAM-style masks are not used here.
+            half_w = 4.0
             if strip_is_horizontal:
                 box = np.array([
-                    coord - 8.0,
+                    coord - half_w,
                     sy1 + 0.06 * sh,
-                    coord + 8.0,
+                    coord + half_w,
                     sy2 - 0.06 * sh,
                 ], dtype=np.float32)
             else:
                 box = np.array([
                     sx1 + 0.06 * sw,
-                    coord - 8.0,
+                    coord - half_w,
                     sx2 - 0.06 * sw,
-                    coord + 8.0,
+                    coord + half_w,
                 ], dtype=np.float32)
 
             box = self._clip_box(box, W, H)
@@ -1085,6 +1226,358 @@ class GroundedSAMModel:
                   f"darkness_peak={peak_dark:.1f} (thr={threshold:.1f})")
 
         return new_dets, new_pts
+
+    def _bright_gap_fallback(
+        self,
+        image_bgr:        np.ndarray,
+        strip_detections: list[DetectionResult],
+        H:                int,
+        W:                int,
+        max_new:          int = 2,
+        existing_edges:   Optional[list[DetectionResult]] = None,
+    ) -> tuple[list[DetectionResult], list[np.ndarray]]:
+        """Detect cuts as bright columns/rows inside the strip ROI.
+
+        The complement of _intensity_valley_fallback: while that method finds
+        dark crevices (pressed rubber), this one finds thin strips that are
+        locally BRIGHTER than the surrounding rubber — i.e. gaps that expose
+        the white or grey table beneath.
+
+        A real bright gap also passes the standard brightness sanity check
+        (CUT_GAP_BRIGHTNESS_MIN) that rejects dark-rubber false positives.
+        """
+        gray          = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY)
+        gray_rgb      = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
+        clahe         = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+        new_dets: list[DetectionResult] = []
+        new_pts:  list[np.ndarray]      = []
+        existing_edges = existing_edges or []
+
+        for strip in strip_detections:
+            if len(new_dets) >= max_new:
+                break
+            sbox = strip.box_xyxy.astype(np.float32)
+
+            already = False
+            for edge in existing_edges + new_dets:
+                inter = self._box_intersection_area(edge.box_xyxy, sbox)
+                area  = max(1.0, (edge.box_xyxy[2] - edge.box_xyxy[0])
+                                * (edge.box_xyxy[3] - edge.box_xyxy[1]))
+                if inter / area > 0.55:
+                    already = True
+                    break
+            if already:
+                continue
+
+            sx1, sy1, sx2, sy2 = self._clip_box(sbox, W, H).astype(int)
+            roi = gray[sy1:sy2, sx1:sx2]
+            if roi.size == 0:
+                continue
+            sw, sh = max(1, sx2 - sx1), max(1, sy2 - sy1)
+
+            roi_eq = clahe.apply(roi)
+            strip_is_horizontal = sw >= sh
+
+            if strip_is_horizontal:
+                profile = roi_eq.mean(axis=0).astype(np.float32)
+                coords  = np.arange(sx1, sx2, dtype=np.float32)
+            else:
+                profile = roi_eq.mean(axis=1).astype(np.float32)
+                coords  = np.arange(sy1, sy2, dtype=np.float32)
+
+            if len(profile) < 20:
+                continue
+
+            window    = max(10, min(len(profile) // 5, 80))
+            kernel    = np.ones(window, dtype=np.float32) / window
+            baseline  = np.convolve(profile, kernel, mode="same")
+            # "brightness" is positive where profile > baseline (brighter than neighbours)
+            brightness = profile - baseline
+
+            margin = max(1, int(0.10 * len(brightness)))
+            valid_brightness = brightness.copy()
+            valid_brightness[:margin]  = 0.0
+            valid_brightness[-margin:] = 0.0
+
+            peak_bright = float(valid_brightness.max())
+            # More conservative than the valley fallback: bright-rubber
+            # reflections can look like bright columns, so require a stronger
+            # peak signal to reduce false positives in no-cut images.
+            threshold = max(5.0, float(np.mean(brightness) + 1.2 * np.std(brightness)))
+            if peak_bright < threshold:
+                continue
+
+            idx   = int(np.argmax(valid_brightness))
+            coord = float(coords[idx])
+
+            half_w = 4.0
+            if strip_is_horizontal:
+                box = np.array([
+                    coord - half_w,
+                    sy1 + 0.06 * sh,
+                    coord + half_w,
+                    sy2 - 0.06 * sh,
+                ], dtype=np.float32)
+            else:
+                box = np.array([
+                    sx1 + 0.06 * sw,
+                    coord - half_w,
+                    sx2 - 0.06 * sw,
+                    coord + half_w,
+                ], dtype=np.float32)
+
+            box = self._clip_box(box, W, H)
+            if not self._is_valid_cutgap_box(box, W, H, strip_box=sbox):
+                continue
+
+            # Bright-gap sanity check: the region must be genuinely bright
+            # (table exposed), not just reflective rubber. Use a stricter
+            # threshold than the DINO path to reduce false positives.
+            p90 = self._gap_centre_brightness(gray_rgb, box)
+            if p90 < max(CUT_GAP_BRIGHTNESS_MIN, 130.0):
+                print(f"[Stage 2] Bright-gap fallback dropped dark FP: p90={p90:.1f}")
+                continue
+
+            mask = self._make_rect_mask(box, H, W)
+            det  = DetectionResult("cut_edge_bright", 0.07, box, mask)
+            new_dets.append(det)
+            new_pts.append(self._extract_cut_gap_borders(mask))
+            print(f"[Stage 2] Bright-gap fallback: cut at coord={coord:.1f}  "
+                  f"brightness_peak={peak_bright:.1f} (thr={threshold:.1f})")
+
+        return new_dets, new_pts
+
+    @staticmethod
+    def _refine_cut_mask_robust(
+        image_bgr: np.ndarray,
+        cut_det: "DetectionResult",
+        H: int,
+        W: int,
+        coarse_half_px: int = 60,   # Phase-1 wide search from box centre
+        fine_half_px:   int = 22,   # Phase-2 narrow search around fitted line
+        min_contrast:   float = 5.0, # minimum gray-level gap vs rubber baseline
+        min_half_px:    int = 2,
+        max_half_px:    int = 50,
+    ) -> "DetectionResult":
+        """Refine any cut mask (SAM or fallback) to a compact diagonal line.
+
+        Two-phase approach:
+          Phase 1 — wide search (±coarse_half_px) from the bbox centre to
+                    capture the full diagonal even for rectangular fallback masks.
+          Phase 2 — narrow search (±fine_half_px) around the Phase-1 fitted
+                    line for sub-pixel accuracy.
+        Both phases use per-row local statistics (p20/p80) to distinguish
+        bright-gap vs dark-crevice and estimate the real gap width.
+        A 2-pass MAD outlier filter is applied after each phase.
+        Handles both vertical cuts (bh > bw) and horizontal cuts (bw >= bh).
+        """
+        if cut_det.mask is None:
+            return cut_det
+        ys, xs = np.where(cut_det.mask)
+        if len(ys) == 0:
+            return cut_det
+
+        y_min, y_max = int(ys.min()), int(ys.max())
+        x_min, x_max = int(xs.min()), int(xs.max())
+        bw = x_max - x_min + 1
+        bh = y_max - y_min + 1
+        vertical_cut = bh > bw
+
+        gray = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2GRAY).astype(np.float32)
+
+        # Determine bright-gap vs dark-crevice by comparing cut centre to rubber flanks
+        anchor_x = (x_min + x_max) // 2
+        anchor_y = (y_min + y_max) // 2
+        if vertical_cut:
+            gap_vals = gray[anchor_y, max(0, anchor_x - 3):min(W, anchor_x + 4)]
+            rub_l    = gray[anchor_y, max(0, x_min - 25):max(0, x_min - 5)]
+            rub_r    = gray[anchor_y, min(W, x_max + 5):min(W, x_max + 25)]
+        else:
+            gap_vals = gray[max(0, anchor_y - 3):min(H, anchor_y + 4), anchor_x].ravel()
+            rub_l    = gray[max(0, y_min - 25):max(0, y_min - 5), anchor_x].ravel()
+            rub_r    = gray[min(H, y_max + 5):min(H, y_max + 25), anchor_x].ravel()
+
+        rubber_all = np.concatenate([rub_l.ravel(), rub_r.ravel()])
+        is_bright = (
+            float(gap_vals.mean()) > float(rubber_all.mean())
+            if gap_vals.size > 0 and rubber_all.size > 0
+            else True
+        )
+
+        perp_max = W if vertical_cut else H
+        scan_lo  = y_min if vertical_cut else x_min
+        scan_hi  = y_max if vertical_cut else x_max
+        # Centre of the detection bbox (used as Phase-1 anchor)
+        box_centre = float(anchor_x if vertical_cut else anchor_y)
+
+        def _scan_rows(anchor_fn, half_px: int):
+            """Scan each row/col; returns (idxs, centers, widths, left_abs, right_abs)."""
+            idxs, centers, widths, left_edges, right_edges = [], [], [], [], []
+            for i in range(scan_lo, scan_hi + 1):
+                pred = anchor_fn(i)
+                s1   = max(0, int(round(pred)) - half_px)
+                s2   = min(perp_max - 1, int(round(pred)) + half_px)
+                if s2 - s1 < 5:
+                    continue
+                slc = (gray[i, s1:s2 + 1] if vertical_cut
+                       else gray[s1:s2 + 1, i]).copy().ravel()
+                n = len(slc)
+                k = min(5, n)
+                if k % 2 == 0:
+                    k = max(1, k - 1)
+                if k >= 3:
+                    slc = cv2.GaussianBlur(slc.reshape(1, -1), (1, k), 0).ravel()
+
+                if is_bright:
+                    peak_rel    = int(np.argmax(slc))
+                    rubber_base = float(np.percentile(slc, 30))
+                    peak_val    = float(slc[peak_rel])
+                    contrast    = peak_val - rubber_base
+                    # Low threshold: capture full bright gap up to where rubber starts
+                    threshold   = rubber_base + 0.15 * max(1.0, contrast)
+                    gap_pix     = slc >= threshold
+                else:
+                    peak_rel    = int(np.argmin(slc))
+                    rubber_base = float(np.percentile(slc, 70))
+                    peak_val    = float(slc[peak_rel])
+                    contrast    = rubber_base - peak_val
+                    threshold   = rubber_base - 0.15 * max(1.0, contrast)
+                    gap_pix     = slc <= threshold
+
+                if contrast < min_contrast:
+                    continue   # row has no credible gap signal
+
+                le, re = peak_rel, peak_rel
+                while le > 0 and gap_pix[le - 1]:
+                    le -= 1
+                while re < n - 1 and gap_pix[re + 1]:
+                    re += 1
+
+                idxs.append(float(i))
+                centers.append(float(s1 + (le + re) / 2.0))
+                widths.append(float(re - le + 1))
+                left_edges.append(float(s1 + le))
+                right_edges.append(float(s1 + re))
+            return idxs, centers, widths, left_edges, right_edges
+
+        def _mad_filter(idxs, centers, widths, left_edges, right_edges, n_sigma=3.5):
+            if len(idxs) < 4:
+                return idxs, centers, widths, left_edges, right_edges
+            s_arr = np.array(idxs,        dtype=np.float64)
+            c_arr = np.array(centers,     dtype=np.float64)
+            w_arr = np.array(widths,      dtype=np.float64)
+            l_arr = np.array(left_edges,  dtype=np.float64)
+            r_arr = np.array(right_edges, dtype=np.float64)
+            for _ in range(2):
+                if len(s_arr) < 4:
+                    break
+                slope_t, inter_t = np.polyfit(s_arr, c_arr, 1)
+                res = c_arr - (slope_t * s_arr + inter_t)
+                mad = float(np.median(np.abs(res - np.median(res))))
+                if mad < 0.5:
+                    break
+                keep = np.abs(res) < n_sigma * mad
+                if keep.sum() < 4:
+                    break
+                s_arr = s_arr[keep]
+                c_arr = c_arr[keep]
+                w_arr = w_arr[keep]
+                l_arr = l_arr[keep]
+                r_arr = r_arr[keep]
+            return (s_arr.tolist(), c_arr.tolist(), w_arr.tolist(),
+                    l_arr.tolist(), r_arr.tolist())
+
+        # ── Phase 1: coarse scan from bbox centre ─────────────────────────────
+        raw_i, raw_c, raw_w, raw_l, raw_r = _scan_rows(lambda _i: box_centre, coarse_half_px)
+        if len(raw_i) < 5:
+            return cut_det
+
+        raw_i, raw_c, raw_w, raw_l, raw_r = _mad_filter(raw_i, raw_c, raw_w, raw_l, raw_r)
+        if len(raw_i) < 4:
+            return cut_det
+
+        s1_arr = np.array(raw_i, dtype=np.float64)
+        c1_arr = np.array(raw_c, dtype=np.float64)
+        slope1, inter1 = np.polyfit(s1_arr, c1_arr, 1)
+
+        # ── Phase 2: fine scan around Phase-1 line ────────────────────────────
+        fin_i, fin_c, fin_w, fin_l, fin_r = _scan_rows(lambda i: slope1 * i + inter1, fine_half_px)
+        if len(fin_i) >= 4:
+            fin_i, fin_c, fin_w, fin_l, fin_r = _mad_filter(fin_i, fin_c, fin_w, fin_l, fin_r)
+
+        if len(fin_i) >= 4:
+            f_arr = np.array(fin_i, dtype=np.float64)
+            g_arr = np.array(fin_c, dtype=np.float64)
+            slope, intercept = np.polyfit(f_arr, g_arr, 1)
+        else:
+            # Phase 2 failed; keep Phase-1 result
+            slope, intercept = slope1, inter1
+
+        # ── Per-row variable-width mask using Phase-1 left/right edge fits ────
+        # Phase-1 coarse scan (±60px) captures the full gap width per row.
+        # Fit separate linear models to left and right rubber edges so the mask
+        # boundary smoothly follows the actual rubber surface on both sides.
+        i_arr = np.array(raw_i, dtype=np.float64)
+        l_arr = np.array(raw_l, dtype=np.float64)
+        r_arr = np.array(raw_r, dtype=np.float64)
+
+        if len(i_arr) >= 2:
+            l_slope, l_inter = np.polyfit(i_arr, l_arr, 1)
+            r_slope, r_inter = np.polyfit(i_arr, r_arr, 1)
+        else:
+            med_half = int(np.clip(
+                round(float(np.median(np.array(raw_w))) / 2.0),
+                min_half_px, max_half_px,
+            ))
+            l_slope, l_inter = slope, intercept - med_half
+            r_slope, r_inter = slope, intercept + med_half
+
+        new_mask = np.zeros((H, W), dtype=bool)
+        if vertical_cut:
+            for y in range(y_min, y_max + 1):
+                xlo = int(round(l_slope * y + l_inter))
+                xhi = int(round(r_slope * y + r_inter))
+                if xlo > xhi:
+                    xlo, xhi = xhi, xlo
+                # Enforce minimum width around the fitted centre
+                if xhi - xlo < 2 * min_half_px:
+                    cx  = int(round(slope * y + intercept))
+                    xlo = cx - min_half_px
+                    xhi = cx + min_half_px
+                xlo = max(0, xlo)
+                xhi = min(W - 1, xhi)
+                if xlo <= xhi:
+                    new_mask[y, xlo:xhi + 1] = True
+        else:
+            for x in range(x_min, x_max + 1):
+                ylo = int(round(l_slope * x + l_inter))
+                yhi = int(round(r_slope * x + r_inter))
+                if ylo > yhi:
+                    ylo, yhi = yhi, ylo
+                if yhi - ylo < 2 * min_half_px:
+                    cy  = int(round(slope * x + intercept))
+                    ylo = cy - min_half_px
+                    yhi = cy + min_half_px
+                ylo = max(0, ylo)
+                yhi = min(H - 1, yhi)
+                if ylo <= yhi:
+                    new_mask[ylo:yhi + 1, x] = True
+
+        if not new_mask.any():
+            return cut_det
+
+        ys2, xs2 = np.where(new_mask)
+        new_box = np.array([
+            float(xs2.min()), float(ys2.min()),
+            float(xs2.max()), float(ys2.max()),
+        ], dtype=np.float32)
+
+        return DetectionResult(
+            label=cut_det.label,
+            score=cut_det.score,
+            box_xyxy=new_box,
+            mask=new_mask,
+        )
 
     @staticmethod
     def _deduplicate_edges(

@@ -21,7 +21,7 @@ GDINO_WEIGHTS = ""
 # New images (May 2026) use real black-and-white QR codes, not pink stickers.
 # Keep the pink-sticker terms as fallback so old dataset still works.
 PROMPT_QR = "qr code . black square qr code . white square with qr pattern . pink square sticker"
-PROMPT_STRIP = "black rubber strip . dark rubber band on table"
+PROMPT_STRIP = "black rubber strip . dark rubber band on table . rubber piece on metal surface"
 
 PROMPT_CUT_CANDIDATES = [
     "gap between rubber pieces .",
@@ -34,8 +34,8 @@ PROMPT_CUT_CANDIDATES = [
 PROMPT_EDGE = PROMPT_STRIP
 
 # ── Detection thresholds ─────────────────────────────────────────────────────
-GDINO_BOX_THRESHOLD  = 0.12
-GDINO_TEXT_THRESHOLD = 0.10
+GDINO_BOX_THRESHOLD  = 0.10
+GDINO_TEXT_THRESHOLD = 0.08
 
 GDINO_BOX_THRESHOLD_CUT  = 0.17
 GDINO_TEXT_THRESHOLD_CUT = 0.14

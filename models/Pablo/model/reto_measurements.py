@@ -55,6 +55,10 @@ class Reto2Row:
     SB1: Optional[float] = None
     SB2: Optional[float] = None
     YSB: Optional[float] = None
+    SA1_xa_mm: Optional[float] = None   # left edge of Band A gap in mm
+    SA1_xb_mm: Optional[float] = None   # right edge of Band A gap in mm
+    SB1_xa_mm: Optional[float] = None   # left edge of Band B gap in mm
+    SB1_xb_mm: Optional[float] = None   # right edge of Band B gap in mm
 
 
 # ── Engine ─────────────────────────────────────────────────────────────────────
@@ -98,30 +102,28 @@ class RetoMeasurementEngine:
         strip_b_mask: Optional[np.ndarray],
         image_bgr:    Optional[np.ndarray] = None,
     ) -> list[Reto2Row]:
-        # YSA / YSB = global Y (mm from table edge) of the TOP of each cut zone.
-        # This is the spec-defined origin for the 10 measurement positions.
-        # nuevas_normas.pdf: "el origen de las divisiones es la parte superior
-        # de la zona de corte de cada banda".
         ysa = self._nearest_cut_y_mm(cut_a_mask)
         ysb = self._nearest_cut_y_mm(cut_b_mask)
 
         rows = []
         for y_off in RETO2_Y_OFFSETS_MM:
             sa1 = sa2 = sb1 = sb2 = None
+            xa_a = xb_a = xa_b = xb_b = None
 
-            # Measurement positions are offsets from the TOP of the cut zone,
-            # not from the top of the strip (those can differ when the cut
-            # starts inside the band rather than at its very edge).
             if cut_a_mask is not None and ysa is not None:
                 y_global = ysa + y_off
-                sa1 = self._gap_width_at_y(cut_a_mask, y_global)
+                edges_a  = self._gap_edges_at_y(cut_a_mask, y_global)
+                if edges_a is not None:
+                    xa_a, xb_a, sa1 = edges_a
                 sa2 = self._gap_upper_to_lower_at_y(
                     cut_a_mask, y_global, image_bgr, band="A"
                 )
 
             if cut_b_mask is not None and ysb is not None:
                 y_global = ysb + y_off
-                sb1 = self._gap_width_at_y(cut_b_mask, y_global)
+                edges_b  = self._gap_edges_at_y(cut_b_mask, y_global)
+                if edges_b is not None:
+                    xa_b, xb_b, sb1 = edges_b
                 sb2 = self._gap_upper_to_lower_at_y(
                     cut_b_mask, y_global, image_bgr, band="B"
                 )
@@ -130,6 +132,8 @@ class RetoMeasurementEngine:
                 y_offset_mm=y_off,
                 SA1=sa1, SA2=sa2, YSA=ysa,
                 SB1=sb1, SB2=sb2, YSB=ysb,
+                SA1_xa_mm=xa_a, SA1_xb_mm=xb_a,
+                SB1_xa_mm=xa_b, SB1_xb_mm=xb_b,
             ))
         return rows
 
@@ -187,39 +191,41 @@ class RetoMeasurementEngine:
         """Global Y (mm) of the cut border closest to the table edge."""
         return self._band_top_y_mm(cut_mask)
 
-    def _gap_width_at_y(
+    def _gap_edges_at_y(
         self,
         cut_mask: Optional[np.ndarray],
         y_mm: float,
-    ) -> Optional[float]:
-        """Horizontal gap width (mm) of the cut mask at a given global Y.
-
-        Scans a horizontal line in mm space and measures the X extent of the
-        cut mask pixels at that Y level.
-        """
+    ) -> Optional[tuple]:
+        """Return (x_a_mm, x_b_mm, width_mm) of the cut gap at Y, or None."""
         if cut_mask is None or not cut_mask.any():
             return None
-
         x_vals = np.arange(0.0, self._X_SCAN_MAX_MM, self._X_SCAN_STEP_MM)
         pts_mm = np.column_stack([
             x_vals.astype(np.float32),
             np.full(len(x_vals), y_mm, dtype=np.float32),
         ])
         pts_px = self.calibrator.mm_to_pixels_bulk(pts_mm, self.H_mat)
-
         xi = np.round(pts_px[:, 0]).astype(int)
         yi = np.round(pts_px[:, 1]).astype(int)
         valid = (xi >= 0) & (xi < self.img_W) & (yi >= 0) & (yi < self.img_H)
         if not valid.any():
             return None
-
         in_cut = cut_mask[yi[valid], xi[valid]]
         hit_x  = x_vals[valid][in_cut]
-
         if len(hit_x) < 2:
             return None
+        x_a = float(hit_x.min())
+        x_b = float(hit_x.max())
+        return x_a, x_b, x_b - x_a
 
-        return float(hit_x.max() - hit_x.min())
+    def _gap_width_at_y(
+        self,
+        cut_mask: Optional[np.ndarray],
+        y_mm: float,
+    ) -> Optional[float]:
+        """Horizontal gap width (mm) of the cut mask at a given global Y."""
+        edges = self._gap_edges_at_y(cut_mask, y_mm)
+        return edges[2] if edges is not None else None
 
     def _gap_upper_to_lower_at_y(
         self,

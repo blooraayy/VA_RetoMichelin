@@ -251,3 +251,25 @@ Contiene `.gitignore` que evita que las fotos entren en el repositorio.
 |---|---|
 | `view/visualiser.py` | Nuevo método `render_reto()`: superpone máscaras de Banda A (naranja, α=0.28) y Banda B (teal), máscaras de corte Cut A (rojo, α=0.5) y Cut B (verde), cajas QR, y llama a `_draw_reto2_visuals()`. Guarda como `<base>_reto.png`. Nuevo método `_draw_reto2_visuals()`: dibuja flecha YSA/YSB desde el borde de la mesa hasta el top del corte; traza las 10 líneas horizontales de medida a los offsets Y especificados; para cada línea dibuja en blanco el segmento SA1/SB1 (ancho del gap) con marcas en los extremos; anota el offset Y y el valor. Colores: YELLOW=(0,220,220) para Banda A, CYAN=(200,200,0) para Banda B. |
 | `reto_challenge.py` | `_process_image()` llama a `visualiser.render_reto()` tras el `render()` existente, generando una tercera imagen de salida `*_reto.png` por imagen procesada. |
+
+---
+
+## Phase 6 — Mejoras de detección para escenas difíciles (sesión 2026-06-08)
+
+### Problemas abordados
+
+| Problema | Causa raíz | Fix |
+|---|---|---|
+| Pos5 fallo total (bandas no detectadas) | Strip fallback `gray < 95` insuficiente en fondo metálico oscuro | CLAHE antes del umbral + fallback adaptativo p20+delta |
+| Pos5 calibración falla con 3 QR | `_build_homography` no manejaba layout TL/BL/BR | Reescritura con clasificación por mayor salto Y |
+| Pos4 cortes no detectados (goma presionada) | Valley fallback umbral `max(6, mean+1.5σ)` demasiado alto para depresiones de 2-5 grises | Bajado a `max(3.0, mean+0.8σ)` + CLAHE en ROI + caja más estrecha (4px) |
+| Pos7 solo 1 corte de 2 detectados | Gradiente clásico umbral `max(5.0, mean+1.0σ)` descarta cortes tenues | Bajado a `max(3.5, mean+0.8σ)` |
+| Pos7/Pos8 cortes brillantes no encontrados | Ningún fallback buscaba picos de brillo (gap expone el fondo blanco/gris) | Añadido 5º pase: `_bright_gap_fallback()` |
+
+### Archivos modificados
+
+| Archivo | Cambio |
+|---|---|
+| `model/qr_calibrator.py` | `_build_homography`: nueva clasificación top/bottom por mayor salto-Y en lugar de mediana. Nuevo branch `n_top==1` para layout TL/BL/BR: `src→(TL,BL,BR)`, `dst→(0,0),(0,L),(L,L)`. |
+| `model/grounded_sam.py` | `_intensity_strip_fallback`: CLAHE (clipLimit=3) sobre la imagen de gris; si <2 bandas encontradas, reintento con umbral adaptativo `p20 + 0.35*(p50-p20)` (máx 110, mín 70). `_intensity_valley_fallback`: CLAHE en ROI, umbral bajado, caja ±4px. `_conditioned_classical_fallback`: umbral de pico de gradiente bajado. Nuevo método `_bright_gap_fallback()` (5º pase): busca columnas/filas más brillantes que la baseline local; aplica brightness check ≥130. |
+| `config/config.py` | `PROMPT_STRIP`: añadido `". rubber piece on metal surface"`. `GDINO_BOX_THRESHOLD`/`GDINO_TEXT_THRESHOLD`: 0.12/0.10 → 0.10/0.08 para detectar bandas en escenas de bajo contraste. |

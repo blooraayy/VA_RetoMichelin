@@ -1,5 +1,17 @@
 # CLAUDE.md — Contexto completo del proyecto Reto Michelin
-# (sesión junio 2026 — actualizado 2026-06-07)
+# (sesión junio 2026 — actualizado 2026-06-08 sesión tarde)
+
+---
+
+## Lo primero al arrancar sesión
+
+**Ejecutar el pipeline completo y revisar las imágenes `_reto.png` de salida:**
+
+```bash
+conda run -n michelin python reto_challenge.py --folder all_images/ --no-show
+```
+
+Salida en `data/outputs/reto/`. Revisar especialmente Pos1, Pos3, Pos4, Pos5, Pos7.
 
 ---
 
@@ -23,7 +35,7 @@ Dado un conjunto de 1–3 fotografías de bandas de goma sobre mesa, el sistema 
 
 ```bash
 # Poner las 3 fotos en competition_images/ y ejecutar:
-python reto_challenge.py --folder competition_images/ --no-show
+conda run -n michelin python reto_challenge.py --folder competition_images/ --no-show
 
 # Genera: reto_results.xlsx  (subir a Agora)
 # Tiempo estimado: 5-15 min GPU, 30-60 min CPU
@@ -31,7 +43,7 @@ python reto_challenge.py --folder competition_images/ --no-show
 
 Para verificar en todo el dataset:
 ```bash
-python reto_challenge.py --folder all_images/ --no-show
+conda run -n michelin python reto_challenge.py --folder all_images/ --no-show
 # Salida: data/outputs/reto/  +  reto_results.xlsx
 ```
 
@@ -59,22 +71,32 @@ reto_challenge.py  (orquestador principal)
 
 ---
 
-## Sistema de detección de cortes (4 pasadas)
+## Sistema de detección de cortes (5 pasadas)
 
 ```
 Pasada 1: DINO normal          (BOX=0.17, TEXT=0.14)
 Pasada 2: DINO umbral bajo     (BOX=0.13, TEXT=0.11)
-Pasada 3: Gradient clásico     (Sobel+CLAHE, max(5.0, mean+1.0σ))
-Pasada 4: Intensity valley     (valle oscuro con ventana deslizante, max(6.0, mean+1.5σ))
+Pasada 3: Gradient clásico     (Sobel+CLAHE, max(3.5, mean+0.8σ)) + brightness p90>120
+Pasada 4: Intensity valley     (valle oscuro, min(6.0, max(2.5, mean+0.7σ))) SIN brightness check
+Pasada 5: Bright-gap fallback  (columna brillante, max(5.0, mean+1.2σ) + p90≥130)
 ```
 
 Cada pasada solo se ejecuta si la anterior no encontró corte.
-Todos los candidatos pasan por `_is_valid_cutgap_box()` (geometría) y `_gap_centre_brightness()` (p90 > 120, para descartar bordes oscuros).
+Pasada 4: umbral CAPEADO a 6.0 — fix para Pos5 (fondo metálico oscuro con σ alto por textura).
 
 ### Strip fallback (cuando DINO devuelve 0 bandas)
 
-`_intensity_strip_fallback()`: proyección de píxeles oscuros (`gray < 95`) por filas/columnas.
-Funciona para bandas horizontales y layouts de 4 cuadrantes en cruz.
+`_intensity_strip_fallback()`: proyección de píxeles oscuros por filas/columnas.
+1. Aplica CLAHE (clipLimit=3) → umbral fijo `gray_eq < 95`
+2. Si <2 bandas: reintento con umbral adaptativo `raw_gray < (p20 + 0.35*(p50-p20))` (máx 110)
+
+---
+
+## QR Calibration (qr_calibrator.py)
+
+- Umbral sanity check: `y_range_mm > 3.5 * qr_leg_mm` (era 2.5×, subido para Pos1 con fondo gris grande)
+- **Combo retry**: si falla el sanity check, prueba todas las C(n,3) combinaciones de los top-10 candidatos QR
+- Layout TL/BL/BR soportado: `n_top==1` → `dst=[(0,0),(0,L),(L,L)]`
 
 ---
 
@@ -82,92 +104,84 @@ Funciona para bandas horizontales y layouts de 4 cuadrantes en cruz.
 
 | Parámetro | Valor | Descripción |
 |---|---|---|
-| `PROMPT_STRIP` | `"black rubber strip . dark rubber band on table"` | Soporte fondo blanco y gris |
-| `PROMPT_QR` | `"qr code . black square qr code . ... . pink square sticker"` | QR reales + pegatinas antiguas |
-| `CUT_GAP_BRIGHTNESS_MIN` | 120.0 | p90 mínimo para aceptar un gap (mesa blanca visible) |
-| `CUT_MIN_ASPECT_RATIO` | 4.0 | Ratio mínimo para validar un corte |
+| `PROMPT_STRIP` | `"black rubber strip . dark rubber band on table . rubber piece on metal surface"` | Soporte fondo blanco, gris y metálico |
+| `GDINO_BOX_THRESHOLD` | 0.10 | Umbral de detección de strips |
+| `CUT_GAP_BRIGHTNESS_MIN` | 120.0 | p90 mínimo para aceptar un gap (pasadas 1–3) |
 | `RETO1_X_MM` | [80,160,...,720] | 9 posiciones X para Reto 1 |
-| `RETO2_Y_OFFSETS_MM` | [5,30,55,...,230] | 10 offsets Y desde top del corte para Reto 2 |
+| `RETO2_Y_OFFSETS_MM` | [5,30,55,...,230] | 10 offsets Y desde top del corte |
 | `RETO2_BAND_WIDTH_MM` | 250.0 | Ancho nominal de banda |
-| `DIST_TO_CENTRE_MIN` | 0.40 | En QR calibrator — filtro de QRs válidos |
 
 ---
 
-## Estado de detección por tipo de imagen (evaluado 2026-06-07)
+## Especificación Reto 2 (nuevas_normas.pdf)
 
-### ✅ Multimedia_31 – Multimedia_52 (mesa blanca, bandas verticales)
-- Detección correcta en la mayoría. Ambas bandas, cortes detectados cuando son visibles.
-- Las 10 líneas de medida son correctas y abarcan el ancho completo de la banda.
-- Multimedia_48 es el caso modelo más limpio.
-- Multimedia_52: Banda A sin corte visible → no se muestran líneas (comportamiento correcto).
-- **Sin falsos positivos** tras el check de brillo en el fallback clásico.
+Las 10 medidas se toman en posiciones fijas desde la **parte superior del corte de cada banda** (origen = top del corte, marcado como `(0)`):
 
-### ✅/⚠️ Pos1 (4 cuadrantes, bandas verticales, fondo blanco/gris)
-- Bandas detectadas pero a veces solo la mitad derecha de cada banda (un trozo en lugar de dos).
-- El corte sí se detecta cuando el gap es visible.
-- **Problema**: DINO detecta las 4 piezas por separado; el merge de trozos adyacentes de la misma banda no se hace.
+| Posición | Offset Y desde top del corte |
+|---|---|
+| 1 | 5 mm |
+| 2 | 30 mm |
+| 3 | 55 mm |
+| ... | +25 mm cada una |
+| 10 | 230 mm |
 
-### ✅/⚠️ Pos2 (bandas verticales, fondo gris)
-- Algunos ejemplos funcionan perfectamente (111123_1, 111134_1).
-- **Problema conocido**: En 111118, la Banda B se asigna a una posición completamente errónea (esquina superior izquierda de la imagen). Es un error de asignación A/B cuando los dos strips detectados están mal ordenados.
-
-### ❌ Pos3 (2 bandas horizontales largas, fondo gris)
-- Bandas detectadas pero **0 cortes** en todos los ejemplos.
-- Los cortes son arrugas o líneas muy sutiles; ni DINO ni los fallbacks los detectan.
-
-### ❌ Pos4 (bandas horizontales largas, cortes de goma presionada, fondo gris)
-- Inconsistente: algunos ejemplos detectan bandas, otros fallan completamente.
-- **Nunca detecta los cortes** (goma presionada = línea oscura sin hueco blanco).
-- La Pasada 4 (intensity valley) no es suficientemente sensible para estos cortes.
-
-### ❌ Pos5 (4 cuadrantes, fondo metálico gris oscuro)
-- **Fallo total**: ni bandas ni cortes en ninguno de los 5 ejemplos.
-- El caucho negro sobre mesa metálica gris oscura apenas tiene contraste.
-- Umbral `gray < 95` no es suficiente. La goma puede ser similar a 80-90 y la mesa 70-85.
-- **Prioridad alta** para mañana: este layout puede aparecer en las imágenes de competición.
-
-### ⚠️ Pos6 (bandas verticales largas, fondo gris)
-- Bandas detectadas. Solo una de las dos bandas tiene corte detectado en la mayoría de casos.
-- La otra banda tiene corte pero muy difuso.
-
-### ⚠️ Pos7 (bandas horizontales, fondo gris)
-- Solo se detecta una banda de las dos en la mayoría de ejemplos.
-- El strip fallback no termina de funcionar bien para estos layouts.
-
-### ⚠️ Pos8 (bandas horizontales, cortes visibles pero tenues)
-- Algunos ejemplos bien (112218: bandas detectadas, corte de banda A visible).
-- **112247: fallo total** — ninguna detección.
-- Cuando el corte está en posición muy alta de la imagen, las 10 líneas de medida caen fuera del área visible (pero el cálculo numérico es correcto).
+**SA1**: distancia horizontal entre el borde superior izquierdo (punto A) y el borde superior derecho (punto B) del corte en cada posición Y.
+**SA2**: distancia entre borde superior e inferior del corte (chaflán). En vista cenital ≈ SA1. **Negativo** si el borde inferior está tapado por el superior (solapamiento).
+**YSA/YSB**: distancia global Y desde el borde de la mesa hasta el top del corte de cada banda.
 
 ---
 
-## Problemas prioritarios para próximas sesiones
+## Visualización `_reto.png` (diseño sesión 2026-06-08)
 
-### P1 (crítico) — Pos5 fallo total
-- Fondo gris metálico oscuro, umbral 95 insuficiente.
-- **Posible solución A**: subir umbral a 110 y usar detección de contraste relativo en lugar de absoluto (percentil 20 de la imagen como referencia).
-- **Posible solución B**: Preprocesar con CLAHE antes del fallback de intensidad para normalizar el histograma.
-- **Archivo**: `model/grounded_sam.py` → `_intensity_strip_fallback()` (línea ~911)
+### `render_reto()` — capas en orden de pintado:
+1. **Overlay SAM bandas** (alpha=0.18): máscara SAM de Banda A en amarillo `(0,220,220)`, Banda B en cian `(200,200,0)`
+2. **Bounding box bandas** (2px) + etiquetas "Banda A" / "Banda B"
+3. **Overlay SAM cortes** (alpha=0.42): máscaras SAM de Corte A y Corte B en rojo `(50,50,220)`
+4. **Bounding box cortes** (2px, rojo) + etiquetas "Corte A" / "Corte B"
+5. **QR detections** (markers + bbox)
+6. **Líneas de medida Reto 2** vía `_draw_reto2_visuals()`
 
-### P2 (importante) — Pos4 cortes de goma presionada
-- El valley fallback existe pero no es suficientemente sensible.
-- La goma presionada crea una depresión de ~2-5 píxeles de ancho y ~3-8 de intensidad más oscura.
-- **Posible solución**: reducir la ventana mínima del valley a 1-2 px, bajar el umbral a `mean + 0.8σ` y confiar más en `_is_valid_cutgap_box` para filtrar falsos positivos.
-- **Archivo**: `model/grounded_sam.py` → `_intensity_valley_fallback()`
+### `_draw_reto2_visuals()`:
+- **Línea vertical marrón** `(19,69,139)` desde borde de mesa (Y=0mm) hasta top del corte (YSA/YSB)
+- **Círculo `(0)`** marrón con borde negro en el punto origen + etiqueta `YSA=xxx.xmm`
+- **10 líneas horizontales** finas (1px, color banda) sin tick marks, desde left a right de la banda
+- **Segmento SA1 blanco** (2px) en el centro del corte en cada línea
+- **Puntos A y B** (círculos blancos, borde negro) en los extremos del segmento SA1; etiquetas "A"/"B" solo en línea 1
+- **Anotaciones** `"N. SA1=x.x"` solo en líneas 1, 5 y 10 (índices 0, 4, 9) al borde derecho
+- Si una banda **no tiene corte detectado** → no se dibujan líneas (correcto según spec)
 
-### P3 (importante) — Pos7 solo detecta una banda
-- El strip fallback debería encontrar ambas bandas horizontales.
-- **Posible causa**: las dos bandas tienen proyecciones muy cercanas y el algoritmo las fusiona en una sola.
-- **Archivo**: `model/grounded_sam.py` → `_intensity_strip_fallback()` → `_find_strips_from_projection()`
+---
 
-### P4 (moderado) — Asignación A/B incorrecta (Pos2)
-- La asignación Banda A = strip más a la izquierda / Banda B = más a la derecha (o arriba/abajo para horizontales) falla cuando hay detecciones espurias.
-- **Archivo**: `model/grounded_sam.py` → la lógica de asignación de strips tras `run()`
-- En `reto_challenge.py`: `band_a, band_b = strips[0], strips[1]` — ordenar por posición X o Y consistentemente
+## Estado de detección por tipo de imagen
 
-### P5 (leve) — Pos1 solo detecta mitad de banda
-- Para layouts de 4 cuadrantes, DINO detecta 4 trozos pero el pipeline toma solo 2.
-- Solución: merge de bounding boxes de trozos del mismo lado (similar X range, separación < umbral en Y).
+| Posición | Descripción | Estado | Notas |
+|---|---|---|---|
+| Multimedia_31–52 | Mesa blanca, bandas verticales | ✅ | Sin falsos positivos |
+| Pos1 | 4 cuadrantes, fondo blanco/gris | ⚠️ | QR fix aplicado (3.5×); solo mitad de banda detectada (sin merge) |
+| Pos2 | Bandas verticales, fondo gris | ⚠️ | A veces asignación A/B incorrecta (111118) |
+| Pos3 | Bandas horizontales largas, gris | ⚠️ | Mejorado (valley fallback): de 0 a ~3/4 con CUT=2 |
+| Pos4 | Bandas horizontales + goma presionada | ⚠️ | Valley+CLAHE aplicado; pendiente validar en nuevo run |
+| Pos5 | 4 cuadrantes, mesa metálica gris oscura | ⚠️ | Valley cap 6.0 aplicado; pendiente validar en nuevo run |
+| Pos6 | Bandas verticales largas, gris | ⚠️ | Solo 1 de 2 cortes detectados |
+| Pos7 | Bandas horizontales, gris | ⚠️ | Gradiente+bright-gap aplicado; pendiente validar |
+| Pos8 | Bandas horizontales, cortes tenues | ⚠️ | Mejorado; 112247 aún falla |
+
+---
+
+## Problemas pendientes
+
+### P1 — Pos1 solo detecta mitad de banda
+- DINO detecta las 4 piezas por separado; falta merge de trozos adyacentes del mismo lado.
+- Archivo: `model/grounded_sam.py` → necesita lógica de merge de bounding boxes solapados.
+
+### P2 — Asignación A/B incorrecta (Pos2, imagen 111118)
+- `assign_bands()` en `model/reto_measurements.py` usa `mean_y_mm` → falla si la calibración QR es imprecisa.
+
+### P3 — Pos6 solo 1 corte
+- El segundo corte es muy difuso. Sin fix conocido todavía.
+
+### P4 — 112247 (Pos8) fallo total
+- Ninguna detección en esa imagen. Sin fix conocido todavía.
 
 ---
 
@@ -175,9 +189,9 @@ Funciona para bandas horizontales y layouts de 4 cuadrantes en cruz.
 
 ```
 data/outputs/reto/
-    <nombre>_detection_<ts>.png     # QR + strip boxes + cut boxes
+    <nombre>_detection_<ts>.png     # QR + strip boxes + cut boxes (SAM masks)
     <nombre>_measurement_<ts>.png   # Reto 1 sample points + distancias
-    <nombre>_reto_<ts>.png          # Vista Reto 2 con 10 líneas de medida
+    <nombre>_reto_<ts>.png          # Vista Reto 2: masks + bboxes + 10 líneas
     <nombre>_measurements_<ts>.csv  # CSV por imagen
     <nombre>_<ts>.json              # JSON completo de resultados
 
@@ -201,56 +215,22 @@ Hoja "Foto N" por imagen:
 |---|---|
 | **DA** | Distancia en Y desde borde de mesa (QR baseline) al borde superior de Banda A |
 | **DB** | Ídem para Banda B |
-| **LA** | Longitud/anchura de Banda A en mm |
+| **LA** | Anchura de Banda A en mm (Y extent de la máscara) |
 | **LB** | Ídem para Banda B |
-| **SA1** | Ancho horizontal del gap (corte) de Banda A a cada posición Y |
-| **SA2** | Ídem incluyendo chaflán (en vista cenital ≈ SA1) |
-| **YSA** | Distancia global en Y desde borde de mesa al top del corte de Banda A (origen de las 10 divisiones) |
+| **SA1** | Distancia entre punto A (borde superior izq. del corte) y punto B (borde superior dcho.) en cada Y |
+| **SA2** | Distancia entre borde superior e inferior del corte (chaflán). Negativo si se solapan. ≈SA1 en vista cenital |
+| **YSA** | Y global desde borde de mesa hasta top del corte de Banda A (origen `(0)` de las 10 divisiones) |
 | **SB1/SB2/YSB** | Equivalentes para Banda B |
-
-**Origen Reto 2**: `ysa` = top de la máscara del corte (no top del strip). Ver `model/reto_measurements.py`.
-
----
-
-## Visualización _reto.png (diseño actual)
-
-- Relleno de banda: alpha=0.12 (muy tenue, el patrón de la goma es visible)
-- Líneas horizontales: 2 px, abarcan el **ancho completo de la banda** (no solo la zona de corte)
-- Marca vertical de 3 px en el borde izquierdo de cada línea
-- Marcador `(0)` en la posición YSA/YSB (círculo + texto)
-- Flecha YSA/YSB desde borde de mesa hasta top del corte
-- Segmento SA1 en blanco (3 px) con marcas en los extremos
-- Anotaciones numeradas `"N. SA1=x.x"` al borde derecho con sombra negra
-- Si una banda **no tiene corte detectado** → no se dibujan líneas (correcto según spec)
-
----
-
-## Historial de commits relevantes
-
-```
-a2e8fbd  docs: add Phase 5 to changes.md
-0710a0c  feat(viz+detection): match reference image format and fix false positives
-26be798  feat(detection): add intensity-valley fallback + all_images/ folder
-518a669  docs: add Phase 3 (render_reto + run_all) to changes.md
-e68adf3  feat: add render_reto visualisation and run_all batch processor
-8ecd0dc  fix(reto2): use top of cut zone (ysa) as measurement origin, not top of strip
-e883651  feat(phase2): robust strip+cut detection for new competition images
-d1f3033  Formato Michelin nuevas_normas: xlsx, mediciones Reto1/2, homografia BR
-```
 
 ---
 
 ## Instalación
 
 ```bash
-# GPU (CUDA 12.1)
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
-pip install -r requirements.txt
+# GPU (CUDA 12.4) — entorno conda "michelin"
+conda run -n michelin python reto_challenge.py --folder all_images/ --no-show
 
-# Solo CPU
-pip install -r requirements.txt
-
-# Pesos SAM ViT-H (deben estar en weights/sam_vit_h_4b8939.pth)
+# Pesos SAM ViT-H en weights/sam_vit_h_4b8939.pth
 # Grounding DINO se descarga automático de HuggingFace
 ```
 

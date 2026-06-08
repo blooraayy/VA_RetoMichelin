@@ -15,6 +15,7 @@ from __future__ import annotations
 import cv2
 import numpy as np
 from dataclasses import dataclass
+from itertools import combinations
 from typing import Optional
 
 from config.config import QR_LEG_MM
@@ -130,7 +131,48 @@ class QRCalibrator:
             test_px.reshape(-1, 1, 2), Hm
         ).reshape(-1, 2)
         y_range_mm = float(test_mm[:, 1].max() - test_mm[:, 1].min())
-        if y_range_mm > 2.5 * self.qr_leg_mm:
+        # Threshold 3.5× instead of 2.5× — some camera angles show significant grey
+        # background beyond the table, pushing full-image corners to ~3× the QR leg
+        # while the triangle itself is still correct (e.g. Pos1 images, range ~2.6–3.1×).
+        # Genuinely degenerate homographies produce ranges of 5–10×.
+        if y_range_mm > 3.5 * self.qr_leg_mm:
+            # Primary 3-QR selection failed the sanity check.
+            # Try all combinations of 3 from the top-10 candidates (by peripherality)
+            # before giving up — one of the top-3 might be a false positive.
+            top_n = sorted(candidates, key=lambda c: c[3], reverse=True)[:min(10, len(candidates))]
+            print(f"[QR] Sanity failed — retrying with {len(list(combinations(range(len(top_n)), 3)))} combos from top-{len(top_n)} candidates")
+            best_y = y_range_mm
+            best_result = None
+            for trio in combinations(range(len(top_n)), 3):
+                trial_centres = [(top_n[i][0], top_n[i][1]) for i in trio]
+                try:
+                    Hm_t, px_t = self._build_homography(trial_centres)
+                except Exception:
+                    continue
+                test_mm_t = cv2.perspectiveTransform(
+                    test_px.reshape(-1, 1, 2), Hm_t
+                ).reshape(-1, 2)
+                y_range_t = float(test_mm_t[:, 1].max() - test_mm_t[:, 1].min())
+                if y_range_t < best_y:
+                    best_y = y_range_t
+                    best_result = QRResult(
+                        centres_px=trial_centres,
+                        homography=Hm_t,
+                        px_per_mm=px_t,
+                        success=y_range_t <= 3.5 * self.qr_leg_mm,
+                        message=(
+                            "Calibration OK (QR combo retry)"
+                            if y_range_t <= 3.5 * self.qr_leg_mm
+                            else f"Best combo still failed: Y range {y_range_t:.0f} mm"
+                        ),
+                    )
+                if y_range_t <= 3.5 * self.qr_leg_mm:
+                    print(f"[QR] Combo retry succeeded: Y range {y_range_t:.0f} mm")
+                    return best_result
+            if best_result is not None:
+                print(f"[QR] All combos failed; best Y range {best_y:.0f} mm")
+                if best_result.success:
+                    return best_result
             return QRResult(
                 centres_px=centres,
                 homography=None,
@@ -232,38 +274,74 @@ class QRCalibrator:
     def _build_homography(self, centres_px) -> tuple[np.ndarray, float]:
         """Compute affine pixel→mm transform from 3 QR centres.
 
-        Handles two triangle layouts automatically:
+        Handles all three realised triangle layouts automatically:
           TL / TR / BL  →  (0,0) / (L,0) / (0,L)   [old dataset, pink stickers]
           TL / TR / BR  →  (0,0) / (L,0) / (L,L)   [new dataset, real QR codes]
+          TL / BL / BR  →  (0,0) / (0,L) / (L,L)   [Pos5-style, only one top QR]
 
-        In both cases the X axis runs along the top edge (TL→TR) and the Y
-        axis runs perpendicular into the table.  The origin (0,0) is always
-        the TL corner so X measurements are referenced from the LEFT side.
+        In all cases X runs along the top edge (or the single top→right leg) and Y
+        runs perpendicular into the table.  Origin (0,0) is always the TL corner.
         """
         pts = np.array(centres_px, dtype=np.float64)
         L   = self.qr_leg_mm
 
-        idx_tl = int(np.argmin(pts[:, 0] + pts[:, 1]))
-        remaining = [i for i in range(3) if i != idx_tl]
-        idx_tr = remaining[int(np.argmax(pts[remaining, 0]))]
-        idx_3rd = [i for i in remaining if i != idx_tr][0]
+        # Classify markers into "top row" vs "bottom row" by splitting at the
+        # largest Y gap.  This handles all layouts including TL/BL/BR (Pos5)
+        # where median-based splitting would misclassify BL as a top point.
+        ys_sorted = np.sort(pts[:, 1])
+        y_gaps    = np.diff(ys_sorted)                         # 2 values for 3 pts
+        split_y   = 0.5 * (ys_sorted[int(np.argmax(y_gaps))]
+                           + ys_sorted[int(np.argmax(y_gaps)) + 1])
+        top_mask  = pts[:, 1] < split_y
+        n_top     = int(top_mask.sum())
 
-        # Determine whether the 3rd point is bottom-LEFT (x ≈ TL) or
-        # bottom-RIGHT (x ≈ TR). Midpoint of TL→TR is the threshold.
-        mid_x = 0.5 * (pts[idx_tl, 0] + pts[idx_tr, 0])
-        if pts[idx_3rd, 0] <= mid_x:
-            # BL layout (original dataset)
-            src = np.float32([pts[idx_tl], pts[idx_tr], pts[idx_3rd]])
-            dst = np.float32([[0.0, 0.0], [L, 0.0], [0.0, L]])
+        if n_top == 2:
+            # Standard layouts: two markers at the top, one at the bottom.
+            top_pts = pts[top_mask]
+            bot_pt  = pts[~top_mask][0]
+
+            tl = top_pts[int(np.argmin(top_pts[:, 0]))]
+            tr = top_pts[int(np.argmax(top_pts[:, 0]))]
+            mid_x = 0.5 * (tl[0] + tr[0])
+            if bot_pt[0] <= mid_x:
+                # TL / TR / BL
+                src = np.float32([tl, tr, bot_pt])
+                dst = np.float32([[0.0, 0.0], [L, 0.0], [0.0, L]])
+            else:
+                # TL / TR / BR
+                src = np.float32([tl, tr, bot_pt])
+                dst = np.float32([[0.0, 0.0], [L, 0.0], [L, L]])
+            leg_px = float(np.linalg.norm(tr - tl))
+
+        elif n_top == 1:
+            # TL / BL / BR layout: only the top-left QR is visible at the top.
+            tl      = pts[top_mask][0]
+            bot_pts = pts[~top_mask]
+            bl      = bot_pts[int(np.argmin(bot_pts[:, 0]))]
+            br      = bot_pts[int(np.argmax(bot_pts[:, 0]))]
+            src = np.float32([tl, bl, br])
+            dst = np.float32([[0.0, 0.0], [0.0, L], [L, L]])
+            # Scale estimate: use the longer bottom leg (BL→BR ≈ L)
+            leg_px = float(np.linalg.norm(br - bl))
+
         else:
-            # BR layout (new dataset — third QR is below TR, not below TL)
-            src = np.float32([pts[idx_tl], pts[idx_tr], pts[idx_3rd]])
-            dst = np.float32([[0.0, 0.0], [L, 0.0], [L, L]])
+            # All three in one row — degenerate; fall back to original logic.
+            idx_tl  = int(np.argmin(pts[:, 0] + pts[:, 1]))
+            remaining = [i for i in range(3) if i != idx_tl]
+            idx_tr  = remaining[int(np.argmax(pts[remaining, 0]))]
+            idx_3rd = [i for i in remaining if i != idx_tr][0]
+            mid_x   = 0.5 * (pts[idx_tl, 0] + pts[idx_tr, 0])
+            if pts[idx_3rd, 0] <= mid_x:
+                src = np.float32([pts[idx_tl], pts[idx_tr], pts[idx_3rd]])
+                dst = np.float32([[0.0, 0.0], [L, 0.0], [0.0, L]])
+            else:
+                src = np.float32([pts[idx_tl], pts[idx_tr], pts[idx_3rd]])
+                dst = np.float32([[0.0, 0.0], [L, 0.0], [L, L]])
+            leg_px = float(np.linalg.norm(pts[idx_tr] - pts[idx_tl]))
 
         H_aff = cv2.getAffineTransform(src, dst)
         H = np.vstack([H_aff, [0.0, 0.0, 1.0]])
 
-        leg_px    = float(np.linalg.norm(pts[idx_tr] - pts[idx_tl]))
         px_per_mm = leg_px / L
 
         if not (0.2 <= px_per_mm <= 15.0):

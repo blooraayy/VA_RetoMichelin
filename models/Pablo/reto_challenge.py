@@ -170,22 +170,27 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         description="Michelin Reto — competition-day xlsx generator"
     )
-    src = p.add_mutually_exclusive_group(required=True)
+    _DEFAULT_FOLDER = os.path.join(_BASE, "challenge")
+    _DEFAULT_OUTPUT = os.path.join(_BASE, "challenge", "outputs", "reto_results.xlsx")
+    _DEFAULT_VIS    = os.path.join(_BASE, "challenge", "outputs")
+    _DEFAULT_TPL    = os.path.join(_BASE, "challenge", "template.xlsx")
+
+    src = p.add_mutually_exclusive_group(required=False)
     src.add_argument("--images", nargs="+",
                      help="One to three image paths to process.")
-    src.add_argument("--folder", type=str,
-                     help="Process all images in this folder.")
+    src.add_argument("--folder", type=str, default=_DEFAULT_FOLDER,
+                     help="Process all images in this folder (default: challenge/).")
 
     p.add_argument("--output", type=str,
-                   default=os.path.join(_BASE, "reto_results.xlsx"),
-                   help="Output xlsx path (default: reto_results.xlsx).")
+                   default=_DEFAULT_OUTPUT,
+                   help="Output xlsx path (default: challenge/outputs/reto_results.xlsx).")
     p.add_argument("--template", type=str,
-                   default=os.path.join(_BASE, "templates", "michelin_template.xlsx"),
-                   help="Path to Michelin xlsx template. If exists, fills it instead "
-                        "of generating a new file. Pass empty string to disable.")
+                   default=_DEFAULT_TPL,
+                   help="Path to Michelin xlsx template (default: challenge/template.xlsx). "
+                        "Pass empty string to disable.")
     p.add_argument("--vis-output", type=str,
-                   default=os.path.join(_BASE, "data", "outputs", "reto"),
-                   help="Folder for annotated visualisations.")
+                   default=_DEFAULT_VIS,
+                   help="Folder for annotated visualisations (default: challenge/outputs/).")
     p.add_argument("--device", type=str, default=DEVICE,
                    choices=["cuda", "cpu"])
     p.add_argument("--no-show", action="store_true")
@@ -205,9 +210,13 @@ def main() -> None:
     if args.images:
         image_paths = [p for p in args.images if os.path.isfile(p)]
     else:
+        folder = args.folder
+        if not os.path.isdir(folder):
+            print(f"[reto_challenge] Folder not found: {folder}")
+            sys.exit(1)
         image_paths = sorted([
-            os.path.join(args.folder, f)
-            for f in os.listdir(args.folder)
+            os.path.join(folder, f)
+            for f in os.listdir(folder)
             if os.path.splitext(f)[1].lower() in EXTENSIONS
         ])
 
