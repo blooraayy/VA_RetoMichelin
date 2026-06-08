@@ -30,7 +30,7 @@ from model.reto_measurements import (
     RetoMeasurementEngine, assign_bands, assign_cuts_to_bands,
 )
 from view.visualiser  import Visualiser
-from view.xlsx_writer import write_reto_xlsx
+from view.xlsx_writer import write_reto_xlsx, write_reto_xlsx_from_template
 from utils.utils      import load_image
 
 EXTENSIONS = (".jpg", ".jpeg", ".png")
@@ -179,6 +179,10 @@ def build_arg_parser() -> argparse.ArgumentParser:
     p.add_argument("--output", type=str,
                    default=os.path.join(_BASE, "reto_results.xlsx"),
                    help="Output xlsx path (default: reto_results.xlsx).")
+    p.add_argument("--template", type=str,
+                   default=os.path.join(_BASE, "templates", "michelin_template.xlsx"),
+                   help="Path to Michelin xlsx template. If exists, fills it instead "
+                        "of generating a new file. Pass empty string to disable.")
     p.add_argument("--vis-output", type=str,
                    default=os.path.join(_BASE, "data", "outputs", "reto"),
                    help="Folder for annotated visualisations.")
@@ -253,7 +257,11 @@ def main() -> None:
 
     # Write xlsx
     os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
-    write_reto_xlsx(args.output, all_results)
+    template = getattr(args, "template", "")
+    if template and os.path.isfile(template):
+        write_reto_xlsx_from_template(template, args.output, all_results)
+    else:
+        write_reto_xlsx(args.output, all_results)
 
     elapsed = time.perf_counter() - t_total
     print(f"\n[reto_challenge] Total time: {elapsed:.1f}s")

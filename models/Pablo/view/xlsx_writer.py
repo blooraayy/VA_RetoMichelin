@@ -236,3 +236,73 @@ def _write_legend(ws, start_row: int) -> None:
         ws.merge_cells(start_row=r, start_column=2, end_row=r,
                        end_column=1 + _N_COLS)
         r += 1
+
+
+# ── Template-filling writer (Michelin official format) ────────────────────────
+
+def write_reto_xlsx_from_template(
+    template_path: str,
+    output_path: str,
+    results: list[dict],
+) -> None:
+    """Fill the official Michelin xlsx template with pipeline measurements.
+
+    Preserves all original template formatting and descriptions.
+    Template layout: single sheet "Hoja1", one Foto section per block of 13
+    rows starting at row 5, with a blank row between sections.
+
+    Layout per Foto section (row offsets from section start):
+      +0  title row ("Foto N")  + column index 1-10
+      +1  "Distancia a borde"   + 80,160,…,720
+      +2  DA   (cols 2-10, 9 values)
+      +3  DB
+      +4  LA
+      +5  LB
+      +6  "Distancia a borde producto" + 5,30,…,230
+      +7  SA1  (cols 2-11, 10 values)
+      +8  SA2
+      +9  YSA  (same value repeated across 10 cols)
+      +10 SB1
+      +11 SB2
+      +12 YSB  (same value repeated across 10 cols)
+    """
+    import shutil
+    shutil.copy2(template_path, output_path)
+
+    wb = openpyxl.load_workbook(output_path)
+    ws = wb["Hoja1"]
+
+    # Exact starting rows of each Foto section in the template
+    # (verified by inspecting the template file directly)
+    FOTO_STARTS = [5, 21, 36]
+
+    # Row offsets within each foto section for Reto 1 metrics
+    RETO1_ROW_OFFSETS = {"DA": 2, "DB": 3, "LA": 4, "LB": 5}
+    # Row offsets within each foto section for Reto 2 metrics
+    RETO2_ROW_OFFSETS = {"SA1": 7, "SA2": 8, "YSA": 9,
+                         "SB1": 10, "SB2": 11, "YSB": 12}
+
+    for foto_idx, rec in enumerate(results[:3]):
+        foto_start = FOTO_STARTS[foto_idx]
+
+        reto1: list[Reto1Row] = rec.get("reto1_rows", [])
+        reto2: list[Reto2Row] = rec.get("reto2_rows", [])
+
+        # ── Reto 1: DA, DB, LA, LB — 9 data columns (cols 2-10) ─────────────
+        for attr, r_off in RETO1_ROW_OFFSETS.items():
+            row = foto_start + r_off
+            for j, row_data in enumerate(reto1[:9]):
+                ws.cell(row=row, column=2 + j).value = _num(
+                    getattr(row_data, attr, None)
+                )
+
+        # ── Reto 2: SA1,SA2,YSA,SB1,SB2,YSB — 10 data cols (cols 2-11) ─────
+        for attr, r_off in RETO2_ROW_OFFSETS.items():
+            row = foto_start + r_off
+            for j, row_data in enumerate(reto2[:10]):
+                ws.cell(row=row, column=2 + j).value = _num(
+                    getattr(row_data, attr, None)
+                )
+
+    wb.save(output_path)
+    print(f"[XlsxWriter] Template saved: {output_path}")
